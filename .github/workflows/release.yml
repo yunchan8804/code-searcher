@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Release
+
+    - name: Test
+      run: dotnet test --configuration Release --verbosity normal
+
+    - name: Publish (Self-contained)
+      run: |
+        dotnet publish src/UnicodeSearcher -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish/self-contained
+
+    - name: Publish (Framework-dependent)
+      run: |
+        dotnet publish src/UnicodeSearcher -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -o publish/framework-dependent
+
+    - name: Create ZIP archives
+      run: |
+        Compress-Archive -Path publish/self-contained/* -DestinationPath CodeSearcher-${{ github.ref_name }}-win-x64-self-contained.zip
+        Compress-Archive -Path publish/framework-dependent/* -DestinationPath CodeSearcher-${{ github.ref_name }}-win-x64.zip
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          CodeSearcher-${{ github.ref_name }}-win-x64-self-contained.zip
+          CodeSearcher-${{ github.ref_name }}-win-x64.zip
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
