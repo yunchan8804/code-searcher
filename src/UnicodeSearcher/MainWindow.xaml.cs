@@ -713,7 +713,7 @@ public partial class MainWindow : Window
 
     private void HandleQuickListKeyDown(System.Windows.Controls.ListBox listBox, KeyEventArgs e)
     {
-        var areaName = listBox == RecentList ? "recent" : "favorite";
+        var isRecent = listBox == RecentList;
 
         switch (e.Key)
         {
@@ -726,26 +726,64 @@ public partial class MainWindow : Window
                 e.Handled = true;
                 break;
 
+            case Key.Left:
+                if (listBox.SelectedIndex > 0)
+                {
+                    // 이전 아이템으로
+                    listBox.SelectedIndex--;
+                }
+                else if (!isRecent && RecentList.Items.Count > 0 && RecentList.IsVisible)
+                {
+                    // 즐겨찾기 첫 번째에서 ← → 최근 마지막으로
+                    RecentList.SelectedIndex = RecentList.Items.Count - 1;
+                    RecentList.Focus();
+                    HighlightSection("recent");
+                }
+                e.Handled = true;
+                break;
+
+            case Key.Right:
+                if (listBox.SelectedIndex < listBox.Items.Count - 1)
+                {
+                    // 다음 아이템으로
+                    listBox.SelectedIndex++;
+                }
+                else if (isRecent && FavoriteList.Items.Count > 0 && FavoriteList.IsVisible)
+                {
+                    // 최근 마지막에서 → → 즐겨찾기 첫 번째로
+                    FavoriteList.SelectedIndex = 0;
+                    FavoriteList.Focus();
+                    HighlightSection("favorite");
+                }
+                e.Handled = true;
+                break;
+
             case Key.Up:
-                // 이전 영역으로 이동
-                FocusPreviousArea(areaName);
+                // 위로: 검색창으로
+                SearchTextBox.Focus();
+                SearchTextBox.SelectAll();
+                HighlightSection("search");
                 e.Handled = true;
                 break;
 
             case Key.Down:
-                // 다음 영역으로 이동
-                FocusNextArea(areaName);
+                // 아래로: 카테고리로
+                FocusOnCategory();
                 e.Handled = true;
                 break;
 
             case Key.Tab:
                 if (Keyboard.Modifiers == ModifierKeys.Shift)
                 {
-                    FocusPreviousArea(areaName);
+                    // Shift+Tab: 검색창으로
+                    SearchTextBox.Focus();
+                    SearchTextBox.SelectAll();
+                    HighlightSection("search");
                 }
                 else
                 {
-                    FocusNextArea(areaName);
+                    // Tab: 카테고리로
+                    FocusOnCategory();
                 }
                 e.Handled = true;
                 break;
