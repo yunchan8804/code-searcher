@@ -26,6 +26,14 @@ public partial class MainWindow : Window
     private const int DWMWCP_ROUND = 2;
     private const int DWMWCP_ROUNDSMALL = 3;
 
+    [DllImport("user32.dll")]
+    private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+    private const int SW_RESTORE = 9;
+
     private void ApplyRoundedCorners()
     {
         try
@@ -140,7 +148,7 @@ public partial class MainWindow : Window
     /// <summary>
     /// 창 표시
     /// </summary>
-    public void ShowWindow(bool positionNearCursor = true)
+    public async void ShowWindow(bool positionNearCursor = true)
     {
         _hideOnDeactivate = true;
         _lastShowTime = DateTime.Now;
@@ -153,18 +161,24 @@ public partial class MainWindow : Window
         // 창 표시 및 활성화
         Show();
         WindowState = WindowState.Normal;
-        Topmost = true;  // 일시적으로 최상단
-        Activate();
+        Topmost = true;
 
-        // 잠시 후 Topmost 해제 및 포커스 설정
-        Dispatcher.BeginInvoke(() =>
+        // 핫키 이벤트가 완전히 처리될 때까지 약간 대기
+        await Task.Delay(50);
+
+        // Win32 API로 강제 포커스
+        var hwnd = new WindowInteropHelper(this).Handle;
+        if (hwnd != IntPtr.Zero)
         {
-            Topmost = true;  // 계속 최상단 유지 (원래 설정)
-            Focus();
-            SearchTextBox.Focus();
-            SearchTextBox.SelectAll();
-            HighlightSection("search");
-        }, DispatcherPriority.Input);
+            ShowWindow(hwnd, SW_RESTORE);
+            SetForegroundWindow(hwnd);
+        }
+
+        Activate();
+        Focus();
+        SearchTextBox.Focus();
+        SearchTextBox.SelectAll();
+        HighlightSection("search");
     }
 
     /// <summary>

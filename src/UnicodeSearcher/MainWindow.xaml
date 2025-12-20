@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:UnicodeSearcher.ViewModels"
+        xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
         mc:Ignorable="d"
         Title="유니코드 검색기"
         Icon="Resources/Icons/app.ico"
@@ -439,10 +440,6 @@
 
         <!-- 문자 그리드 -->
         <Border x:Name="GridSection" Grid.Row="4" Background="{DynamicResource SurfaceBrush}">
-            <ScrollViewer x:Name="CharacterScrollViewer"
-                          VerticalScrollBarVisibility="Auto"
-                          HorizontalScrollBarVisibility="Disabled"
-                          PreviewMouseWheel="CharacterScrollViewer_PreviewMouseWheel">
                 <ListBox x:Name="CharacterGrid"
                          ItemsSource="{Binding FilteredCharacters}"
                          SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
@@ -450,11 +447,16 @@
                          Padding="8"
                          Background="Transparent"
                          BorderThickness="0"
+                         VirtualizingPanel.IsVirtualizing="True"
+                         VirtualizingPanel.VirtualizationMode="Recycling"
+                         VirtualizingPanel.ScrollUnit="Pixel"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.CanContentScroll="True"
                          SelectionChanged="CharacterGrid_SelectionChanged">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal"/>
+                            <vwp:VirtualizingWrapPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemContainerStyle>
@@ -501,7 +503,6 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </ScrollViewer>
         </Border>
 
         <!-- 상태 바 -->
