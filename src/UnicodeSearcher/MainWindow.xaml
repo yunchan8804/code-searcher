@@ -236,32 +236,35 @@
             </Grid.RowDefinitions>
 
             <!-- 커스텀 타이틀 바 -->
-            <Grid Grid.Row="0" Background="{DynamicResource SurfaceBrush}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            <Border Grid.Row="0" Background="{DynamicResource SurfaceBrush}"
+                    CornerRadius="7,7,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <!-- 타이틀 -->
-                <TextBlock Grid.Column="0"
-                           Text="🔤 유니코드 검색기"
-                           FontSize="12"
-                           Foreground="{DynamicResource ForegroundBrush}"
-                           VerticalAlignment="Center"
-                           Margin="12,0,0,0"/>
+                    <!-- 타이틀 -->
+                    <TextBlock Grid.Column="0"
+                               Text="🔤 유니코드 검색기"
+                               FontSize="12"
+                               Foreground="{DynamicResource ForegroundBrush}"
+                               VerticalAlignment="Center"
+                               Margin="12,0,0,0"/>
 
-                <!-- 타이틀바 버튼들 -->
-                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <Button Style="{StaticResource TitleBarButtonStyle}"
-                            Content="─"
-                            Click="MinimizeButton_Click"
-                            ToolTip="최소화"/>
-                    <Button Style="{StaticResource CloseButtonStyle}"
-                            Content="✕"
-                            Click="CloseButton_Click"
-                            ToolTip="닫기 (Esc)"/>
-                </StackPanel>
-            </Grid>
+                    <!-- 타이틀바 버튼들 -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button Style="{StaticResource TitleBarButtonStyle}"
+                                Content="─"
+                                Click="MinimizeButton_Click"
+                                ToolTip="최소화"/>
+                        <Button Style="{StaticResource CloseButtonStyle}"
+                                Content="✕"
+                                Click="CloseButton_Click"
+                                ToolTip="닫기 (Esc)"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
 
             <!-- 검색창 -->
             <Border x:Name="SearchSection" Grid.Row="1" Background="{DynamicResource SurfaceBrush}" Padding="12" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
@@ -505,7 +508,8 @@
         </Border>
 
         <!-- 상태 바 -->
-        <Border Grid.Row="6" Background="{DynamicResource StatusBarBrush}" Padding="12,8" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0">
+        <Border Grid.Row="6" Background="{DynamicResource StatusBarBrush}" Padding="12,8" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0"
+                CornerRadius="0,0,7,7">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>

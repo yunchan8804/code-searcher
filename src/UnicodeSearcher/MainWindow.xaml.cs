@@ -1,7 +1,9 @@
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Threading;
 using UnicodeSearcher.Helpers;
@@ -15,6 +17,34 @@ namespace UnicodeSearcher;
 /// </summary>
 public partial class MainWindow : Window
 {
+    #region Windows 11 둥근 모서리 API
+
+    [DllImport("dwmapi.dll", CharSet = CharSet.Unicode, PreserveSig = false)]
+    private static extern void DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
+
+    private const int DWMWA_WINDOW_CORNER_PREFERENCE = 33;
+    private const int DWMWCP_ROUND = 2;
+    private const int DWMWCP_ROUNDSMALL = 3;
+
+    private void ApplyRoundedCorners()
+    {
+        try
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            if (hwnd != IntPtr.Zero)
+            {
+                int preference = DWMWCP_ROUND;
+                DwmSetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, ref preference, sizeof(int));
+            }
+        }
+        catch
+        {
+            // Windows 10 이하에서는 무시 (WPF 기본 둥근 모서리 사용)
+        }
+    }
+
+    #endregion
+
     private MainViewModel ViewModel => (MainViewModel)DataContext;
 
     // 그리드에서 한 행에 표시되는 문자 수 (대략적 계산용)
@@ -33,6 +63,9 @@ public partial class MainWindow : Window
 
     private async void Window_Loaded(object sender, RoutedEventArgs e)
     {
+        // Windows 11 네이티브 둥근 모서리 적용
+        ApplyRoundedCorners();
+
         // 검색창에 포커스
         SearchTextBox.Focus();
         SearchTextBox.SelectAll();
