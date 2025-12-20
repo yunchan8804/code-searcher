@@ -473,3 +473,58 @@ cd ..\..
 dotnet sln add src\UnicodeSearcher\UnicodeSearcher.csproj
 dotnet run --project src\UnicodeSearcher
 ```
+
+---
+
+## Future Plans (미래 계획)
+
+### 이모지 검색 기능 추가
+
+#### 배경
+- 현재 앱은 특수문자/기호 위주로 구성
+- 이모지도 유니코드의 일부 (U+1F300~ 범위)
+- 사용자 요구에 따라 이모지 검색 기능 추가 고려
+
+#### WPF 컬러 이모지 렌더링 이슈
+WPF는 **네이티브로 컬러 이모지를 지원하지 않음** (흑백 렌더링)
+
+| 프레임워크 | 컬러 이모지 | 비고 |
+|-----------|------------|------|
+| WPF | ❌ | DirectWrite 레벨 미지원 |
+| UWP | ✅ | `IsColorFontEnabled` 속성 |
+| WinUI 3 | ✅ | UWP 렌더링 엔진 계승 |
+
+**관련 이슈**: [dotnet/wpf#91](https://github.com/dotnet/wpf/issues/91)
+
+#### 해결 방안: Emoji.Wpf 라이브러리
+
+```bash
+dotnet add package Emoji.Wpf
+```
+
+**특징**:
+- Segoe UI Emoji 폰트의 벡터 + COLR/CPAL 컬러 정보 파싱
+- `TextBlock` → `EmojiTextBlock` 드롭인 교체
+- 시스템 폰트 사용 (별도 폰트 임베드 불필요)
+- .NET Framework 4.0+ 지원
+
+**참고 라이브러리**:
+- [samhocevar/emoji.wpf](https://github.com/samhocevar/emoji.wpf)
+- [iNKORE-NET/UI.WPF.Emojis](https://github.com/iNKORE-NET/UI.WPF.Emojis)
+
+#### 예상 작업량
+- [ ] Emoji.Wpf NuGet 패키지 추가
+- [ ] 이모지 데이터 수집 (약 3,600개)
+- [ ] characters.json에 이모지 카테고리 추가
+- [ ] 그리드 DataTemplate에서 EmojiTextBlock 적용
+- [ ] 이모지 전용 카테고리 UI 구성
+
+#### 성능 고려사항
+- Windows 이모지 피커(Win+;)도 수천 개 이모지 + GIF 처리
+- 현대 PC에서 이모지 수천 개 렌더링은 문제 없음
+- 필요시 가상화 리스트 적용으로 최적화 가능
+
+### 기타 미래 기능
+- [ ] 클라우드 동기화 (즐겨찾기, 설정)
+- [ ] 플러그인 시스템 (사용자 정의 문자셋)
+- [ ] 다국어 검색 확장 (일본어, 중국어 태그)
