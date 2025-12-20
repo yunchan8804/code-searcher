@@ -140,6 +140,48 @@
       "name_en": "Roman",
       "icon": "Ⅰ",
       "order": 19
+    },
+    {
+      "id": "emoji",
+      "name_ko": "이모지",
+      "name_en": "Emoji",
+      "icon": "😀",
+      "order": 20
+    },
+    {
+      "id": "unit",
+      "name_ko": "단위",
+      "name_en": "Units",
+      "icon": "㎞",
+      "order": 21
+    },
+    {
+      "id": "fraction",
+      "name_ko": "분수",
+      "name_en": "Fractions",
+      "icon": "½",
+      "order": 22
+    },
+    {
+      "id": "circled",
+      "name_ko": "원문자",
+      "name_en": "Circled",
+      "icon": "①",
+      "order": 23
+    },
+    {
+      "id": "letterlike",
+      "name_ko": "문자형",
+      "name_en": "Letterlike",
+      "icon": "ℕ",
+      "order": 24
+    },
+    {
+      "id": "technical",
+      "name_ko": "기술",
+      "name_en": "Technical",
+      "icon": "⌘",
+      "order": 25
     }
   ],
   "characters": [
@@ -220,18 +262,147 @@
     },
     {
       "char": "✪",
-      "codepoint": "U\u002B272A",
+      "codepoint": "U+272A",
       "name": "CIRCLED WHITE STAR",
-      "tags_ko": [
-        "별",
-        "원"
-      ],
-      "tags_en": [
-        "star",
-        "circled"
-      ],
+      "tags_ko": ["별", "원"],
+      "tags_en": ["star", "circled"],
       "category": "star",
       "frequency": 55
+    },
+    {
+      "char": "✫",
+      "codepoint": "U+272B",
+      "name": "OPEN CENTRE BLACK STAR",
+      "tags_ko": ["별", "열린별"],
+      "tags_en": ["star", "open"],
+      "category": "star",
+      "frequency": 52
+    },
+    {
+      "char": "✬",
+      "codepoint": "U+272C",
+      "name": "BLACK CENTRE WHITE STAR",
+      "tags_ko": ["별", "중앙검정"],
+      "tags_en": ["star", "center"],
+      "category": "star",
+      "frequency": 50
+    },
+    {
+      "char": "✭",
+      "codepoint": "U+272D",
+      "name": "OUTLINED BLACK STAR",
+      "tags_ko": ["별", "윤곽"],
+      "tags_en": ["star", "outlined"],
+      "category": "star",
+      "frequency": 58
+    },
+    {
+      "char": "✮",
+      "codepoint": "U+272E",
+      "name": "HEAVY OUTLINED BLACK STAR",
+      "tags_ko": ["별", "굵은윤곽"],
+      "tags_en": ["star", "heavy", "outlined"],
+      "category": "star",
+      "frequency": 54
+    },
+    {
+      "char": "✯",
+      "codepoint": "U+272F",
+      "name": "PINWHEEL STAR",
+      "tags_ko": ["별", "바람개비"],
+      "tags_en": ["star", "pinwheel"],
+      "category": "star",
+      "frequency": 48
+    },
+    {
+      "char": "✰",
+      "codepoint": "U+2730",
+      "name": "SHADOWED WHITE STAR",
+      "tags_ko": ["별", "그림자"],
+      "tags_en": ["star", "shadow"],
+      "category": "star",
+      "frequency": 56
+    },
+    {
+      "char": "✡",
+      "codepoint": "U+2721",
+      "name": "STAR OF DAVID",
+      "tags_ko": ["별", "다윗의별", "육각별"],
+      "tags_en": ["star", "david", "hexagram"],
+      "category": "star",
+      "frequency": 62
+    },
+    {
+      "char": "✴",
+      "codepoint": "U+2734",
+      "name": "EIGHT POINTED BLACK STAR",
+      "tags_ko": ["별", "팔각별"],
+      "tags_en": ["star", "eight pointed"],
+      "category": "star",
+      "frequency": 68
+    },
+    {
+      "char": "✵",
+      "codepoint": "U+2735",
+      "name": "EIGHT POINTED PINWHEEL STAR",
+      "tags_ko": ["별", "팔각바람개비"],
+      "tags_en": ["star", "eight", "pinwheel"],
+      "category": "star",
+      "frequency": 45
+    },
+    {
+      "char": "✶",
+      "codepoint": "U+2736",
+      "name": "SIX POINTED BLACK STAR",
+      "tags_ko": ["별", "육각별"],
+      "tags_en": ["star", "six pointed"],
+      "category": "star",
+      "frequency": 64
+    },
+    {
+      "char": "✷",
+      "codepoint": "U+2737",
+      "name": "EIGHT POINTED RECTILINEAR BLACK STAR",
+      "tags_ko": ["별", "팔각직선별"],
+      "tags_en": ["star", "rectilinear"],
+      "category": "star",
+      "frequency": 42
+    },
+    {
+      "char": "✸",
+      "codepoint": "U+2738",
+      "name": "HEAVY EIGHT POINTED RECTILINEAR BLACK STAR",
+      "tags_ko": ["별", "굵은팔각별"],
+      "tags_en": ["star", "heavy", "eight"],
+      "category": "star",
+      "frequency": 44
+    },
+    {
+      "char": "✹",
+      "codepoint": "U+2739",
+      "name": "TWELVE POINTED BLACK STAR",
+      "tags_ko": ["별", "십이각별"],
+      "tags_en": ["star", "twelve pointed"],
+      "category": "star",
+      "frequency": 46
+    },
+    {
+      "char": "⁂",
+      "codepoint": "U+2042",
+      "name": "ASTERISM",
+      "tags_ko": ["별", "삼각별", "에스터리즘"],
+      "tags_en": ["asterism", "stars"],
+      "category": "star",
+      "frequency": 40
+    },
+    {
+      "char": "⋆",
+      "codepoint": "U+22C6",
+      "name": "STAR OPERATOR",
+      "tags_ko": ["별", "수학별", "연산자"],
+      "tags_en": ["star", "operator", "math"],
+      "category": "star",
+      "frequency": 72
     },
     {
       "char": "→",
@@ -342,20 +513,651 @@
     },
     {
       "char": "⇔",
-      "codepoint": "U\u002B21D4",
+      "codepoint": "U+21D4",
       "name": "LEFT RIGHT DOUBLE ARROW",
-      "tags_ko": [
-        "화살표",
-        "이중",
-        "동치"
-      ],
-      "tags_en": [
-        "arrow",
-        "double",
-        "equivalent"
-      ],
+      "tags_ko": ["화살표", "이중", "동치"],
+      "tags_en": ["arrow", "double", "equivalent"],
       "category": "arrow",
       "frequency": 72
+    },
+    {
+      "char": "⇑",
+      "codepoint": "U+21D1",
+      "name": "UPWARDS DOUBLE ARROW",
+      "tags_ko": ["화살표", "이중", "위"],
+      "tags_en": ["arrow", "double", "up"],
+      "category": "arrow",
+      "frequency": 68
+    },
+    {
+      "char": "⇓",
+      "codepoint": "U+21D3",
+      "name": "DOWNWARDS DOUBLE ARROW",
+      "tags_ko": ["화살표", "이중", "아래"],
+      "tags_en": ["arrow", "double", "down"],
+      "category": "arrow",
+      "frequency": 66
+    },
+    {
+      "char": "↕",
+      "codepoint": "U+2195",
+      "name": "UP DOWN ARROW",
+      "tags_ko": ["화살표", "상하"],
+      "tags_en": ["arrow", "up", "down"],
+      "category": "arrow",
+      "frequency": 78
+    },
+    {
+      "char": "⇕",
+      "codepoint": "U+21D5",
+      "name": "UP DOWN DOUBLE ARROW",
+      "tags_ko": ["화살표", "이중", "상하"],
+      "tags_en": ["arrow", "double", "vertical"],
+      "category": "arrow",
+      "frequency": 64
+    },
+    {
+      "char": "↗",
+      "codepoint": "U+2197",
+      "name": "NORTH EAST ARROW",
+      "tags_ko": ["화살표", "대각선", "오른쪽위"],
+      "tags_en": ["arrow", "diagonal", "northeast"],
+      "category": "arrow",
+      "frequency": 74
+    },
+    {
+      "char": "↘",
+      "codepoint": "U+2198",
+      "name": "SOUTH EAST ARROW",
+      "tags_ko": ["화살표", "대각선", "오른쪽아래"],
+      "tags_en": ["arrow", "diagonal", "southeast"],
+      "category": "arrow",
+      "frequency": 72
+    },
+    {
+      "char": "↙",
+      "codepoint": "U+2199",
+      "name": "SOUTH WEST ARROW",
+      "tags_ko": ["화살표", "대각선", "왼쪽아래"],
+      "tags_en": ["arrow", "diagonal", "southwest"],
+      "category": "arrow",
+      "frequency": 70
+    },
+    {
+      "char": "↖",
+      "codepoint": "U+2196",
+      "name": "NORTH WEST ARROW",
+      "tags_ko": ["화살표", "대각선", "왼쪽위"],
+      "tags_en": ["arrow", "diagonal", "northwest"],
+      "category": "arrow",
+      "frequency": 70
+    },
+    {
+      "char": "↩",
+      "codepoint": "U+21A9",
+      "name": "LEFTWARDS ARROW WITH HOOK",
+      "tags_ko": ["화살표", "되돌아가기", "후크"],
+      "tags_en": ["arrow", "hook", "return"],
+      "category": "arrow",
+      "frequency": 82
+    },
+    {
+      "char": "↪",
+      "codepoint": "U+21AA",
+      "name": "RIGHTWARDS ARROW WITH HOOK",
+      "tags_ko": ["화살표", "후크"],
+      "tags_en": ["arrow", "hook", "right"],
+      "category": "arrow",
+      "frequency": 76
+    },
+    {
+      "char": "↺",
+      "codepoint": "U+21BA",
+      "name": "ANTICLOCKWISE OPEN CIRCLE ARROW",
+      "tags_ko": ["화살표", "회전", "반시계"],
+      "tags_en": ["arrow", "rotate", "counterclockwise"],
+      "category": "arrow",
+      "frequency": 70
+    },
+    {
+      "char": "↻",
+      "codepoint": "U+21BB",
+      "name": "CLOCKWISE OPEN CIRCLE ARROW",
+      "tags_ko": ["화살표", "회전", "시계"],
+      "tags_en": ["arrow", "rotate", "clockwise"],
+      "category": "arrow",
+      "frequency": 72
+    },
+    {
+      "char": "⟵",
+      "codepoint": "U+27F5",
+      "name": "LONG LEFTWARDS ARROW",
+      "tags_ko": ["화살표", "긴", "왼쪽"],
+      "tags_en": ["arrow", "long", "left"],
+      "category": "arrow",
+      "frequency": 55
+    },
+    {
+      "char": "⟶",
+      "codepoint": "U+27F6",
+      "name": "LONG RIGHTWARDS ARROW",
+      "tags_ko": ["화살표", "긴", "오른쪽"],
+      "tags_en": ["arrow", "long", "right"],
+      "category": "arrow",
+      "frequency": 58
+    },
+    {
+      "char": "⟷",
+      "codepoint": "U+27F7",
+      "name": "LONG LEFT RIGHT ARROW",
+      "tags_ko": ["화살표", "긴", "양방향"],
+      "tags_en": ["arrow", "long", "both"],
+      "category": "arrow",
+      "frequency": 52
+    },
+    {
+      "char": "➔",
+      "codepoint": "U+2794",
+      "name": "HEAVY WIDE-HEADED RIGHTWARDS ARROW",
+      "tags_ko": ["화살표", "굵은", "오른쪽"],
+      "tags_en": ["arrow", "heavy", "right"],
+      "category": "arrow",
+      "frequency": 80
+    },
+    {
+      "char": "➜",
+      "codepoint": "U+279C",
+      "name": "HEAVY ROUND-TIPPED RIGHTWARDS ARROW",
+      "tags_ko": ["화살표", "둥근", "오른쪽"],
+      "tags_en": ["arrow", "round", "right"],
+      "category": "arrow",
+      "frequency": 78
+    },
+    {
+      "char": "➝",
+      "codepoint": "U+279D",
+      "name": "TRIANGLE-HEADED RIGHTWARDS ARROW",
+      "tags_ko": ["화살표", "삼각", "오른쪽"],
+      "tags_en": ["arrow", "triangle", "right"],
+      "category": "arrow",
+      "frequency": 74
+    },
+    {
+      "char": "➞",
+      "codepoint": "U+279E",
+      "name": "HEAVY TRIANGLE-HEADED RIGHTWARDS ARROW",
+      "tags_ko": ["화살표", "굵은삼각"],
+      "tags_en": ["arrow", "heavy", "triangle"],
+      "category": "arrow",
+      "frequency": 72
+    },
+    {
+      "char": "➡",
+      "codepoint": "U+27A1",
+      "name": "BLACK RIGHTWARDS ARROW",
+      "tags_ko": ["화살표", "검정", "오른쪽"],
+      "tags_en": ["arrow", "black", "right"],
+      "category": "arrow",
+      "frequency": 88
+    },
+    {
+      "char": "➤",
+      "codepoint": "U+27A4",
+      "name": "BLACK RIGHTWARDS ARROWHEAD",
+      "tags_ko": ["화살표", "화살촉"],
+      "tags_en": ["arrow", "arrowhead"],
+      "category": "arrow",
+      "frequency": 84
+    },
+    {
+      "char": "➥",
+      "codepoint": "U+27A5",
+      "name": "HEAVY BLACK CURVED DOWNWARDS AND RIGHTWARDS ARROW",
+      "tags_ko": ["화살표", "곡선", "아래오른쪽"],
+      "tags_en": ["arrow", "curved", "down right"],
+      "category": "arrow",
+      "frequency": 60
+    },
+    {
+      "char": "➦",
+      "codepoint": "U+27A6",
+      "name": "HEAVY BLACK CURVED UPWARDS AND RIGHTWARDS ARROW",
+      "tags_ko": ["화살표", "곡선", "위오른쪽"],
+      "tags_en": ["arrow", "curved", "up right"],
+      "category": "arrow",
+      "frequency": 58
+    },
+    {
+      "char": "⤴",
+      "codepoint": "U+2934",
+      "name": "ARROW POINTING RIGHTWARDS THEN CURVING UPWARDS",
+      "tags_ko": ["화살표", "위로꺾임"],
+      "tags_en": ["arrow", "curve", "up"],
+      "category": "arrow",
+      "frequency": 65
+    },
+    {
+      "char": "⤵",
+      "codepoint": "U+2935",
+      "name": "ARROW POINTING RIGHTWARDS THEN CURVING DOWNWARDS",
+      "tags_ko": ["화살표", "아래로꺾임"],
+      "tags_en": ["arrow", "curve", "down"],
+      "category": "arrow",
+      "frequency": 63
+    },
+    {
+      "char": "⇐",
+      "codepoint": "U+21D0",
+      "name": "LEFTWARDS DOUBLE ARROW",
+      "tags_ko": ["화살표", "이중", "왼쪽"],
+      "tags_en": ["arrow", "double", "left"],
+      "category": "arrow",
+      "frequency": 70
+    },
+    {
+      "char": "⇑",
+      "codepoint": "U+21D1",
+      "name": "UPWARDS DOUBLE ARROW",
+      "tags_ko": ["화살표", "이중", "위"],
+      "tags_en": ["arrow", "double", "up"],
+      "category": "arrow",
+      "frequency": 65
+    },
+    {
+      "char": "⇓",
+      "codepoint": "U+21D3",
+      "name": "DOWNWARDS DOUBLE ARROW",
+      "tags_ko": ["화살표", "이중", "아래"],
+      "tags_en": ["arrow", "double", "down"],
+      "category": "arrow",
+      "frequency": 65
+    },
+    {
+      "char": "⟵",
+      "codepoint": "U+27F5",
+      "name": "LONG LEFTWARDS ARROW",
+      "tags_ko": ["화살표", "긴", "왼쪽"],
+      "tags_en": ["arrow", "long", "left"],
+      "category": "arrow",
+      "frequency": 55
+    },
+    {
+      "char": "⟶",
+      "codepoint": "U+27F6",
+      "name": "LONG RIGHTWARDS ARROW",
+      "tags_ko": ["화살표", "긴", "오른쪽"],
+      "tags_en": ["arrow", "long", "right"],
+      "category": "arrow",
+      "frequency": 58
+    },
+    {
+      "char": "⟷",
+      "codepoint": "U+27F7",
+      "name": "LONG LEFT RIGHT ARROW",
+      "tags_ko": ["화살표", "긴", "양방향"],
+      "tags_en": ["arrow", "long", "both"],
+      "category": "arrow",
+      "frequency": 52
+    },
+    {
+      "char": "⟸",
+      "codepoint": "U+27F8",
+      "name": "LONG LEFTWARDS DOUBLE ARROW",
+      "tags_ko": ["화살표", "긴", "이중", "왼쪽"],
+      "tags_en": ["arrow", "long", "double", "left"],
+      "category": "arrow",
+      "frequency": 50
+    },
+    {
+      "char": "⟹",
+      "codepoint": "U+27F9",
+      "name": "LONG RIGHTWARDS DOUBLE ARROW",
+      "tags_ko": ["화살표", "긴", "이중", "오른쪽", "따라서"],
+      "tags_en": ["arrow", "long", "double", "right", "implies"],
+      "category": "arrow",
+      "frequency": 68
+    },
+    {
+      "char": "⟺",
+      "codepoint": "U+27FA",
+      "name": "LONG LEFT RIGHT DOUBLE ARROW",
+      "tags_ko": ["화살표", "긴", "이중", "양방향", "동치"],
+      "tags_en": ["arrow", "long", "double", "both", "equivalent"],
+      "category": "arrow",
+      "frequency": 65
+    },
+    {
+      "char": "⤶",
+      "codepoint": "U+2936",
+      "name": "ARROW POINTING DOWNWARDS THEN CURVING LEFTWARDS",
+      "tags_ko": ["화살표", "곡선", "왼쪽아래"],
+      "tags_en": ["arrow", "curve", "down", "left"],
+      "category": "arrow",
+      "frequency": 55
+    },
+    {
+      "char": "⤷",
+      "codepoint": "U+2937",
+      "name": "ARROW POINTING DOWNWARDS THEN CURVING RIGHTWARDS",
+      "tags_ko": ["화살표", "곡선", "오른쪽아래"],
+      "tags_en": ["arrow", "curve", "down", "right"],
+      "category": "arrow",
+      "frequency": 55
+    },
+    {
+      "char": "⬅",
+      "codepoint": "U+2B05",
+      "name": "LEFTWARDS BLACK ARROW",
+      "tags_ko": ["화살표", "검정", "왼쪽"],
+      "tags_en": ["arrow", "black", "left"],
+      "category": "arrow",
+      "frequency": 85
+    },
+    {
+      "char": "⬆",
+      "codepoint": "U+2B06",
+      "name": "UPWARDS BLACK ARROW",
+      "tags_ko": ["화살표", "검정", "위"],
+      "tags_en": ["arrow", "black", "up"],
+      "category": "arrow",
+      "frequency": 82
+    },
+    {
+      "char": "⬇",
+      "codepoint": "U+2B07",
+      "name": "DOWNWARDS BLACK ARROW",
+      "tags_ko": ["화살표", "검정", "아래"],
+      "tags_en": ["arrow", "black", "down"],
+      "category": "arrow",
+      "frequency": 82
+    },
+    {
+      "char": "⬈",
+      "codepoint": "U+2B08",
+      "name": "NORTH EAST BLACK ARROW",
+      "tags_ko": ["화살표", "검정", "대각선", "오른쪽위"],
+      "tags_en": ["arrow", "black", "diagonal", "northeast"],
+      "category": "arrow",
+      "frequency": 65
+    },
+    {
+      "char": "⬉",
+      "codepoint": "U+2B09",
+      "name": "NORTH WEST BLACK ARROW",
+      "tags_ko": ["화살표", "검정", "대각선", "왼쪽위"],
+      "tags_en": ["arrow", "black", "diagonal", "northwest"],
+      "category": "arrow",
+      "frequency": 62
+    },
+    {
+      "char": "⬊",
+      "codepoint": "U+2B0A",
+      "name": "SOUTH EAST BLACK ARROW",
+      "tags_ko": ["화살표", "검정", "대각선", "오른쪽아래"],
+      "tags_en": ["arrow", "black", "diagonal", "southeast"],
+      "category": "arrow",
+      "frequency": 62
+    },
+    {
+      "char": "⬋",
+      "codepoint": "U+2B0B",
+      "name": "SOUTH WEST BLACK ARROW",
+      "tags_ko": ["화살표", "검정", "대각선", "왼쪽아래"],
+      "tags_en": ["arrow", "black", "diagonal", "southwest"],
+      "category": "arrow",
+      "frequency": 60
+    },
+    {
+      "char": "⬌",
+      "codepoint": "U+2B0C",
+      "name": "LEFT RIGHT BLACK ARROW",
+      "tags_ko": ["화살표", "검정", "양방향"],
+      "tags_en": ["arrow", "black", "both", "horizontal"],
+      "category": "arrow",
+      "frequency": 70
+    },
+    {
+      "char": "⬍",
+      "codepoint": "U+2B0D",
+      "name": "UP DOWN BLACK ARROW",
+      "tags_ko": ["화살표", "검정", "상하"],
+      "tags_en": ["arrow", "black", "vertical"],
+      "category": "arrow",
+      "frequency": 68
+    },
+    {
+      "char": "⇦",
+      "codepoint": "U+21E6",
+      "name": "LEFTWARDS WHITE ARROW",
+      "tags_ko": ["화살표", "흰색", "왼쪽"],
+      "tags_en": ["arrow", "white", "left"],
+      "category": "arrow",
+      "frequency": 72
+    },
+    {
+      "char": "⇧",
+      "codepoint": "U+21E7",
+      "name": "UPWARDS WHITE ARROW",
+      "tags_ko": ["화살표", "흰색", "위", "시프트"],
+      "tags_en": ["arrow", "white", "up", "shift"],
+      "category": "arrow",
+      "frequency": 78
+    },
+    {
+      "char": "⇨",
+      "codepoint": "U+21E8",
+      "name": "RIGHTWARDS WHITE ARROW",
+      "tags_ko": ["화살표", "흰색", "오른쪽"],
+      "tags_en": ["arrow", "white", "right"],
+      "category": "arrow",
+      "frequency": 74
+    },
+    {
+      "char": "⇩",
+      "codepoint": "U+21E9",
+      "name": "DOWNWARDS WHITE ARROW",
+      "tags_ko": ["화살표", "흰색", "아래"],
+      "tags_en": ["arrow", "white", "down"],
+      "category": "arrow",
+      "frequency": 72
+    },
+    {
+      "char": "⇠",
+      "codepoint": "U+21E0",
+      "name": "LEFTWARDS DASHED ARROW",
+      "tags_ko": ["화살표", "점선", "왼쪽"],
+      "tags_en": ["arrow", "dashed", "left"],
+      "category": "arrow",
+      "frequency": 55
+    },
+    {
+      "char": "⇡",
+      "codepoint": "U+21E1",
+      "name": "UPWARDS DASHED ARROW",
+      "tags_ko": ["화살표", "점선", "위"],
+      "tags_en": ["arrow", "dashed", "up"],
+      "category": "arrow",
+      "frequency": 52
+    },
+    {
+      "char": "⇢",
+      "codepoint": "U+21E2",
+      "name": "RIGHTWARDS DASHED ARROW",
+      "tags_ko": ["화살표", "점선", "오른쪽"],
+      "tags_en": ["arrow", "dashed", "right"],
+      "category": "arrow",
+      "frequency": 55
+    },
+    {
+      "char": "⇣",
+      "codepoint": "U+21E3",
+      "name": "DOWNWARDS DASHED ARROW",
+      "tags_ko": ["화살표", "점선", "아래"],
+      "tags_en": ["arrow", "dashed", "down"],
+      "category": "arrow",
+      "frequency": 52
+    },
+    {
+      "char": "⇤",
+      "codepoint": "U+21E4",
+      "name": "LEFTWARDS ARROW TO BAR",
+      "tags_ko": ["화살표", "탭", "왼쪽끝"],
+      "tags_en": ["arrow", "tab", "left", "bar"],
+      "category": "arrow",
+      "frequency": 60
+    },
+    {
+      "char": "⇥",
+      "codepoint": "U+21E5",
+      "name": "RIGHTWARDS ARROW TO BAR",
+      "tags_ko": ["화살표", "탭", "오른쪽끝"],
+      "tags_en": ["arrow", "tab", "right", "bar"],
+      "category": "arrow",
+      "frequency": 65
+    },
+    {
+      "char": "⇱",
+      "codepoint": "U+21F1",
+      "name": "NORTH WEST ARROW TO CORNER",
+      "tags_ko": ["화살표", "홈", "왼쪽위"],
+      "tags_en": ["arrow", "home", "corner", "northwest"],
+      "category": "arrow",
+      "frequency": 58
+    },
+    {
+      "char": "⇲",
+      "codepoint": "U+21F2",
+      "name": "SOUTH EAST ARROW TO CORNER",
+      "tags_ko": ["화살표", "끝", "오른쪽아래"],
+      "tags_en": ["arrow", "end", "corner", "southeast"],
+      "category": "arrow",
+      "frequency": 55
+    },
+    {
+      "char": "⇳",
+      "codepoint": "U+21F3",
+      "name": "UP DOWN WHITE ARROW",
+      "tags_ko": ["화살표", "흰색", "상하"],
+      "tags_en": ["arrow", "white", "vertical"],
+      "category": "arrow",
+      "frequency": 52
+    },
+    {
+      "char": "⇴",
+      "codepoint": "U+21F4",
+      "name": "RIGHT ARROW WITH SMALL CIRCLE",
+      "tags_ko": ["화살표", "원", "오른쪽"],
+      "tags_en": ["arrow", "circle", "right"],
+      "category": "arrow",
+      "frequency": 45
+    },
+    {
+      "char": "⇵",
+      "codepoint": "U+21F5",
+      "name": "DOWNWARDS ARROW LEFTWARDS OF UPWARDS ARROW",
+      "tags_ko": ["화살표", "정렬", "상하"],
+      "tags_en": ["arrow", "sort", "up", "down"],
+      "category": "arrow",
+      "frequency": 58
+    },
+    {
+      "char": "⇶",
+      "codepoint": "U+21F6",
+      "name": "THREE RIGHTWARDS ARROWS",
+      "tags_ko": ["화살표", "세개", "오른쪽"],
+      "tags_en": ["arrow", "triple", "right"],
+      "category": "arrow",
+      "frequency": 48
+    },
+    {
+      "char": "⤊",
+      "codepoint": "U+290A",
+      "name": "UPWARDS TRIPLE ARROW",
+      "tags_ko": ["화살표", "삼중", "위"],
+      "tags_en": ["arrow", "triple", "up"],
+      "category": "arrow",
+      "frequency": 45
+    },
+    {
+      "char": "⤋",
+      "codepoint": "U+290B",
+      "name": "DOWNWARDS TRIPLE ARROW",
+      "tags_ko": ["화살표", "삼중", "아래"],
+      "tags_en": ["arrow", "triple", "down"],
+      "category": "arrow",
+      "frequency": 45
+    },
+    {
+      "char": "⤌",
+      "codepoint": "U+290C",
+      "name": "LEFTWARDS DOUBLE DASH ARROW",
+      "tags_ko": ["화살표", "이중점선", "왼쪽"],
+      "tags_en": ["arrow", "double dash", "left"],
+      "category": "arrow",
+      "frequency": 42
+    },
+    {
+      "char": "⤍",
+      "codepoint": "U+290D",
+      "name": "RIGHTWARDS DOUBLE DASH ARROW",
+      "tags_ko": ["화살표", "이중점선", "오른쪽"],
+      "tags_en": ["arrow", "double dash", "right"],
+      "category": "arrow",
+      "frequency": 42
+    },
+    {
+      "char": "⤎",
+      "codepoint": "U+290E",
+      "name": "LEFTWARDS TRIPLE DASH ARROW",
+      "tags_ko": ["화살표", "삼중점선", "왼쪽"],
+      "tags_en": ["arrow", "triple dash", "left"],
+      "category": "arrow",
+      "frequency": 40
+    },
+    {
+      "char": "⤏",
+      "codepoint": "U+290F",
+      "name": "RIGHTWARDS TRIPLE DASH ARROW",
+      "tags_ko": ["화살표", "삼중점선", "오른쪽"],
+      "tags_en": ["arrow", "triple dash", "right"],
+      "category": "arrow",
+      "frequency": 40
+    },
+    {
+      "char": "⤐",
+      "codepoint": "U+2910",
+      "name": "RIGHTWARDS TWO-HEADED TRIPLE DASH ARROW",
+      "tags_ko": ["화살표", "양머리", "삼중점선"],
+      "tags_en": ["arrow", "two-headed", "triple dash"],
+      "category": "arrow",
+      "frequency": 38
+    },
+    {
+      "char": "⤑",
+      "codepoint": "U+2911",
+      "name": "RIGHTWARDS ARROW WITH DOTTED STEM",
+      "tags_ko": ["화살표", "점선줄기", "오른쪽"],
+      "tags_en": ["arrow", "dotted stem", "right"],
+      "category": "arrow",
+      "frequency": 42
+    },
+    {
+      "char": "⤒",
+      "codepoint": "U+2912",
+      "name": "UPWARDS ARROW TO BAR",
+      "tags_ko": ["화살표", "위끝", "바"],
+      "tags_en": ["arrow", "up", "bar"],
+      "category": "arrow",
+      "frequency": 50
+    },
+    {
+      "char": "⤓",
+      "codepoint": "U+2913",
+      "name": "DOWNWARDS ARROW TO BAR",
+      "tags_ko": ["화살표", "아래끝", "바"],
+      "tags_en": ["arrow", "down", "bar"],
+      "category": "arrow",
+      "frequency": 50
     },
     {
       "char": "×",
@@ -472,16 +1274,822 @@
     },
     {
       "char": "≥",
-      "codepoint": "U\u002B2265",
+      "codepoint": "U+2265",
       "name": "GREATER-THAN OR EQUAL TO",
-      "tags_ko": [
-        "크거나같음"
-      ],
-      "tags_en": [
-        "greater equal"
-      ],
+      "tags_ko": ["크거나같음"],
+      "tags_en": ["greater equal"],
       "category": "math",
       "frequency": 76
+    },
+    {
+      "char": "≈",
+      "codepoint": "U+2248",
+      "name": "ALMOST EQUAL TO",
+      "tags_ko": ["약같음", "근사"],
+      "tags_en": ["approximately", "almost equal"],
+      "category": "math",
+      "frequency": 74
+    },
+    {
+      "char": "≡",
+      "codepoint": "U+2261",
+      "name": "IDENTICAL TO",
+      "tags_ko": ["합동", "동치"],
+      "tags_en": ["identical", "equivalent"],
+      "category": "math",
+      "frequency": 70
+    },
+    {
+      "char": "∝",
+      "codepoint": "U+221D",
+      "name": "PROPORTIONAL TO",
+      "tags_ko": ["비례"],
+      "tags_en": ["proportional"],
+      "category": "math",
+      "frequency": 55
+    },
+    {
+      "char": "∠",
+      "codepoint": "U+2220",
+      "name": "ANGLE",
+      "tags_ko": ["각도", "앵글"],
+      "tags_en": ["angle"],
+      "category": "math",
+      "frequency": 68
+    },
+    {
+      "char": "∟",
+      "codepoint": "U+221F",
+      "name": "RIGHT ANGLE",
+      "tags_ko": ["직각"],
+      "tags_en": ["right angle"],
+      "category": "math",
+      "frequency": 60
+    },
+    {
+      "char": "∥",
+      "codepoint": "U+2225",
+      "name": "PARALLEL TO",
+      "tags_ko": ["평행"],
+      "tags_en": ["parallel"],
+      "category": "math",
+      "frequency": 58
+    },
+    {
+      "char": "∴",
+      "codepoint": "U+2234",
+      "name": "THEREFORE",
+      "tags_ko": ["그러므로", "따라서"],
+      "tags_en": ["therefore"],
+      "category": "math",
+      "frequency": 72
+    },
+    {
+      "char": "∵",
+      "codepoint": "U+2235",
+      "name": "BECAUSE",
+      "tags_ko": ["왜냐하면"],
+      "tags_en": ["because"],
+      "category": "math",
+      "frequency": 65
+    },
+    {
+      "char": "∈",
+      "codepoint": "U+2208",
+      "name": "ELEMENT OF",
+      "tags_ko": ["원소", "포함"],
+      "tags_en": ["element", "member"],
+      "category": "math",
+      "frequency": 68
+    },
+    {
+      "char": "∉",
+      "codepoint": "U+2209",
+      "name": "NOT AN ELEMENT OF",
+      "tags_ko": ["원소아님"],
+      "tags_en": ["not element"],
+      "category": "math",
+      "frequency": 55
+    },
+    {
+      "char": "∋",
+      "codepoint": "U+220B",
+      "name": "CONTAINS AS MEMBER",
+      "tags_ko": ["포함"],
+      "tags_en": ["contains"],
+      "category": "math",
+      "frequency": 52
+    },
+    {
+      "char": "∩",
+      "codepoint": "U+2229",
+      "name": "INTERSECTION",
+      "tags_ko": ["교집합"],
+      "tags_en": ["intersection"],
+      "category": "math",
+      "frequency": 70
+    },
+    {
+      "char": "∪",
+      "codepoint": "U+222A",
+      "name": "UNION",
+      "tags_ko": ["합집합"],
+      "tags_en": ["union"],
+      "category": "math",
+      "frequency": 70
+    },
+    {
+      "char": "⊂",
+      "codepoint": "U+2282",
+      "name": "SUBSET OF",
+      "tags_ko": ["부분집합"],
+      "tags_en": ["subset"],
+      "category": "math",
+      "frequency": 62
+    },
+    {
+      "char": "⊃",
+      "codepoint": "U+2283",
+      "name": "SUPERSET OF",
+      "tags_ko": ["상위집합"],
+      "tags_en": ["superset"],
+      "category": "math",
+      "frequency": 58
+    },
+    {
+      "char": "⊆",
+      "codepoint": "U+2286",
+      "name": "SUBSET OF OR EQUAL TO",
+      "tags_ko": ["부분집합같거나"],
+      "tags_en": ["subset equal"],
+      "category": "math",
+      "frequency": 60
+    },
+    {
+      "char": "∀",
+      "codepoint": "U+2200",
+      "name": "FOR ALL",
+      "tags_ko": ["모든", "전칭"],
+      "tags_en": ["for all", "universal"],
+      "category": "math",
+      "frequency": 65
+    },
+    {
+      "char": "∃",
+      "codepoint": "U+2203",
+      "name": "THERE EXISTS",
+      "tags_ko": ["존재", "존재한다"],
+      "tags_en": ["exists"],
+      "category": "math",
+      "frequency": 63
+    },
+    {
+      "char": "∅",
+      "codepoint": "U+2205",
+      "name": "EMPTY SET",
+      "tags_ko": ["공집합"],
+      "tags_en": ["empty set", "null"],
+      "category": "math",
+      "frequency": 68
+    },
+    {
+      "char": "∫",
+      "codepoint": "U+222B",
+      "name": "INTEGRAL",
+      "tags_ko": ["적분"],
+      "tags_en": ["integral"],
+      "category": "math",
+      "frequency": 75
+    },
+    {
+      "char": "∬",
+      "codepoint": "U+222C",
+      "name": "DOUBLE INTEGRAL",
+      "tags_ko": ["이중적분"],
+      "tags_en": ["double integral"],
+      "category": "math",
+      "frequency": 50
+    },
+    {
+      "char": "∂",
+      "codepoint": "U+2202",
+      "name": "PARTIAL DIFFERENTIAL",
+      "tags_ko": ["편미분"],
+      "tags_en": ["partial", "differential"],
+      "category": "math",
+      "frequency": 60
+    },
+    {
+      "char": "∇",
+      "codepoint": "U+2207",
+      "name": "NABLA",
+      "tags_ko": ["나블라", "델"],
+      "tags_en": ["nabla", "del"],
+      "category": "math",
+      "frequency": 55
+    },
+    {
+      "char": "∏",
+      "codepoint": "U+220F",
+      "name": "N-ARY PRODUCT",
+      "tags_ko": ["곱", "프로덕트"],
+      "tags_en": ["product"],
+      "category": "math",
+      "frequency": 58
+    },
+    {
+      "char": "⊕",
+      "codepoint": "U+2295",
+      "name": "CIRCLED PLUS",
+      "tags_ko": ["원플러스", "직합", "XOR"],
+      "tags_en": ["circled plus", "direct sum", "xor"],
+      "category": "math",
+      "frequency": 72
+    },
+    {
+      "char": "⊖",
+      "codepoint": "U+2296",
+      "name": "CIRCLED MINUS",
+      "tags_ko": ["원마이너스"],
+      "tags_en": ["circled minus"],
+      "category": "math",
+      "frequency": 55
+    },
+    {
+      "char": "⊗",
+      "codepoint": "U+2297",
+      "name": "CIRCLED TIMES",
+      "tags_ko": ["원곱하기", "텐서곱"],
+      "tags_en": ["circled times", "tensor product"],
+      "category": "math",
+      "frequency": 68
+    },
+    {
+      "char": "⊘",
+      "codepoint": "U+2298",
+      "name": "CIRCLED DIVISION SLASH",
+      "tags_ko": ["원나누기"],
+      "tags_en": ["circled division"],
+      "category": "math",
+      "frequency": 45
+    },
+    {
+      "char": "⊙",
+      "codepoint": "U+2299",
+      "name": "CIRCLED DOT OPERATOR",
+      "tags_ko": ["원점", "내적"],
+      "tags_en": ["circled dot", "dot product"],
+      "category": "math",
+      "frequency": 60
+    },
+    {
+      "char": "∧",
+      "codepoint": "U+2227",
+      "name": "LOGICAL AND",
+      "tags_ko": ["논리곱", "AND", "그리고"],
+      "tags_en": ["logical and", "conjunction"],
+      "category": "math",
+      "frequency": 78
+    },
+    {
+      "char": "∨",
+      "codepoint": "U+2228",
+      "name": "LOGICAL OR",
+      "tags_ko": ["논리합", "OR", "또는"],
+      "tags_en": ["logical or", "disjunction"],
+      "category": "math",
+      "frequency": 76
+    },
+    {
+      "char": "¬",
+      "codepoint": "U+00AC",
+      "name": "NOT SIGN",
+      "tags_ko": ["부정", "NOT", "아님"],
+      "tags_en": ["not", "negation"],
+      "category": "math",
+      "frequency": 74
+    },
+    {
+      "char": "⊤",
+      "codepoint": "U+22A4",
+      "name": "DOWN TACK",
+      "tags_ko": ["참", "TRUE"],
+      "tags_en": ["top", "true", "verum"],
+      "category": "math",
+      "frequency": 55
+    },
+    {
+      "char": "⊥",
+      "codepoint": "U+22A5",
+      "name": "UP TACK",
+      "tags_ko": ["거짓", "FALSE", "수직"],
+      "tags_en": ["bottom", "false", "perpendicular"],
+      "category": "math",
+      "frequency": 65
+    },
+    {
+      "char": "⊢",
+      "codepoint": "U+22A2",
+      "name": "RIGHT TACK",
+      "tags_ko": ["증명", "유도"],
+      "tags_en": ["proves", "turnstile"],
+      "category": "math",
+      "frequency": 52
+    },
+    {
+      "char": "⊣",
+      "codepoint": "U+22A3",
+      "name": "LEFT TACK",
+      "tags_ko": ["왼쪽턴스타일"],
+      "tags_en": ["left turnstile"],
+      "category": "math",
+      "frequency": 45
+    },
+    {
+      "char": "⊨",
+      "codepoint": "U+22A8",
+      "name": "TRUE",
+      "tags_ko": ["모델", "만족"],
+      "tags_en": ["models", "satisfies"],
+      "category": "math",
+      "frequency": 50
+    },
+    {
+      "char": "≪",
+      "codepoint": "U+226A",
+      "name": "MUCH LESS-THAN",
+      "tags_ko": ["훨씬작음"],
+      "tags_en": ["much less than"],
+      "category": "math",
+      "frequency": 65
+    },
+    {
+      "char": "≫",
+      "codepoint": "U+226B",
+      "name": "MUCH GREATER-THAN",
+      "tags_ko": ["훨씬큼"],
+      "tags_en": ["much greater than"],
+      "category": "math",
+      "frequency": 65
+    },
+    {
+      "char": "≺",
+      "codepoint": "U+227A",
+      "name": "PRECEDES",
+      "tags_ko": ["선행"],
+      "tags_en": ["precedes"],
+      "category": "math",
+      "frequency": 48
+    },
+    {
+      "char": "≻",
+      "codepoint": "U+227B",
+      "name": "SUCCEEDS",
+      "tags_ko": ["후행"],
+      "tags_en": ["succeeds"],
+      "category": "math",
+      "frequency": 48
+    },
+    {
+      "char": "≼",
+      "codepoint": "U+227C",
+      "name": "PRECEDES OR EQUAL TO",
+      "tags_ko": ["선행같음"],
+      "tags_en": ["precedes or equal"],
+      "category": "math",
+      "frequency": 42
+    },
+    {
+      "char": "≽",
+      "codepoint": "U+227D",
+      "name": "SUCCEEDS OR EQUAL TO",
+      "tags_ko": ["후행같음"],
+      "tags_en": ["succeeds or equal"],
+      "category": "math",
+      "frequency": 42
+    },
+    {
+      "char": "⊂",
+      "codepoint": "U+2282",
+      "name": "SUBSET OF",
+      "tags_ko": ["진부분집합"],
+      "tags_en": ["proper subset"],
+      "category": "math",
+      "frequency": 62
+    },
+    {
+      "char": "⊃",
+      "codepoint": "U+2283",
+      "name": "SUPERSET OF",
+      "tags_ko": ["진상위집합"],
+      "tags_en": ["proper superset"],
+      "category": "math",
+      "frequency": 58
+    },
+    {
+      "char": "⊆",
+      "codepoint": "U+2286",
+      "name": "SUBSET OF OR EQUAL TO",
+      "tags_ko": ["부분집합같음"],
+      "tags_en": ["subset or equal"],
+      "category": "math",
+      "frequency": 60
+    },
+    {
+      "char": "⊇",
+      "codepoint": "U+2287",
+      "name": "SUPERSET OF OR EQUAL TO",
+      "tags_ko": ["상위집합같음"],
+      "tags_en": ["superset or equal"],
+      "category": "math",
+      "frequency": 55
+    },
+    {
+      "char": "⊊",
+      "codepoint": "U+228A",
+      "name": "SUBSET OF WITH NOT EQUAL TO",
+      "tags_ko": ["진부분집합"],
+      "tags_en": ["strict subset"],
+      "category": "math",
+      "frequency": 45
+    },
+    {
+      "char": "⊋",
+      "codepoint": "U+228B",
+      "name": "SUPERSET OF WITH NOT EQUAL TO",
+      "tags_ko": ["진상위집합"],
+      "tags_en": ["strict superset"],
+      "category": "math",
+      "frequency": 45
+    },
+    {
+      "char": "⊎",
+      "codepoint": "U+228E",
+      "name": "MULTISET UNION",
+      "tags_ko": ["분리합집합"],
+      "tags_en": ["disjoint union", "multiset union"],
+      "category": "math",
+      "frequency": 50
+    },
+    {
+      "char": "⊏",
+      "codepoint": "U+228F",
+      "name": "SQUARE IMAGE OF",
+      "tags_ko": ["사각부분"],
+      "tags_en": ["square image"],
+      "category": "math",
+      "frequency": 40
+    },
+    {
+      "char": "⊐",
+      "codepoint": "U+2290",
+      "name": "SQUARE ORIGINAL OF",
+      "tags_ko": ["사각원본"],
+      "tags_en": ["square original"],
+      "category": "math",
+      "frequency": 40
+    },
+    {
+      "char": "⊓",
+      "codepoint": "U+2293",
+      "name": "SQUARE CAP",
+      "tags_ko": ["사각교집합"],
+      "tags_en": ["square cap", "meet"],
+      "category": "math",
+      "frequency": 45
+    },
+    {
+      "char": "⊔",
+      "codepoint": "U+2294",
+      "name": "SQUARE CUP",
+      "tags_ko": ["사각합집합"],
+      "tags_en": ["square cup", "join"],
+      "category": "math",
+      "frequency": 45
+    },
+    {
+      "char": "⋀",
+      "codepoint": "U+22C0",
+      "name": "N-ARY LOGICAL AND",
+      "tags_ko": ["대논리곱"],
+      "tags_en": ["big wedge", "n-ary and"],
+      "category": "math",
+      "frequency": 55
+    },
+    {
+      "char": "⋁",
+      "codepoint": "U+22C1",
+      "name": "N-ARY LOGICAL OR",
+      "tags_ko": ["대논리합"],
+      "tags_en": ["big vee", "n-ary or"],
+      "category": "math",
+      "frequency": 55
+    },
+    {
+      "char": "⋂",
+      "codepoint": "U+22C2",
+      "name": "N-ARY INTERSECTION",
+      "tags_ko": ["대교집합"],
+      "tags_en": ["big cap", "n-ary intersection"],
+      "category": "math",
+      "frequency": 58
+    },
+    {
+      "char": "⋃",
+      "codepoint": "U+22C3",
+      "name": "N-ARY UNION",
+      "tags_ko": ["대합집합"],
+      "tags_en": ["big cup", "n-ary union"],
+      "category": "math",
+      "frequency": 58
+    },
+    {
+      "char": "⋄",
+      "codepoint": "U+22C4",
+      "name": "DIAMOND OPERATOR",
+      "tags_ko": ["다이아몬드연산"],
+      "tags_en": ["diamond operator"],
+      "category": "math",
+      "frequency": 50
+    },
+    {
+      "char": "⋅",
+      "codepoint": "U+22C5",
+      "name": "DOT OPERATOR",
+      "tags_ko": ["점연산", "곱셈점"],
+      "tags_en": ["dot operator", "multiplication"],
+      "category": "math",
+      "frequency": 72
+    },
+    {
+      "char": "⋆",
+      "codepoint": "U+22C6",
+      "name": "STAR OPERATOR",
+      "tags_ko": ["별연산", "콘볼루션"],
+      "tags_en": ["star operator", "convolution"],
+      "category": "math",
+      "frequency": 55
+    },
+    {
+      "char": "⋇",
+      "codepoint": "U+22C7",
+      "name": "DIVISION TIMES",
+      "tags_ko": ["나눗셈곱셈"],
+      "tags_en": ["division times"],
+      "category": "math",
+      "frequency": 40
+    },
+    {
+      "char": "⋈",
+      "codepoint": "U+22C8",
+      "name": "BOWTIE",
+      "tags_ko": ["보타이", "조인"],
+      "tags_en": ["bowtie", "natural join"],
+      "category": "math",
+      "frequency": 52
+    },
+    {
+      "char": "⋉",
+      "codepoint": "U+22C9",
+      "name": "LEFT NORMAL FACTOR SEMIDIRECT PRODUCT",
+      "tags_ko": ["왼쪽반직접곱"],
+      "tags_en": ["left semidirect"],
+      "category": "math",
+      "frequency": 38
+    },
+    {
+      "char": "⋊",
+      "codepoint": "U+22CA",
+      "name": "RIGHT NORMAL FACTOR SEMIDIRECT PRODUCT",
+      "tags_ko": ["오른쪽반직접곱"],
+      "tags_en": ["right semidirect"],
+      "category": "math",
+      "frequency": 38
+    },
+    {
+      "char": "∮",
+      "codepoint": "U+222E",
+      "name": "CONTOUR INTEGRAL",
+      "tags_ko": ["선적분", "경로적분"],
+      "tags_en": ["contour integral", "line integral"],
+      "category": "math",
+      "frequency": 60
+    },
+    {
+      "char": "∯",
+      "codepoint": "U+222F",
+      "name": "SURFACE INTEGRAL",
+      "tags_ko": ["면적분"],
+      "tags_en": ["surface integral"],
+      "category": "math",
+      "frequency": 48
+    },
+    {
+      "char": "∰",
+      "codepoint": "U+2230",
+      "name": "VOLUME INTEGRAL",
+      "tags_ko": ["체적적분"],
+      "tags_en": ["volume integral"],
+      "category": "math",
+      "frequency": 45
+    },
+    {
+      "char": "∱",
+      "codepoint": "U+2231",
+      "name": "CLOCKWISE INTEGRAL",
+      "tags_ko": ["시계적분"],
+      "tags_en": ["clockwise integral"],
+      "category": "math",
+      "frequency": 40
+    },
+    {
+      "char": "∲",
+      "codepoint": "U+2232",
+      "name": "CLOCKWISE CONTOUR INTEGRAL",
+      "tags_ko": ["시계선적분"],
+      "tags_en": ["clockwise contour"],
+      "category": "math",
+      "frequency": 38
+    },
+    {
+      "char": "∳",
+      "codepoint": "U+2233",
+      "name": "ANTICLOCKWISE CONTOUR INTEGRAL",
+      "tags_ko": ["반시계선적분"],
+      "tags_en": ["anticlockwise contour"],
+      "category": "math",
+      "frequency": 38
+    },
+    {
+      "char": "⨁",
+      "codepoint": "U+2A01",
+      "name": "N-ARY CIRCLED PLUS OPERATOR",
+      "tags_ko": ["대원플러스", "직합"],
+      "tags_en": ["big oplus", "direct sum"],
+      "category": "math",
+      "frequency": 55
+    },
+    {
+      "char": "⨂",
+      "codepoint": "U+2A02",
+      "name": "N-ARY CIRCLED TIMES OPERATOR",
+      "tags_ko": ["대원곱", "텐서곱"],
+      "tags_en": ["big otimes", "tensor product"],
+      "category": "math",
+      "frequency": 52
+    },
+    {
+      "char": "⨃",
+      "codepoint": "U+2A03",
+      "name": "N-ARY UNION OPERATOR WITH DOT",
+      "tags_ko": ["점합집합"],
+      "tags_en": ["union with dot"],
+      "category": "math",
+      "frequency": 40
+    },
+    {
+      "char": "⨄",
+      "codepoint": "U+2A04",
+      "name": "N-ARY UNION OPERATOR WITH PLUS",
+      "tags_ko": ["대분리합집합"],
+      "tags_en": ["big uplus"],
+      "category": "math",
+      "frequency": 45
+    },
+    {
+      "char": "⨅",
+      "codepoint": "U+2A05",
+      "name": "N-ARY SQUARE INTERSECTION OPERATOR",
+      "tags_ko": ["대사각교집합"],
+      "tags_en": ["big sqcap"],
+      "category": "math",
+      "frequency": 42
+    },
+    {
+      "char": "⨆",
+      "codepoint": "U+2A06",
+      "name": "N-ARY SQUARE UNION OPERATOR",
+      "tags_ko": ["대사각합집합"],
+      "tags_en": ["big sqcup"],
+      "category": "math",
+      "frequency": 42
+    },
+    {
+      "char": "⟨",
+      "codepoint": "U+27E8",
+      "name": "MATHEMATICAL LEFT ANGLE BRACKET",
+      "tags_ko": ["왼쪽꺾쇠", "브라"],
+      "tags_en": ["left angle bracket", "bra"],
+      "category": "math",
+      "frequency": 68
+    },
+    {
+      "char": "⟩",
+      "codepoint": "U+27E9",
+      "name": "MATHEMATICAL RIGHT ANGLE BRACKET",
+      "tags_ko": ["오른쪽꺾쇠", "켓"],
+      "tags_en": ["right angle bracket", "ket"],
+      "category": "math",
+      "frequency": 68
+    },
+    {
+      "char": "⟦",
+      "codepoint": "U+27E6",
+      "name": "MATHEMATICAL LEFT WHITE SQUARE BRACKET",
+      "tags_ko": ["흰사각괄호왼"],
+      "tags_en": ["left white bracket"],
+      "category": "math",
+      "frequency": 50
+    },
+    {
+      "char": "⟧",
+      "codepoint": "U+27E7",
+      "name": "MATHEMATICAL RIGHT WHITE SQUARE BRACKET",
+      "tags_ko": ["흰사각괄호오"],
+      "tags_en": ["right white bracket"],
+      "category": "math",
+      "frequency": 50
+    },
+    {
+      "char": "⌈",
+      "codepoint": "U+2308",
+      "name": "LEFT CEILING",
+      "tags_ko": ["왼천장", "올림"],
+      "tags_en": ["left ceiling", "ceil"],
+      "category": "math",
+      "frequency": 62
+    },
+    {
+      "char": "⌉",
+      "codepoint": "U+2309",
+      "name": "RIGHT CEILING",
+      "tags_ko": ["오른천장", "올림"],
+      "tags_en": ["right ceiling", "ceil"],
+      "category": "math",
+      "frequency": 62
+    },
+    {
+      "char": "⌊",
+      "codepoint": "U+230A",
+      "name": "LEFT FLOOR",
+      "tags_ko": ["왼바닥", "내림"],
+      "tags_en": ["left floor", "floor"],
+      "category": "math",
+      "frequency": 62
+    },
+    {
+      "char": "⌋",
+      "codepoint": "U+230B",
+      "name": "RIGHT FLOOR",
+      "tags_ko": ["오른바닥", "내림"],
+      "tags_en": ["right floor", "floor"],
+      "category": "math",
+      "frequency": 62
+    },
+    {
+      "char": "∝",
+      "codepoint": "U+221D",
+      "name": "PROPORTIONAL TO",
+      "tags_ko": ["비례"],
+      "tags_en": ["proportional"],
+      "category": "math",
+      "frequency": 58
+    },
+    {
+      "char": "∣",
+      "codepoint": "U+2223",
+      "name": "DIVIDES",
+      "tags_ko": ["나눔", "약수"],
+      "tags_en": ["divides", "such that"],
+      "category": "math",
+      "frequency": 55
+    },
+    {
+      "char": "∤",
+      "codepoint": "U+2224",
+      "name": "DOES NOT DIVIDE",
+      "tags_ko": ["나누지않음"],
+      "tags_en": ["does not divide"],
+      "category": "math",
+      "frequency": 45
+    },
+    {
+      "char": "∥",
+      "codepoint": "U+2225",
+      "name": "PARALLEL TO",
+      "tags_ko": ["평행"],
+      "tags_en": ["parallel"],
+      "category": "math",
+      "frequency": 58
+    },
+    {
+      "char": "∦",
+      "codepoint": "U+2226",
+      "name": "NOT PARALLEL TO",
+      "tags_ko": ["평행아님"],
+      "tags_en": ["not parallel"],
+      "category": "math",
+      "frequency": 45
     },
     {
       "char": "€",
@@ -844,18 +2452,156 @@
     },
     {
       "char": "❤",
-      "codepoint": "U\u002B2764",
+      "codepoint": "U+2764",
       "name": "HEAVY BLACK HEART",
-      "tags_ko": [
-        "하트",
-        "사랑"
-      ],
-      "tags_en": [
-        "heart",
-        "love"
-      ],
+      "tags_ko": ["하트", "사랑"],
+      "tags_en": ["heart", "love"],
       "category": "heart",
       "frequency": 92
+    },
+    {
+      "char": "❥",
+      "codepoint": "U+2765",
+      "name": "ROTATED HEAVY BLACK HEART BULLET",
+      "tags_ko": ["하트", "회전"],
+      "tags_en": ["heart", "rotated"],
+      "category": "heart",
+      "frequency": 70
+    },
+    {
+      "char": "❣",
+      "codepoint": "U+2763",
+      "name": "HEAVY HEART EXCLAMATION MARK ORNAMENT",
+      "tags_ko": ["하트", "느낌표"],
+      "tags_en": ["heart", "exclamation"],
+      "category": "heart",
+      "frequency": 75
+    },
+    {
+      "char": "❦",
+      "codepoint": "U+2766",
+      "name": "FLORAL HEART",
+      "tags_ko": ["하트", "꽃", "장식"],
+      "tags_en": ["heart", "floral"],
+      "category": "heart",
+      "frequency": 65
+    },
+    {
+      "char": "❧",
+      "codepoint": "U+2767",
+      "name": "ROTATED FLORAL HEART BULLET",
+      "tags_ko": ["하트", "꽃", "회전"],
+      "tags_en": ["heart", "floral", "rotated"],
+      "category": "heart",
+      "frequency": 60
+    },
+    {
+      "char": "💔",
+      "codepoint": "U+1F494",
+      "name": "BROKEN HEART",
+      "tags_ko": ["하트", "깨진", "상처"],
+      "tags_en": ["heart", "broken"],
+      "category": "heart",
+      "frequency": 85
+    },
+    {
+      "char": "💕",
+      "codepoint": "U+1F495",
+      "name": "TWO HEARTS",
+      "tags_ko": ["하트", "두개", "사랑"],
+      "tags_en": ["heart", "two", "love"],
+      "category": "heart",
+      "frequency": 88
+    },
+    {
+      "char": "💖",
+      "codepoint": "U+1F496",
+      "name": "SPARKLING HEART",
+      "tags_ko": ["하트", "반짝", "스파클"],
+      "tags_en": ["heart", "sparkling"],
+      "category": "heart",
+      "frequency": 86
+    },
+    {
+      "char": "💗",
+      "codepoint": "U+1F497",
+      "name": "GROWING HEART",
+      "tags_ko": ["하트", "커지는"],
+      "tags_en": ["heart", "growing"],
+      "category": "heart",
+      "frequency": 82
+    },
+    {
+      "char": "💘",
+      "codepoint": "U+1F498",
+      "name": "HEART WITH ARROW",
+      "tags_ko": ["하트", "화살", "큐피드"],
+      "tags_en": ["heart", "arrow", "cupid"],
+      "category": "heart",
+      "frequency": 80
+    },
+    {
+      "char": "💙",
+      "codepoint": "U+1F499",
+      "name": "BLUE HEART",
+      "tags_ko": ["하트", "파랑"],
+      "tags_en": ["heart", "blue"],
+      "category": "heart",
+      "frequency": 84
+    },
+    {
+      "char": "💚",
+      "codepoint": "U+1F49A",
+      "name": "GREEN HEART",
+      "tags_ko": ["하트", "초록"],
+      "tags_en": ["heart", "green"],
+      "category": "heart",
+      "frequency": 82
+    },
+    {
+      "char": "💛",
+      "codepoint": "U+1F49B",
+      "name": "YELLOW HEART",
+      "tags_ko": ["하트", "노랑"],
+      "tags_en": ["heart", "yellow"],
+      "category": "heart",
+      "frequency": 82
+    },
+    {
+      "char": "💜",
+      "codepoint": "U+1F49C",
+      "name": "PURPLE HEART",
+      "tags_ko": ["하트", "보라"],
+      "tags_en": ["heart", "purple"],
+      "category": "heart",
+      "frequency": 83
+    },
+    {
+      "char": "🧡",
+      "codepoint": "U+1F9E1",
+      "name": "ORANGE HEART",
+      "tags_ko": ["하트", "주황"],
+      "tags_en": ["heart", "orange"],
+      "category": "heart",
+      "frequency": 78
+    },
+    {
+      "char": "🖤",
+      "codepoint": "U+1F5A4",
+      "name": "BLACK HEART",
+      "tags_ko": ["하트", "검정"],
+      "tags_en": ["heart", "black"],
+      "category": "heart",
+      "frequency": 80
+    },
+    {
+      "char": "🤍",
+      "codepoint": "U+1F90D",
+      "name": "WHITE HEART",
+      "tags_ko": ["하트", "흰색"],
+      "tags_en": ["heart", "white"],
+      "category": "heart",
+      "frequency": 76
     },
     {
       "char": "♪",
@@ -1160,17 +2906,174 @@
     },
     {
       "char": "◆",
-      "codepoint": "U\u002B25C6",
+      "codepoint": "U+25C6",
       "name": "BLACK DIAMOND",
-      "tags_ko": [
-        "마름모"
-      ],
-      "tags_en": [
-        "diamond",
-        "rhombus"
-      ],
+      "tags_ko": ["마름모"],
+      "tags_en": ["diamond", "rhombus"],
       "category": "geometric",
       "frequency": 75
+    },
+    {
+      "char": "◇",
+      "codepoint": "U+25C7",
+      "name": "WHITE DIAMOND",
+      "tags_ko": ["마름모", "흰색"],
+      "tags_en": ["diamond", "white"],
+      "category": "geometric",
+      "frequency": 72
+    },
+    {
+      "char": "◈",
+      "codepoint": "U+25C8",
+      "name": "WHITE DIAMOND CONTAINING BLACK SMALL DIAMOND",
+      "tags_ko": ["마름모", "중첩"],
+      "tags_en": ["diamond", "nested"],
+      "category": "geometric",
+      "frequency": 65
+    },
+    {
+      "char": "▪",
+      "codepoint": "U+25AA",
+      "name": "BLACK SMALL SQUARE",
+      "tags_ko": ["작은사각형", "검정"],
+      "tags_en": ["small square", "black"],
+      "category": "geometric",
+      "frequency": 80
+    },
+    {
+      "char": "▫",
+      "codepoint": "U+25AB",
+      "name": "WHITE SMALL SQUARE",
+      "tags_ko": ["작은사각형", "흰색"],
+      "tags_en": ["small square", "white"],
+      "category": "geometric",
+      "frequency": 78
+    },
+    {
+      "char": "▬",
+      "codepoint": "U+25AC",
+      "name": "BLACK RECTANGLE",
+      "tags_ko": ["직사각형", "검정"],
+      "tags_en": ["rectangle", "black"],
+      "category": "geometric",
+      "frequency": 65
+    },
+    {
+      "char": "▭",
+      "codepoint": "U+25AD",
+      "name": "WHITE RECTANGLE",
+      "tags_ko": ["직사각형", "흰색"],
+      "tags_en": ["rectangle", "white"],
+      "category": "geometric",
+      "frequency": 62
+    },
+    {
+      "char": "△",
+      "codepoint": "U+25B3",
+      "name": "WHITE UP-POINTING TRIANGLE",
+      "tags_ko": ["삼각형", "위", "흰색"],
+      "tags_en": ["triangle", "up", "white"],
+      "category": "geometric",
+      "frequency": 80
+    },
+    {
+      "char": "▽",
+      "codepoint": "U+25BD",
+      "name": "WHITE DOWN-POINTING TRIANGLE",
+      "tags_ko": ["삼각형", "아래", "흰색"],
+      "tags_en": ["triangle", "down", "white"],
+      "category": "geometric",
+      "frequency": 76
+    },
+    {
+      "char": "◀",
+      "codepoint": "U+25C0",
+      "name": "BLACK LEFT-POINTING TRIANGLE",
+      "tags_ko": ["삼각형", "왼쪽", "재생"],
+      "tags_en": ["triangle", "left", "play"],
+      "category": "geometric",
+      "frequency": 82
+    },
+    {
+      "char": "▶",
+      "codepoint": "U+25B6",
+      "name": "BLACK RIGHT-POINTING TRIANGLE",
+      "tags_ko": ["삼각형", "오른쪽", "재생"],
+      "tags_en": ["triangle", "right", "play"],
+      "category": "geometric",
+      "frequency": 88
+    },
+    {
+      "char": "◁",
+      "codepoint": "U+25C1",
+      "name": "WHITE LEFT-POINTING TRIANGLE",
+      "tags_ko": ["삼각형", "왼쪽", "흰색"],
+      "tags_en": ["triangle", "left", "white"],
+      "category": "geometric",
+      "frequency": 68
+    },
+    {
+      "char": "▷",
+      "codepoint": "U+25B7",
+      "name": "WHITE RIGHT-POINTING TRIANGLE",
+      "tags_ko": ["삼각형", "오른쪽", "흰색"],
+      "tags_en": ["triangle", "right", "white"],
+      "category": "geometric",
+      "frequency": 70
+    },
+    {
+      "char": "◉",
+      "codepoint": "U+25C9",
+      "name": "FISHEYE",
+      "tags_ko": ["원", "중첩", "어안"],
+      "tags_en": ["circle", "fisheye"],
+      "category": "geometric",
+      "frequency": 60
+    },
+    {
+      "char": "◎",
+      "codepoint": "U+25CE",
+      "name": "BULLSEYE",
+      "tags_ko": ["원", "동심원", "과녁"],
+      "tags_en": ["circle", "bullseye", "target"],
+      "category": "geometric",
+      "frequency": 72
+    },
+    {
+      "char": "◐",
+      "codepoint": "U+25D0",
+      "name": "CIRCLE WITH LEFT HALF BLACK",
+      "tags_ko": ["원", "반원", "왼쪽검정"],
+      "tags_en": ["circle", "half", "left"],
+      "category": "geometric",
+      "frequency": 55
+    },
+    {
+      "char": "◑",
+      "codepoint": "U+25D1",
+      "name": "CIRCLE WITH RIGHT HALF BLACK",
+      "tags_ko": ["원", "반원", "오른쪽검정"],
+      "tags_en": ["circle", "half", "right"],
+      "category": "geometric",
+      "frequency": 55
+    },
+    {
+      "char": "◒",
+      "codepoint": "U+25D2",
+      "name": "CIRCLE WITH LOWER HALF BLACK",
+      "tags_ko": ["원", "반원", "아래검정"],
+      "tags_en": ["circle", "half", "bottom"],
+      "category": "geometric",
+      "frequency": 52
+    },
+    {
+      "char": "◓",
+      "codepoint": "U+25D3",
+      "name": "CIRCLE WITH UPPER HALF BLACK",
+      "tags_ko": ["원", "반원", "위검정"],
+      "tags_en": ["circle", "half", "top"],
+      "category": "geometric",
+      "frequency": 52
     },
     {
       "char": "☞",
@@ -1351,17 +3254,525 @@
     },
     {
       "char": "┘",
-      "codepoint": "U\u002B2518",
+      "codepoint": "U+2518",
       "name": "BOX DRAWINGS LIGHT UP AND LEFT",
-      "tags_ko": [
-        "모서리"
-      ],
-      "tags_en": [
-        "corner",
-        "box"
-      ],
+      "tags_ko": ["모서리"],
+      "tags_en": ["corner", "box"],
       "category": "line",
       "frequency": 75
+    },
+    {
+      "char": "├",
+      "codepoint": "U+251C",
+      "name": "BOX DRAWINGS LIGHT VERTICAL AND RIGHT",
+      "tags_ko": ["선", "분기", "T자"],
+      "tags_en": ["line", "tee", "branch"],
+      "category": "line",
+      "frequency": 72
+    },
+    {
+      "char": "┤",
+      "codepoint": "U+2524",
+      "name": "BOX DRAWINGS LIGHT VERTICAL AND LEFT",
+      "tags_ko": ["선", "분기"],
+      "tags_en": ["line", "tee"],
+      "category": "line",
+      "frequency": 70
+    },
+    {
+      "char": "┬",
+      "codepoint": "U+252C",
+      "name": "BOX DRAWINGS LIGHT DOWN AND HORIZONTAL",
+      "tags_ko": ["선", "T자", "위"],
+      "tags_en": ["line", "tee", "top"],
+      "category": "line",
+      "frequency": 68
+    },
+    {
+      "char": "┴",
+      "codepoint": "U+2534",
+      "name": "BOX DRAWINGS LIGHT UP AND HORIZONTAL",
+      "tags_ko": ["선", "T자", "아래"],
+      "tags_en": ["line", "tee", "bottom"],
+      "category": "line",
+      "frequency": 68
+    },
+    {
+      "char": "┼",
+      "codepoint": "U+253C",
+      "name": "BOX DRAWINGS LIGHT VERTICAL AND HORIZONTAL",
+      "tags_ko": ["선", "십자", "교차"],
+      "tags_en": ["line", "cross"],
+      "category": "line",
+      "frequency": 74
+    },
+    {
+      "char": "═",
+      "codepoint": "U+2550",
+      "name": "BOX DRAWINGS DOUBLE HORIZONTAL",
+      "tags_ko": ["선", "이중", "가로"],
+      "tags_en": ["line", "double", "horizontal"],
+      "category": "line",
+      "frequency": 70
+    },
+    {
+      "char": "║",
+      "codepoint": "U+2551",
+      "name": "BOX DRAWINGS DOUBLE VERTICAL",
+      "tags_ko": ["선", "이중", "세로"],
+      "tags_en": ["line", "double", "vertical"],
+      "category": "line",
+      "frequency": 68
+    },
+    {
+      "char": "╔",
+      "codepoint": "U+2554",
+      "name": "BOX DRAWINGS DOUBLE DOWN AND RIGHT",
+      "tags_ko": ["모서리", "이중", "왼쪽위"],
+      "tags_en": ["corner", "double"],
+      "category": "line",
+      "frequency": 65
+    },
+    {
+      "char": "╗",
+      "codepoint": "U+2557",
+      "name": "BOX DRAWINGS DOUBLE DOWN AND LEFT",
+      "tags_ko": ["모서리", "이중", "오른쪽위"],
+      "tags_en": ["corner", "double"],
+      "category": "line",
+      "frequency": 65
+    },
+    {
+      "char": "╚",
+      "codepoint": "U+255A",
+      "name": "BOX DRAWINGS DOUBLE UP AND RIGHT",
+      "tags_ko": ["모서리", "이중", "왼쪽아래"],
+      "tags_en": ["corner", "double"],
+      "category": "line",
+      "frequency": 65
+    },
+    {
+      "char": "╝",
+      "codepoint": "U+255D",
+      "name": "BOX DRAWINGS DOUBLE UP AND LEFT",
+      "tags_ko": ["모서리", "이중", "오른쪽아래"],
+      "tags_en": ["corner", "double"],
+      "category": "line",
+      "frequency": 65
+    },
+    {
+      "char": "━",
+      "codepoint": "U+2501",
+      "name": "BOX DRAWINGS HEAVY HORIZONTAL",
+      "tags_ko": ["선", "굵은", "가로"],
+      "tags_en": ["line", "heavy", "horizontal"],
+      "category": "line",
+      "frequency": 72
+    },
+    {
+      "char": "┃",
+      "codepoint": "U+2503",
+      "name": "BOX DRAWINGS HEAVY VERTICAL",
+      "tags_ko": ["선", "굵은", "세로"],
+      "tags_en": ["line", "heavy", "vertical"],
+      "category": "line",
+      "frequency": 70
+    },
+    {
+      "char": "┏",
+      "codepoint": "U+250F",
+      "name": "BOX DRAWINGS HEAVY DOWN AND RIGHT",
+      "tags_ko": ["모서리", "굵은"],
+      "tags_en": ["corner", "heavy"],
+      "category": "line",
+      "frequency": 62
+    },
+    {
+      "char": "┓",
+      "codepoint": "U+2513",
+      "name": "BOX DRAWINGS HEAVY DOWN AND LEFT",
+      "tags_ko": ["모서리", "굵은"],
+      "tags_en": ["corner", "heavy"],
+      "category": "line",
+      "frequency": 62
+    },
+    {
+      "char": "┗",
+      "codepoint": "U+2517",
+      "name": "BOX DRAWINGS HEAVY UP AND RIGHT",
+      "tags_ko": ["모서리", "굵은"],
+      "tags_en": ["corner", "heavy"],
+      "category": "line",
+      "frequency": 62
+    },
+    {
+      "char": "┛",
+      "codepoint": "U+251B",
+      "name": "BOX DRAWINGS HEAVY UP AND LEFT",
+      "tags_ko": ["모서리", "굵은"],
+      "tags_en": ["corner", "heavy"],
+      "category": "line",
+      "frequency": 62
+    },
+    {
+      "char": "╭",
+      "codepoint": "U+256D",
+      "name": "BOX DRAWINGS LIGHT ARC DOWN AND RIGHT",
+      "tags_ko": ["모서리", "둥근"],
+      "tags_en": ["corner", "arc", "round"],
+      "category": "line",
+      "frequency": 58
+    },
+    {
+      "char": "╮",
+      "codepoint": "U+256E",
+      "name": "BOX DRAWINGS LIGHT ARC DOWN AND LEFT",
+      "tags_ko": ["모서리", "둥근"],
+      "tags_en": ["corner", "arc", "round"],
+      "category": "line",
+      "frequency": 58
+    },
+    {
+      "char": "╯",
+      "codepoint": "U+256F",
+      "name": "BOX DRAWINGS LIGHT ARC UP AND LEFT",
+      "tags_ko": ["모서리", "둥근"],
+      "tags_en": ["corner", "arc", "round"],
+      "category": "line",
+      "frequency": 58
+    },
+    {
+      "char": "╰",
+      "codepoint": "U+2570",
+      "name": "BOX DRAWINGS LIGHT ARC UP AND RIGHT",
+      "tags_ko": ["모서리", "둥근"],
+      "tags_en": ["corner", "arc", "round"],
+      "category": "line",
+      "frequency": 58
+    },
+    {
+      "char": "┄",
+      "codepoint": "U+2504",
+      "name": "BOX DRAWINGS LIGHT TRIPLE DASH HORIZONTAL",
+      "tags_ko": ["선", "점선", "가로"],
+      "tags_en": ["line", "dashed", "horizontal"],
+      "category": "line",
+      "frequency": 55
+    },
+    {
+      "char": "┅",
+      "codepoint": "U+2505",
+      "name": "BOX DRAWINGS HEAVY TRIPLE DASH HORIZONTAL",
+      "tags_ko": ["선", "굵은점선", "가로"],
+      "tags_en": ["line", "heavy", "dashed", "horizontal"],
+      "category": "line",
+      "frequency": 52
+    },
+    {
+      "char": "┆",
+      "codepoint": "U+2506",
+      "name": "BOX DRAWINGS LIGHT TRIPLE DASH VERTICAL",
+      "tags_ko": ["선", "점선", "세로"],
+      "tags_en": ["line", "dashed", "vertical"],
+      "category": "line",
+      "frequency": 55
+    },
+    {
+      "char": "┇",
+      "codepoint": "U+2507",
+      "name": "BOX DRAWINGS HEAVY TRIPLE DASH VERTICAL",
+      "tags_ko": ["선", "굵은점선", "세로"],
+      "tags_en": ["line", "heavy", "dashed", "vertical"],
+      "category": "line",
+      "frequency": 52
+    },
+    {
+      "char": "┈",
+      "codepoint": "U+2508",
+      "name": "BOX DRAWINGS LIGHT QUADRUPLE DASH HORIZONTAL",
+      "tags_ko": ["선", "사중점선", "가로"],
+      "tags_en": ["line", "quad dash", "horizontal"],
+      "category": "line",
+      "frequency": 50
+    },
+    {
+      "char": "┉",
+      "codepoint": "U+2509",
+      "name": "BOX DRAWINGS HEAVY QUADRUPLE DASH HORIZONTAL",
+      "tags_ko": ["선", "굵은사중점선", "가로"],
+      "tags_en": ["line", "heavy", "quad dash", "horizontal"],
+      "category": "line",
+      "frequency": 48
+    },
+    {
+      "char": "┊",
+      "codepoint": "U+250A",
+      "name": "BOX DRAWINGS LIGHT QUADRUPLE DASH VERTICAL",
+      "tags_ko": ["선", "사중점선", "세로"],
+      "tags_en": ["line", "quad dash", "vertical"],
+      "category": "line",
+      "frequency": 50
+    },
+    {
+      "char": "┋",
+      "codepoint": "U+250B",
+      "name": "BOX DRAWINGS HEAVY QUADRUPLE DASH VERTICAL",
+      "tags_ko": ["선", "굵은사중점선", "세로"],
+      "tags_en": ["line", "heavy", "quad dash", "vertical"],
+      "category": "line",
+      "frequency": 48
+    },
+    {
+      "char": "╌",
+      "codepoint": "U+254C",
+      "name": "BOX DRAWINGS LIGHT DOUBLE DASH HORIZONTAL",
+      "tags_ko": ["선", "이중점선", "가로"],
+      "tags_en": ["line", "double dash", "horizontal"],
+      "category": "line",
+      "frequency": 52
+    },
+    {
+      "char": "╍",
+      "codepoint": "U+254D",
+      "name": "BOX DRAWINGS HEAVY DOUBLE DASH HORIZONTAL",
+      "tags_ko": ["선", "굵은이중점선", "가로"],
+      "tags_en": ["line", "heavy", "double dash", "horizontal"],
+      "category": "line",
+      "frequency": 50
+    },
+    {
+      "char": "╎",
+      "codepoint": "U+254E",
+      "name": "BOX DRAWINGS LIGHT DOUBLE DASH VERTICAL",
+      "tags_ko": ["선", "이중점선", "세로"],
+      "tags_en": ["line", "double dash", "vertical"],
+      "category": "line",
+      "frequency": 52
+    },
+    {
+      "char": "╏",
+      "codepoint": "U+254F",
+      "name": "BOX DRAWINGS HEAVY DOUBLE DASH VERTICAL",
+      "tags_ko": ["선", "굵은이중점선", "세로"],
+      "tags_en": ["line", "heavy", "double dash", "vertical"],
+      "category": "line",
+      "frequency": 50
+    },
+    {
+      "char": "╠",
+      "codepoint": "U+2560",
+      "name": "BOX DRAWINGS DOUBLE VERTICAL AND RIGHT",
+      "tags_ko": ["선", "이중", "분기"],
+      "tags_en": ["line", "double", "tee", "right"],
+      "category": "line",
+      "frequency": 62
+    },
+    {
+      "char": "╣",
+      "codepoint": "U+2563",
+      "name": "BOX DRAWINGS DOUBLE VERTICAL AND LEFT",
+      "tags_ko": ["선", "이중", "분기"],
+      "tags_en": ["line", "double", "tee", "left"],
+      "category": "line",
+      "frequency": 62
+    },
+    {
+      "char": "╦",
+      "codepoint": "U+2566",
+      "name": "BOX DRAWINGS DOUBLE DOWN AND HORIZONTAL",
+      "tags_ko": ["선", "이중", "T자위"],
+      "tags_en": ["line", "double", "tee", "top"],
+      "category": "line",
+      "frequency": 60
+    },
+    {
+      "char": "╩",
+      "codepoint": "U+2569",
+      "name": "BOX DRAWINGS DOUBLE UP AND HORIZONTAL",
+      "tags_ko": ["선", "이중", "T자아래"],
+      "tags_en": ["line", "double", "tee", "bottom"],
+      "category": "line",
+      "frequency": 60
+    },
+    {
+      "char": "╬",
+      "codepoint": "U+256C",
+      "name": "BOX DRAWINGS DOUBLE VERTICAL AND HORIZONTAL",
+      "tags_ko": ["선", "이중", "십자"],
+      "tags_en": ["line", "double", "cross"],
+      "category": "line",
+      "frequency": 65
+    },
+    {
+      "char": "┣",
+      "codepoint": "U+2523",
+      "name": "BOX DRAWINGS HEAVY VERTICAL AND RIGHT",
+      "tags_ko": ["선", "굵은", "분기오른쪽"],
+      "tags_en": ["line", "heavy", "tee", "right"],
+      "category": "line",
+      "frequency": 58
+    },
+    {
+      "char": "┫",
+      "codepoint": "U+252B",
+      "name": "BOX DRAWINGS HEAVY VERTICAL AND LEFT",
+      "tags_ko": ["선", "굵은", "분기왼쪽"],
+      "tags_en": ["line", "heavy", "tee", "left"],
+      "category": "line",
+      "frequency": 58
+    },
+    {
+      "char": "┳",
+      "codepoint": "U+2533",
+      "name": "BOX DRAWINGS HEAVY DOWN AND HORIZONTAL",
+      "tags_ko": ["선", "굵은", "T자위"],
+      "tags_en": ["line", "heavy", "tee", "top"],
+      "category": "line",
+      "frequency": 56
+    },
+    {
+      "char": "┻",
+      "codepoint": "U+253B",
+      "name": "BOX DRAWINGS HEAVY UP AND HORIZONTAL",
+      "tags_ko": ["선", "굵은", "T자아래"],
+      "tags_en": ["line", "heavy", "tee", "bottom"],
+      "category": "line",
+      "frequency": 56
+    },
+    {
+      "char": "╋",
+      "codepoint": "U+254B",
+      "name": "BOX DRAWINGS HEAVY VERTICAL AND HORIZONTAL",
+      "tags_ko": ["선", "굵은", "십자"],
+      "tags_en": ["line", "heavy", "cross"],
+      "category": "line",
+      "frequency": 60
+    },
+    {
+      "char": "▀",
+      "codepoint": "U+2580",
+      "name": "UPPER HALF BLOCK",
+      "tags_ko": ["블록", "위반", "채움"],
+      "tags_en": ["block", "upper", "half"],
+      "category": "line",
+      "frequency": 55
+    },
+    {
+      "char": "▄",
+      "codepoint": "U+2584",
+      "name": "LOWER HALF BLOCK",
+      "tags_ko": ["블록", "아래반", "채움"],
+      "tags_en": ["block", "lower", "half"],
+      "category": "line",
+      "frequency": 55
+    },
+    {
+      "char": "█",
+      "codepoint": "U+2588",
+      "name": "FULL BLOCK",
+      "tags_ko": ["블록", "전체", "채움"],
+      "tags_en": ["block", "full", "solid"],
+      "category": "line",
+      "frequency": 68
+    },
+    {
+      "char": "▌",
+      "codepoint": "U+258C",
+      "name": "LEFT HALF BLOCK",
+      "tags_ko": ["블록", "왼쪽반", "채움"],
+      "tags_en": ["block", "left", "half"],
+      "category": "line",
+      "frequency": 52
+    },
+    {
+      "char": "▐",
+      "codepoint": "U+2590",
+      "name": "RIGHT HALF BLOCK",
+      "tags_ko": ["블록", "오른쪽반", "채움"],
+      "tags_en": ["block", "right", "half"],
+      "category": "line",
+      "frequency": 52
+    },
+    {
+      "char": "░",
+      "codepoint": "U+2591",
+      "name": "LIGHT SHADE",
+      "tags_ko": ["음영", "연한", "패턴"],
+      "tags_en": ["shade", "light"],
+      "category": "line",
+      "frequency": 60
+    },
+    {
+      "char": "▒",
+      "codepoint": "U+2592",
+      "name": "MEDIUM SHADE",
+      "tags_ko": ["음영", "중간", "패턴"],
+      "tags_en": ["shade", "medium"],
+      "category": "line",
+      "frequency": 58
+    },
+    {
+      "char": "▓",
+      "codepoint": "U+2593",
+      "name": "DARK SHADE",
+      "tags_ko": ["음영", "진한", "패턴"],
+      "tags_en": ["shade", "dark"],
+      "category": "line",
+      "frequency": 56
+    },
+    {
+      "char": "▁",
+      "codepoint": "U+2581",
+      "name": "LOWER ONE EIGHTH BLOCK",
+      "tags_ko": ["블록", "1/8", "아래"],
+      "tags_en": ["block", "eighth", "lower"],
+      "category": "line",
+      "frequency": 45
+    },
+    {
+      "char": "▂",
+      "codepoint": "U+2582",
+      "name": "LOWER ONE QUARTER BLOCK",
+      "tags_ko": ["블록", "1/4", "아래"],
+      "tags_en": ["block", "quarter", "lower"],
+      "category": "line",
+      "frequency": 45
+    },
+    {
+      "char": "▃",
+      "codepoint": "U+2583",
+      "name": "LOWER THREE EIGHTHS BLOCK",
+      "tags_ko": ["블록", "3/8", "아래"],
+      "tags_en": ["block", "three-eighths", "lower"],
+      "category": "line",
+      "frequency": 42
+    },
+    {
+      "char": "▅",
+      "codepoint": "U+2585",
+      "name": "LOWER FIVE EIGHTHS BLOCK",
+      "tags_ko": ["블록", "5/8", "아래"],
+      "tags_en": ["block", "five-eighths", "lower"],
+      "category": "line",
+      "frequency": 42
+    },
+    {
+      "char": "▆",
+      "codepoint": "U+2586",
+      "name": "LOWER THREE QUARTERS BLOCK",
+      "tags_ko": ["블록", "3/4", "아래"],
+      "tags_en": ["block", "three-quarters", "lower"],
+      "category": "line",
+      "frequency": 45
+    },
+    {
+      "char": "▇",
+      "codepoint": "U+2587",
+      "name": "LOWER SEVEN EIGHTHS BLOCK",
+      "tags_ko": ["블록", "7/8", "아래"],
+      "tags_en": ["block", "seven-eighths", "lower"],
+      "category": "line",
+      "frequency": 42
     },
     {
       "char": "α",
@@ -1470,7 +3881,7 @@
     },
     {
       "char": "λ",
-      "codepoint": "U\u002B03BB",
+      "codepoint": "U+03BB",
       "name": "GREEK SMALL LETTER LAMBDA",
       "tags_ko": [
         "람다",
@@ -1482,6 +3893,375 @@
       ],
       "category": "greek",
       "frequency": 74
+    },
+    {
+      "char": "Α",
+      "codepoint": "U+0391",
+      "name": "GREEK CAPITAL LETTER ALPHA",
+      "tags_ko": ["알파", "대문자"],
+      "tags_en": ["alpha", "capital", "greek"],
+      "category": "greek",
+      "frequency": 70
+    },
+    {
+      "char": "Β",
+      "codepoint": "U+0392",
+      "name": "GREEK CAPITAL LETTER BETA",
+      "tags_ko": ["베타", "대문자"],
+      "tags_en": ["beta", "capital", "greek"],
+      "category": "greek",
+      "frequency": 68
+    },
+    {
+      "char": "Γ",
+      "codepoint": "U+0393",
+      "name": "GREEK CAPITAL LETTER GAMMA",
+      "tags_ko": ["감마", "대문자"],
+      "tags_en": ["gamma", "capital", "greek"],
+      "category": "greek",
+      "frequency": 72
+    },
+    {
+      "char": "Δ",
+      "codepoint": "U+0394",
+      "name": "GREEK CAPITAL LETTER DELTA",
+      "tags_ko": ["델타", "대문자", "변화"],
+      "tags_en": ["delta", "capital", "greek", "change"],
+      "category": "greek",
+      "frequency": 78
+    },
+    {
+      "char": "Ε",
+      "codepoint": "U+0395",
+      "name": "GREEK CAPITAL LETTER EPSILON",
+      "tags_ko": ["엡실론", "대문자"],
+      "tags_en": ["epsilon", "capital", "greek"],
+      "category": "greek",
+      "frequency": 65
+    },
+    {
+      "char": "Ζ",
+      "codepoint": "U+0396",
+      "name": "GREEK CAPITAL LETTER ZETA",
+      "tags_ko": ["제타", "대문자"],
+      "tags_en": ["zeta", "capital", "greek"],
+      "category": "greek",
+      "frequency": 55
+    },
+    {
+      "char": "Η",
+      "codepoint": "U+0397",
+      "name": "GREEK CAPITAL LETTER ETA",
+      "tags_ko": ["에타", "대문자"],
+      "tags_en": ["eta", "capital", "greek"],
+      "category": "greek",
+      "frequency": 60
+    },
+    {
+      "char": "Θ",
+      "codepoint": "U+0398",
+      "name": "GREEK CAPITAL LETTER THETA",
+      "tags_ko": ["세타", "대문자", "각도"],
+      "tags_en": ["theta", "capital", "greek", "angle"],
+      "category": "greek",
+      "frequency": 75
+    },
+    {
+      "char": "Ι",
+      "codepoint": "U+0399",
+      "name": "GREEK CAPITAL LETTER IOTA",
+      "tags_ko": ["이오타", "대문자"],
+      "tags_en": ["iota", "capital", "greek"],
+      "category": "greek",
+      "frequency": 50
+    },
+    {
+      "char": "Κ",
+      "codepoint": "U+039A",
+      "name": "GREEK CAPITAL LETTER KAPPA",
+      "tags_ko": ["카파", "대문자"],
+      "tags_en": ["kappa", "capital", "greek"],
+      "category": "greek",
+      "frequency": 58
+    },
+    {
+      "char": "Λ",
+      "codepoint": "U+039B",
+      "name": "GREEK CAPITAL LETTER LAMBDA",
+      "tags_ko": ["람다", "대문자"],
+      "tags_en": ["lambda", "capital", "greek"],
+      "category": "greek",
+      "frequency": 70
+    },
+    {
+      "char": "Μ",
+      "codepoint": "U+039C",
+      "name": "GREEK CAPITAL LETTER MU",
+      "tags_ko": ["뮤", "대문자"],
+      "tags_en": ["mu", "capital", "greek"],
+      "category": "greek",
+      "frequency": 62
+    },
+    {
+      "char": "Ν",
+      "codepoint": "U+039D",
+      "name": "GREEK CAPITAL LETTER NU",
+      "tags_ko": ["뉴", "대문자"],
+      "tags_en": ["nu", "capital", "greek"],
+      "category": "greek",
+      "frequency": 55
+    },
+    {
+      "char": "Ξ",
+      "codepoint": "U+039E",
+      "name": "GREEK CAPITAL LETTER XI",
+      "tags_ko": ["크시", "대문자"],
+      "tags_en": ["xi", "capital", "greek"],
+      "category": "greek",
+      "frequency": 52
+    },
+    {
+      "char": "Ο",
+      "codepoint": "U+039F",
+      "name": "GREEK CAPITAL LETTER OMICRON",
+      "tags_ko": ["오미크론", "대문자"],
+      "tags_en": ["omicron", "capital", "greek"],
+      "category": "greek",
+      "frequency": 48
+    },
+    {
+      "char": "Π",
+      "codepoint": "U+03A0",
+      "name": "GREEK CAPITAL LETTER PI",
+      "tags_ko": ["파이", "대문자", "곱"],
+      "tags_en": ["pi", "capital", "greek", "product"],
+      "category": "greek",
+      "frequency": 80
+    },
+    {
+      "char": "Ρ",
+      "codepoint": "U+03A1",
+      "name": "GREEK CAPITAL LETTER RHO",
+      "tags_ko": ["로", "대문자"],
+      "tags_en": ["rho", "capital", "greek"],
+      "category": "greek",
+      "frequency": 58
+    },
+    {
+      "char": "Τ",
+      "codepoint": "U+03A4",
+      "name": "GREEK CAPITAL LETTER TAU",
+      "tags_ko": ["타우", "대문자"],
+      "tags_en": ["tau", "capital", "greek"],
+      "category": "greek",
+      "frequency": 55
+    },
+    {
+      "char": "Υ",
+      "codepoint": "U+03A5",
+      "name": "GREEK CAPITAL LETTER UPSILON",
+      "tags_ko": ["입실론", "대문자"],
+      "tags_en": ["upsilon", "capital", "greek"],
+      "category": "greek",
+      "frequency": 48
+    },
+    {
+      "char": "Φ",
+      "codepoint": "U+03A6",
+      "name": "GREEK CAPITAL LETTER PHI",
+      "tags_ko": ["파이", "피", "대문자"],
+      "tags_en": ["phi", "capital", "greek"],
+      "category": "greek",
+      "frequency": 72
+    },
+    {
+      "char": "Χ",
+      "codepoint": "U+03A7",
+      "name": "GREEK CAPITAL LETTER CHI",
+      "tags_ko": ["카이", "대문자"],
+      "tags_en": ["chi", "capital", "greek"],
+      "category": "greek",
+      "frequency": 60
+    },
+    {
+      "char": "Ψ",
+      "codepoint": "U+03A8",
+      "name": "GREEK CAPITAL LETTER PSI",
+      "tags_ko": ["프사이", "대문자"],
+      "tags_en": ["psi", "capital", "greek"],
+      "category": "greek",
+      "frequency": 58
+    },
+    {
+      "char": "Ω",
+      "codepoint": "U+03A9",
+      "name": "GREEK CAPITAL LETTER OMEGA",
+      "tags_ko": ["오메가", "대문자", "옴"],
+      "tags_en": ["omega", "capital", "greek", "ohm"],
+      "category": "greek",
+      "frequency": 75
+    },
+    {
+      "char": "ε",
+      "codepoint": "U+03B5",
+      "name": "GREEK SMALL LETTER EPSILON",
+      "tags_ko": ["엡실론", "소문자"],
+      "tags_en": ["epsilon", "small", "greek"],
+      "category": "greek",
+      "frequency": 70
+    },
+    {
+      "char": "ζ",
+      "codepoint": "U+03B6",
+      "name": "GREEK SMALL LETTER ZETA",
+      "tags_ko": ["제타", "소문자"],
+      "tags_en": ["zeta", "small", "greek"],
+      "category": "greek",
+      "frequency": 55
+    },
+    {
+      "char": "η",
+      "codepoint": "U+03B7",
+      "name": "GREEK SMALL LETTER ETA",
+      "tags_ko": ["에타", "소문자"],
+      "tags_en": ["eta", "small", "greek"],
+      "category": "greek",
+      "frequency": 65
+    },
+    {
+      "char": "θ",
+      "codepoint": "U+03B8",
+      "name": "GREEK SMALL LETTER THETA",
+      "tags_ko": ["세타", "소문자", "각도"],
+      "tags_en": ["theta", "small", "greek", "angle"],
+      "category": "greek",
+      "frequency": 80
+    },
+    {
+      "char": "ι",
+      "codepoint": "U+03B9",
+      "name": "GREEK SMALL LETTER IOTA",
+      "tags_ko": ["이오타", "소문자"],
+      "tags_en": ["iota", "small", "greek"],
+      "category": "greek",
+      "frequency": 50
+    },
+    {
+      "char": "κ",
+      "codepoint": "U+03BA",
+      "name": "GREEK SMALL LETTER KAPPA",
+      "tags_ko": ["카파", "소문자"],
+      "tags_en": ["kappa", "small", "greek"],
+      "category": "greek",
+      "frequency": 60
+    },
+    {
+      "char": "μ",
+      "codepoint": "U+03BC",
+      "name": "GREEK SMALL LETTER MU",
+      "tags_ko": ["뮤", "소문자", "마이크로"],
+      "tags_en": ["mu", "small", "greek", "micro"],
+      "category": "greek",
+      "frequency": 78
+    },
+    {
+      "char": "ν",
+      "codepoint": "U+03BD",
+      "name": "GREEK SMALL LETTER NU",
+      "tags_ko": ["뉴", "소문자"],
+      "tags_en": ["nu", "small", "greek"],
+      "category": "greek",
+      "frequency": 55
+    },
+    {
+      "char": "ξ",
+      "codepoint": "U+03BE",
+      "name": "GREEK SMALL LETTER XI",
+      "tags_ko": ["크시", "소문자"],
+      "tags_en": ["xi", "small", "greek"],
+      "category": "greek",
+      "frequency": 52
+    },
+    {
+      "char": "ο",
+      "codepoint": "U+03BF",
+      "name": "GREEK SMALL LETTER OMICRON",
+      "tags_ko": ["오미크론", "소문자"],
+      "tags_en": ["omicron", "small", "greek"],
+      "category": "greek",
+      "frequency": 48
+    },
+    {
+      "char": "ρ",
+      "codepoint": "U+03C1",
+      "name": "GREEK SMALL LETTER RHO",
+      "tags_ko": ["로", "소문자", "밀도"],
+      "tags_en": ["rho", "small", "greek", "density"],
+      "category": "greek",
+      "frequency": 65
+    },
+    {
+      "char": "ς",
+      "codepoint": "U+03C2",
+      "name": "GREEK SMALL LETTER FINAL SIGMA",
+      "tags_ko": ["시그마", "끝자음"],
+      "tags_en": ["sigma", "final", "greek"],
+      "category": "greek",
+      "frequency": 45
+    },
+    {
+      "char": "σ",
+      "codepoint": "U+03C3",
+      "name": "GREEK SMALL LETTER SIGMA",
+      "tags_ko": ["시그마", "소문자", "표준편차"],
+      "tags_en": ["sigma", "small", "greek", "standard deviation"],
+      "category": "greek",
+      "frequency": 82
+    },
+    {
+      "char": "τ",
+      "codepoint": "U+03C4",
+      "name": "GREEK SMALL LETTER TAU",
+      "tags_ko": ["타우", "소문자"],
+      "tags_en": ["tau", "small", "greek"],
+      "category": "greek",
+      "frequency": 60
+    },
+    {
+      "char": "υ",
+      "codepoint": "U+03C5",
+      "name": "GREEK SMALL LETTER UPSILON",
+      "tags_ko": ["입실론", "소문자"],
+      "tags_en": ["upsilon", "small", "greek"],
+      "category": "greek",
+      "frequency": 48
+    },
+    {
+      "char": "φ",
+      "codepoint": "U+03C6",
+      "name": "GREEK SMALL LETTER PHI",
+      "tags_ko": ["파이", "피", "소문자"],
+      "tags_en": ["phi", "small", "greek"],
+      "category": "greek",
+      "frequency": 75
+    },
+    {
+      "char": "χ",
+      "codepoint": "U+03C7",
+      "name": "GREEK SMALL LETTER CHI",
+      "tags_ko": ["카이", "소문자"],
+      "tags_en": ["chi", "small", "greek"],
+      "category": "greek",
+      "frequency": 62
+    },
+    {
+      "char": "ψ",
+      "codepoint": "U+03C8",
+      "name": "GREEK SMALL LETTER PSI",
+      "tags_ko": ["프사이", "소문자"],
+      "tags_en": ["psi", "small", "greek"],
+      "category": "greek",
+      "frequency": 58
     },
     {
       "char": "Ⅰ",
@@ -1845,18 +4625,136 @@
     },
     {
       "char": "⚠",
-      "codepoint": "U\u002B26A0",
+      "codepoint": "U+26A0",
       "name": "WARNING SIGN",
-      "tags_ko": [
-        "경고",
-        "주의"
-      ],
-      "tags_en": [
-        "warning",
-        "caution"
-      ],
+      "tags_ko": ["경고", "주의"],
+      "tags_en": ["warning", "caution"],
       "category": "symbol",
       "frequency": 82
-    }
+    },
+    {"char": "①", "codepoint": "U+2460", "name": "CIRCLED DIGIT ONE", "tags_ko": ["원숫자", "1"], "tags_en": ["circled", "one"], "category": "circled", "frequency": 90},
+    {"char": "②", "codepoint": "U+2461", "name": "CIRCLED DIGIT TWO", "tags_ko": ["원숫자", "2"], "tags_en": ["circled", "two"], "category": "circled", "frequency": 88},
+    {"char": "③", "codepoint": "U+2462", "name": "CIRCLED DIGIT THREE", "tags_ko": ["원숫자", "3"], "tags_en": ["circled", "three"], "category": "circled", "frequency": 86},
+    {"char": "④", "codepoint": "U+2463", "name": "CIRCLED DIGIT FOUR", "tags_ko": ["원숫자", "4"], "tags_en": ["circled", "four"], "category": "circled", "frequency": 84},
+    {"char": "⑤", "codepoint": "U+2464", "name": "CIRCLED DIGIT FIVE", "tags_ko": ["원숫자", "5"], "tags_en": ["circled", "five"], "category": "circled", "frequency": 84},
+    {"char": "⑥", "codepoint": "U+2465", "name": "CIRCLED DIGIT SIX", "tags_ko": ["원숫자", "6"], "tags_en": ["circled", "six"], "category": "circled", "frequency": 82},
+    {"char": "⑦", "codepoint": "U+2466", "name": "CIRCLED DIGIT SEVEN", "tags_ko": ["원숫자", "7"], "tags_en": ["circled", "seven"], "category": "circled", "frequency": 82},
+    {"char": "⑧", "codepoint": "U+2467", "name": "CIRCLED DIGIT EIGHT", "tags_ko": ["원숫자", "8"], "tags_en": ["circled", "eight"], "category": "circled", "frequency": 80},
+    {"char": "⑨", "codepoint": "U+2468", "name": "CIRCLED DIGIT NINE", "tags_ko": ["원숫자", "9"], "tags_en": ["circled", "nine"], "category": "circled", "frequency": 80},
+    {"char": "⑩", "codepoint": "U+2469", "name": "CIRCLED NUMBER TEN", "tags_ko": ["원숫자", "10"], "tags_en": ["circled", "ten"], "category": "circled", "frequency": 78},
+    {"char": "⑪", "codepoint": "U+246A", "name": "CIRCLED NUMBER ELEVEN", "tags_ko": ["원숫자", "11"], "tags_en": ["circled", "eleven"], "category": "circled", "frequency": 70},
+    {"char": "⑫", "codepoint": "U+246B", "name": "CIRCLED NUMBER TWELVE", "tags_ko": ["원숫자", "12"], "tags_en": ["circled", "twelve"], "category": "circled", "frequency": 70},
+    {"char": "⑬", "codepoint": "U+246C", "name": "CIRCLED NUMBER THIRTEEN", "tags_ko": ["원숫자", "13"], "tags_en": ["circled", "thirteen"], "category": "circled", "frequency": 68},
+    {"char": "⑭", "codepoint": "U+246D", "name": "CIRCLED NUMBER FOURTEEN", "tags_ko": ["원숫자", "14"], "tags_en": ["circled", "fourteen"], "category": "circled", "frequency": 66},
+    {"char": "⑮", "codepoint": "U+246E", "name": "CIRCLED NUMBER FIFTEEN", "tags_ko": ["원숫자", "15"], "tags_en": ["circled", "fifteen"], "category": "circled", "frequency": 66},
+    {"char": "⑯", "codepoint": "U+246F", "name": "CIRCLED NUMBER SIXTEEN", "tags_ko": ["원숫자", "16"], "tags_en": ["circled", "sixteen"], "category": "circled", "frequency": 64},
+    {"char": "⑰", "codepoint": "U+2470", "name": "CIRCLED NUMBER SEVENTEEN", "tags_ko": ["원숫자", "17"], "tags_en": ["circled", "seventeen"], "category": "circled", "frequency": 64},
+    {"char": "⑱", "codepoint": "U+2471", "name": "CIRCLED NUMBER EIGHTEEN", "tags_ko": ["원숫자", "18"], "tags_en": ["circled", "eighteen"], "category": "circled", "frequency": 62},
+    {"char": "⑲", "codepoint": "U+2472", "name": "CIRCLED NUMBER NINETEEN", "tags_ko": ["원숫자", "19"], "tags_en": ["circled", "nineteen"], "category": "circled", "frequency": 62},
+    {"char": "⑳", "codepoint": "U+2473", "name": "CIRCLED NUMBER TWENTY", "tags_ko": ["원숫자", "20"], "tags_en": ["circled", "twenty"], "category": "circled", "frequency": 60},
+    {"char": "Ⓐ", "codepoint": "U+24B6", "name": "CIRCLED LATIN CAPITAL LETTER A", "tags_ko": ["원문자", "A"], "tags_en": ["circled", "A"], "category": "circled", "frequency": 72},
+    {"char": "Ⓑ", "codepoint": "U+24B7", "name": "CIRCLED LATIN CAPITAL LETTER B", "tags_ko": ["원문자", "B"], "tags_en": ["circled", "B"], "category": "circled", "frequency": 70},
+    {"char": "Ⓒ", "codepoint": "U+24B8", "name": "CIRCLED LATIN CAPITAL LETTER C", "tags_ko": ["원문자", "C"], "tags_en": ["circled", "C"], "category": "circled", "frequency": 70},
+    {"char": "Ⓓ", "codepoint": "U+24B9", "name": "CIRCLED LATIN CAPITAL LETTER D", "tags_ko": ["원문자", "D"], "tags_en": ["circled", "D"], "category": "circled", "frequency": 68},
+    {"char": "Ⓔ", "codepoint": "U+24BA", "name": "CIRCLED LATIN CAPITAL LETTER E", "tags_ko": ["원문자", "E"], "tags_en": ["circled", "E"], "category": "circled", "frequency": 68},
+    {"char": "Ⓕ", "codepoint": "U+24BB", "name": "CIRCLED LATIN CAPITAL LETTER F", "tags_ko": ["원문자", "F"], "tags_en": ["circled", "F"], "category": "circled", "frequency": 66},
+    {"char": "Ⓖ", "codepoint": "U+24BC", "name": "CIRCLED LATIN CAPITAL LETTER G", "tags_ko": ["원문자", "G"], "tags_en": ["circled", "G"], "category": "circled", "frequency": 65},
+    {"char": "Ⓗ", "codepoint": "U+24BD", "name": "CIRCLED LATIN CAPITAL LETTER H", "tags_ko": ["원문자", "H"], "tags_en": ["circled", "H"], "category": "circled", "frequency": 65},
+    {"char": "Ⓘ", "codepoint": "U+24BE", "name": "CIRCLED LATIN CAPITAL LETTER I", "tags_ko": ["원문자", "I"], "tags_en": ["circled", "I"], "category": "circled", "frequency": 64},
+    {"char": "Ⓙ", "codepoint": "U+24BF", "name": "CIRCLED LATIN CAPITAL LETTER J", "tags_ko": ["원문자", "J"], "tags_en": ["circled", "J"], "category": "circled", "frequency": 62},
+    {"char": "Ⓚ", "codepoint": "U+24C0", "name": "CIRCLED LATIN CAPITAL LETTER K", "tags_ko": ["원문자", "K"], "tags_en": ["circled", "K"], "category": "circled", "frequency": 62},
+    {"char": "Ⓛ", "codepoint": "U+24C1", "name": "CIRCLED LATIN CAPITAL LETTER L", "tags_ko": ["원문자", "L"], "tags_en": ["circled", "L"], "category": "circled", "frequency": 62},
+    {"char": "Ⓜ", "codepoint": "U+24C2", "name": "CIRCLED LATIN CAPITAL LETTER M", "tags_ko": ["원문자", "M"], "tags_en": ["circled", "M"], "category": "circled", "frequency": 65},
+    {"char": "Ⓝ", "codepoint": "U+24C3", "name": "CIRCLED LATIN CAPITAL LETTER N", "tags_ko": ["원문자", "N"], "tags_en": ["circled", "N"], "category": "circled", "frequency": 64},
+    {"char": "Ⓞ", "codepoint": "U+24C4", "name": "CIRCLED LATIN CAPITAL LETTER O", "tags_ko": ["원문자", "O"], "tags_en": ["circled", "O"], "category": "circled", "frequency": 64},
+    {"char": "Ⓟ", "codepoint": "U+24C5", "name": "CIRCLED LATIN CAPITAL LETTER P", "tags_ko": ["원문자", "P"], "tags_en": ["circled", "P"], "category": "circled", "frequency": 66},
+    {"char": "Ⓠ", "codepoint": "U+24C6", "name": "CIRCLED LATIN CAPITAL LETTER Q", "tags_ko": ["원문자", "Q"], "tags_en": ["circled", "Q"], "category": "circled", "frequency": 58},
+    {"char": "Ⓡ", "codepoint": "U+24C7", "name": "CIRCLED LATIN CAPITAL LETTER R", "tags_ko": ["원문자", "R"], "tags_en": ["circled", "R"], "category": "circled", "frequency": 68},
+    {"char": "Ⓢ", "codepoint": "U+24C8", "name": "CIRCLED LATIN CAPITAL LETTER S", "tags_ko": ["원문자", "S"], "tags_en": ["circled", "S"], "category": "circled", "frequency": 68},
+    {"char": "Ⓣ", "codepoint": "U+24C9", "name": "CIRCLED LATIN CAPITAL LETTER T", "tags_ko": ["원문자", "T"], "tags_en": ["circled", "T"], "category": "circled", "frequency": 66},
+    {"char": "Ⓤ", "codepoint": "U+24CA", "name": "CIRCLED LATIN CAPITAL LETTER U", "tags_ko": ["원문자", "U"], "tags_en": ["circled", "U"], "category": "circled", "frequency": 62},
+    {"char": "Ⓥ", "codepoint": "U+24CB", "name": "CIRCLED LATIN CAPITAL LETTER V", "tags_ko": ["원문자", "V"], "tags_en": ["circled", "V"], "category": "circled", "frequency": 60},
+    {"char": "Ⓦ", "codepoint": "U+24CC", "name": "CIRCLED LATIN CAPITAL LETTER W", "tags_ko": ["원문자", "W"], "tags_en": ["circled", "W"], "category": "circled", "frequency": 58},
+    {"char": "Ⓧ", "codepoint": "U+24CD", "name": "CIRCLED LATIN CAPITAL LETTER X", "tags_ko": ["원문자", "X"], "tags_en": ["circled", "X"], "category": "circled", "frequency": 58},
+    {"char": "Ⓨ", "codepoint": "U+24CE", "name": "CIRCLED LATIN CAPITAL LETTER Y", "tags_ko": ["원문자", "Y"], "tags_en": ["circled", "Y"], "category": "circled", "frequency": 58},
+    {"char": "Ⓩ", "codepoint": "U+24CF", "name": "CIRCLED LATIN CAPITAL LETTER Z", "tags_ko": ["원문자", "Z"], "tags_en": ["circled", "Z"], "category": "circled", "frequency": 56},
+    {"char": "ⓐ", "codepoint": "U+24D0", "name": "CIRCLED LATIN SMALL LETTER A", "tags_ko": ["원문자", "a", "소문자"], "tags_en": ["circled", "a", "small"], "category": "circled", "frequency": 68},
+    {"char": "ⓑ", "codepoint": "U+24D1", "name": "CIRCLED LATIN SMALL LETTER B", "tags_ko": ["원문자", "b", "소문자"], "tags_en": ["circled", "b", "small"], "category": "circled", "frequency": 66},
+    {"char": "ⓒ", "codepoint": "U+24D2", "name": "CIRCLED LATIN SMALL LETTER C", "tags_ko": ["원문자", "c", "소문자"], "tags_en": ["circled", "c", "small"], "category": "circled", "frequency": 66},
+    {"char": "ⓓ", "codepoint": "U+24D3", "name": "CIRCLED LATIN SMALL LETTER D", "tags_ko": ["원문자", "d", "소문자"], "tags_en": ["circled", "d", "small"], "category": "circled", "frequency": 64},
+    {"char": "ⓔ", "codepoint": "U+24D4", "name": "CIRCLED LATIN SMALL LETTER E", "tags_ko": ["원문자", "e", "소문자"], "tags_en": ["circled", "e", "small"], "category": "circled", "frequency": 64},
+    {"char": "ⓕ", "codepoint": "U+24D5", "name": "CIRCLED LATIN SMALL LETTER F", "tags_ko": ["원문자", "f", "소문자"], "tags_en": ["circled", "f", "small"], "category": "circled", "frequency": 62},
+    {"char": "ⓖ", "codepoint": "U+24D6", "name": "CIRCLED LATIN SMALL LETTER G", "tags_ko": ["원문자", "g", "소문자"], "tags_en": ["circled", "g", "small"], "category": "circled", "frequency": 60},
+    {"char": "ⓗ", "codepoint": "U+24D7", "name": "CIRCLED LATIN SMALL LETTER H", "tags_ko": ["원문자", "h", "소문자"], "tags_en": ["circled", "h", "small"], "category": "circled", "frequency": 60},
+    {"char": "ⓘ", "codepoint": "U+24D8", "name": "CIRCLED LATIN SMALL LETTER I", "tags_ko": ["원문자", "i", "소문자"], "tags_en": ["circled", "i", "small"], "category": "circled", "frequency": 62},
+    {"char": "ⓙ", "codepoint": "U+24D9", "name": "CIRCLED LATIN SMALL LETTER J", "tags_ko": ["원문자", "j", "소문자"], "tags_en": ["circled", "j", "small"], "category": "circled", "frequency": 58},
+    {"char": "ⓚ", "codepoint": "U+24DA", "name": "CIRCLED LATIN SMALL LETTER K", "tags_ko": ["원문자", "k", "소문자"], "tags_en": ["circled", "k", "small"], "category": "circled", "frequency": 58},
+    {"char": "ⓛ", "codepoint": "U+24DB", "name": "CIRCLED LATIN SMALL LETTER L", "tags_ko": ["원문자", "l", "소문자"], "tags_en": ["circled", "l", "small"], "category": "circled", "frequency": 58},
+    {"char": "ⓜ", "codepoint": "U+24DC", "name": "CIRCLED LATIN SMALL LETTER M", "tags_ko": ["원문자", "m", "소문자"], "tags_en": ["circled", "m", "small"], "category": "circled", "frequency": 60},
+    {"char": "ⓝ", "codepoint": "U+24DD", "name": "CIRCLED LATIN SMALL LETTER N", "tags_ko": ["원문자", "n", "소문자"], "tags_en": ["circled", "n", "small"], "category": "circled", "frequency": 58},
+    {"char": "⓪", "codepoint": "U+24EA", "name": "CIRCLED DIGIT ZERO", "tags_ko": ["원숫자", "0", "영"], "tags_en": ["circled", "zero", "0"], "category": "circled", "frequency": 72},
+    {"char": "½", "codepoint": "U+00BD", "name": "VULGAR FRACTION ONE HALF", "tags_ko": ["분수", "2분의1"], "tags_en": ["fraction", "half"], "category": "fraction", "frequency": 92},
+    {"char": "⅓", "codepoint": "U+2153", "name": "VULGAR FRACTION ONE THIRD", "tags_ko": ["분수", "3분의1"], "tags_en": ["fraction", "third"], "category": "fraction", "frequency": 85},
+    {"char": "⅔", "codepoint": "U+2154", "name": "VULGAR FRACTION TWO THIRDS", "tags_ko": ["분수", "3분의2"], "tags_en": ["fraction", "two thirds"], "category": "fraction", "frequency": 82},
+    {"char": "¼", "codepoint": "U+00BC", "name": "VULGAR FRACTION ONE QUARTER", "tags_ko": ["분수", "4분의1"], "tags_en": ["fraction", "quarter"], "category": "fraction", "frequency": 88},
+    {"char": "¾", "codepoint": "U+00BE", "name": "VULGAR FRACTION THREE QUARTERS", "tags_ko": ["분수", "4분의3"], "tags_en": ["fraction", "three quarters"], "category": "fraction", "frequency": 85},
+    {"char": "⅕", "codepoint": "U+2155", "name": "VULGAR FRACTION ONE FIFTH", "tags_ko": ["분수", "5분의1"], "tags_en": ["fraction", "fifth"], "category": "fraction", "frequency": 70},
+    {"char": "⅖", "codepoint": "U+2156", "name": "VULGAR FRACTION TWO FIFTHS", "tags_ko": ["분수", "5분의2"], "tags_en": ["fraction", "two fifths"], "category": "fraction", "frequency": 65},
+    {"char": "⅗", "codepoint": "U+2157", "name": "VULGAR FRACTION THREE FIFTHS", "tags_ko": ["분수", "5분의3"], "tags_en": ["fraction", "three fifths"], "category": "fraction", "frequency": 65},
+    {"char": "⅘", "codepoint": "U+2158", "name": "VULGAR FRACTION FOUR FIFTHS", "tags_ko": ["분수", "5분의4"], "tags_en": ["fraction", "four fifths"], "category": "fraction", "frequency": 65},
+    {"char": "⅙", "codepoint": "U+2159", "name": "VULGAR FRACTION ONE SIXTH", "tags_ko": ["분수", "6분의1"], "tags_en": ["fraction", "sixth"], "category": "fraction", "frequency": 60},
+    {"char": "⅛", "codepoint": "U+215B", "name": "VULGAR FRACTION ONE EIGHTH", "tags_ko": ["분수", "8분의1"], "tags_en": ["fraction", "eighth"], "category": "fraction", "frequency": 65},
+    {"char": "⅜", "codepoint": "U+215C", "name": "VULGAR FRACTION THREE EIGHTHS", "tags_ko": ["분수", "8분의3"], "tags_en": ["fraction", "three eighths"], "category": "fraction", "frequency": 60},
+    {"char": "⅝", "codepoint": "U+215D", "name": "VULGAR FRACTION FIVE EIGHTHS", "tags_ko": ["분수", "8분의5"], "tags_en": ["fraction", "five eighths"], "category": "fraction", "frequency": 60},
+    {"char": "⅞", "codepoint": "U+215E", "name": "VULGAR FRACTION SEVEN EIGHTHS", "tags_ko": ["분수", "8분의7"], "tags_en": ["fraction", "seven eighths"], "category": "fraction", "frequency": 60},
+    {"char": "㎜", "codepoint": "U+339C", "name": "SQUARE MM", "tags_ko": ["단위", "밀리미터"], "tags_en": ["unit", "millimeter"], "category": "unit", "frequency": 85},
+    {"char": "㎝", "codepoint": "U+339D", "name": "SQUARE CM", "tags_ko": ["단위", "센티미터"], "tags_en": ["unit", "centimeter"], "category": "unit", "frequency": 88},
+    {"char": "㎞", "codepoint": "U+339E", "name": "SQUARE KM", "tags_ko": ["단위", "킬로미터"], "tags_en": ["unit", "kilometer"], "category": "unit", "frequency": 90},
+    {"char": "㎎", "codepoint": "U+338E", "name": "SQUARE MG", "tags_ko": ["단위", "밀리그램"], "tags_en": ["unit", "milligram"], "category": "unit", "frequency": 78},
+    {"char": "㎏", "codepoint": "U+338F", "name": "SQUARE KG", "tags_ko": ["단위", "킬로그램"], "tags_en": ["unit", "kilogram"], "category": "unit", "frequency": 88},
+    {"char": "㎖", "codepoint": "U+3396", "name": "SQUARE ML", "tags_ko": ["단위", "밀리리터"], "tags_en": ["unit", "milliliter"], "category": "unit", "frequency": 82},
+    {"char": "㎡", "codepoint": "U+33A1", "name": "SQUARE M SQUARED", "tags_ko": ["단위", "제곱미터", "평방미터"], "tags_en": ["unit", "square meter"], "category": "unit", "frequency": 85},
+    {"char": "㎥", "codepoint": "U+33A5", "name": "SQUARE M CUBED", "tags_ko": ["단위", "세제곱미터", "입방미터"], "tags_en": ["unit", "cubic meter"], "category": "unit", "frequency": 75},
+    {"char": "㏄", "codepoint": "U+33C4", "name": "SQUARE CC", "tags_ko": ["단위", "씨씨"], "tags_en": ["unit", "cc"], "category": "unit", "frequency": 78},
+    {"char": "㎐", "codepoint": "U+3390", "name": "SQUARE HZ", "tags_ko": ["단위", "헤르츠"], "tags_en": ["unit", "hertz"], "category": "unit", "frequency": 72},
+    {"char": "㎑", "codepoint": "U+3391", "name": "SQUARE KHZ", "tags_ko": ["단위", "킬로헤르츠"], "tags_en": ["unit", "kilohertz"], "category": "unit", "frequency": 70},
+    {"char": "㎒", "codepoint": "U+3392", "name": "SQUARE MHZ", "tags_ko": ["단위", "메가헤르츠"], "tags_en": ["unit", "megahertz"], "category": "unit", "frequency": 72},
+    {"char": "㏈", "codepoint": "U+33C8", "name": "SQUARE DB", "tags_ko": ["단위", "데시벨"], "tags_en": ["unit", "decibel"], "category": "unit", "frequency": 70},
+    {"char": "⌘", "codepoint": "U+2318", "name": "PLACE OF INTEREST SIGN", "tags_ko": ["기술", "맥", "커맨드"], "tags_en": ["technical", "command", "mac"], "category": "technical", "frequency": 88},
+    {"char": "⌥", "codepoint": "U+2325", "name": "OPTION KEY", "tags_ko": ["기술", "맥", "옵션"], "tags_en": ["technical", "option", "mac"], "category": "technical", "frequency": 82},
+    {"char": "⇧", "codepoint": "U+21E7", "name": "UPWARDS WHITE ARROW", "tags_ko": ["기술", "시프트"], "tags_en": ["technical", "shift"], "category": "technical", "frequency": 85},
+    {"char": "⌃", "codepoint": "U+2303", "name": "UP ARROWHEAD", "tags_ko": ["기술", "컨트롤"], "tags_en": ["technical", "control"], "category": "technical", "frequency": 80},
+    {"char": "⎋", "codepoint": "U+238B", "name": "BROKEN CIRCLE WITH NORTHWEST ARROW", "tags_ko": ["기술", "이스케이프", "ESC"], "tags_en": ["technical", "escape", "esc"], "category": "technical", "frequency": 78},
+    {"char": "⏎", "codepoint": "U+23CE", "name": "RETURN SYMBOL", "tags_ko": ["기술", "엔터", "리턴"], "tags_en": ["technical", "return", "enter"], "category": "technical", "frequency": 85},
+    {"char": "⌫", "codepoint": "U+232B", "name": "ERASE TO THE LEFT", "tags_ko": ["기술", "백스페이스", "삭제"], "tags_en": ["technical", "backspace", "delete"], "category": "technical", "frequency": 82},
+    {"char": "⌦", "codepoint": "U+2326", "name": "ERASE TO THE RIGHT", "tags_ko": ["기술", "딜리트"], "tags_en": ["technical", "delete"], "category": "technical", "frequency": 75},
+    {"char": "⇥", "codepoint": "U+21E5", "name": "RIGHTWARDS ARROW TO BAR", "tags_ko": ["기술", "탭"], "tags_en": ["technical", "tab"], "category": "technical", "frequency": 78},
+    {"char": "⇤", "codepoint": "U+21E4", "name": "LEFTWARDS ARROW TO BAR", "tags_ko": ["기술", "역탭"], "tags_en": ["technical", "backtab"], "category": "technical", "frequency": 65},
+    {"char": "⏏", "codepoint": "U+23CF", "name": "EJECT SYMBOL", "tags_ko": ["기술", "꺼내기"], "tags_en": ["technical", "eject"], "category": "technical", "frequency": 70},
+    {"char": "ℕ", "codepoint": "U+2115", "name": "DOUBLE-STRUCK CAPITAL N", "tags_ko": ["수학", "자연수"], "tags_en": ["math", "natural"], "category": "letterlike", "frequency": 72},
+    {"char": "ℤ", "codepoint": "U+2124", "name": "DOUBLE-STRUCK CAPITAL Z", "tags_ko": ["수학", "정수"], "tags_en": ["math", "integer"], "category": "letterlike", "frequency": 72},
+    {"char": "ℚ", "codepoint": "U+211A", "name": "DOUBLE-STRUCK CAPITAL Q", "tags_ko": ["수학", "유리수"], "tags_en": ["math", "rational"], "category": "letterlike", "frequency": 70},
+    {"char": "ℝ", "codepoint": "U+211D", "name": "DOUBLE-STRUCK CAPITAL R", "tags_ko": ["수학", "실수"], "tags_en": ["math", "real"], "category": "letterlike", "frequency": 75},
+    {"char": "ℂ", "codepoint": "U+2102", "name": "DOUBLE-STRUCK CAPITAL C", "tags_ko": ["수학", "복소수"], "tags_en": ["math", "complex"], "category": "letterlike", "frequency": 68},
+    {"char": "ℋ", "codepoint": "U+210B", "name": "SCRIPT CAPITAL H", "tags_ko": ["필기체", "H"], "tags_en": ["script", "H"], "category": "letterlike", "frequency": 55},
+    {"char": "ℓ", "codepoint": "U+2113", "name": "SCRIPT SMALL L", "tags_ko": ["필기체", "리터"], "tags_en": ["script", "liter"], "category": "letterlike", "frequency": 70},
+    {"char": "℮", "codepoint": "U+212E", "name": "ESTIMATED SYMBOL", "tags_ko": ["추정", "이스티메이트"], "tags_en": ["estimated"], "category": "letterlike", "frequency": 55},
+    {"char": "😀", "codepoint": "U+1F600", "name": "GRINNING FACE", "tags_ko": ["이모지", "웃음", "얼굴"], "tags_en": ["emoji", "grin", "face"], "category": "emoji", "frequency": 95},
+    {"char": "😂", "codepoint": "U+1F602", "name": "FACE WITH TEARS OF JOY", "tags_ko": ["이모지", "웃음", "눈물"], "tags_en": ["emoji", "joy", "tears"], "category": "emoji", "frequency": 98},
+    {"char": "😍", "codepoint": "U+1F60D", "name": "SMILING FACE WITH HEART-EYES", "tags_ko": ["이모지", "하트눈", "사랑"], "tags_en": ["emoji", "heart", "eyes"], "category": "emoji", "frequency": 92},
+    {"char": "🥰", "codepoint": "U+1F970", "name": "SMILING FACE WITH HEARTS", "tags_ko": ["이모지", "하트", "사랑"], "tags_en": ["emoji", "hearts", "love"], "category": "emoji", "frequency": 88},
+    {"char": "😊", "codepoint": "U+1F60A", "name": "SMILING FACE WITH SMILING EYES", "tags_ko": ["이모지", "미소", "눈웃음"], "tags_en": ["emoji", "smile", "blush"], "category": "emoji", "frequency": 90},
+    {"char": "😎", "codepoint": "U+1F60E", "name": "SMILING FACE WITH SUNGLASSES", "tags_ko": ["이모지", "선글라스", "쿨"], "tags_en": ["emoji", "cool", "sunglasses"], "category": "emoji", "frequency": 85},
+    {"char": "🤔", "codepoint": "U+1F914", "name": "THINKING FACE", "tags_ko": ["이모지", "생각", "고민"], "tags_en": ["emoji", "thinking"], "category": "emoji", "frequency": 90},
+    {"char": "😢", "codepoint": "U+1F622", "name": "CRYING FACE", "tags_ko": ["이모지", "울음", "슬픔"], "tags_en": ["emoji", "crying", "sad"], "category": "emoji", "frequency": 82},
+    {"char": "😱", "codepoint": "U+1F631", "name": "FACE SCREAMING IN FEAR", "tags_ko": ["이모지", "놀람", "공포"], "tags_en": ["emoji", "scream", "fear"], "category": "emoji", "frequency": 80},
+    {"char": "🙏", "codepoint": "U+1F64F", "name": "FOLDED HANDS", "tags_ko": ["이모지", "기도", "부탁"], "tags_en": ["emoji", "pray", "please"], "category": "emoji", "frequency": 92},
+    {"char": "👍", "codepoint": "U+1F44D", "name": "THUMBS UP", "tags_ko": ["이모지", "좋아요", "엄지"], "tags_en": ["emoji", "thumbs up", "like"], "category": "emoji", "frequency": 95},
+    {"char": "👎", "codepoint": "U+1F44E", "name": "THUMBS DOWN", "tags_ko": ["이모지", "싫어요"], "tags_en": ["emoji", "thumbs down", "dislike"], "category": "emoji", "frequency": 78},
+    {"char": "👏", "codepoint": "U+1F44F", "name": "CLAPPING HANDS", "tags_ko": ["이모지", "박수"], "tags_en": ["emoji", "clap"], "category": "emoji", "frequency": 85},
+    {"char": "🔥", "codepoint": "U+1F525", "name": "FIRE", "tags_ko": ["이모지", "불", "핫"], "tags_en": ["emoji", "fire", "hot"], "category": "emoji", "frequency": 92},
+    {"char": "💯", "codepoint": "U+1F4AF", "name": "HUNDRED POINTS", "tags_ko": ["이모지", "100점", "완벽"], "tags_en": ["emoji", "hundred", "perfect"], "category": "emoji", "frequency": 88},
+    {"char": "✨", "codepoint": "U+2728", "name": "SPARKLES", "tags_ko": ["이모지", "반짝", "스파클"], "tags_en": ["emoji", "sparkles"], "category": "emoji", "frequency": 90},
+    {"char": "🎉", "codepoint": "U+1F389", "name": "PARTY POPPER", "tags_ko": ["이모지", "파티", "축하"], "tags_en": ["emoji", "party", "celebration"], "category": "emoji", "frequency": 88}
   ]
 }
