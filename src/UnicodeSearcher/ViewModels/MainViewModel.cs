@@ -14,6 +14,8 @@ public partial class MainViewModel : ObservableObject
     private readonly ICharacterDataService _characterDataService;
     private readonly ISearchService _searchService;
     private readonly IClipboardService _clipboardService;
+    private readonly IRecentCharactersService _recentCharactersService;
+    private readonly ISettingsService _settingsService;
 
     private CancellationTokenSource? _searchCts;
     private IReadOnlyList<UnicodeCharacter> _allCharacters = [];
@@ -42,6 +44,9 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private string _statusMessage = string.Empty;
 
+    [ObservableProperty]
+    private ObservableCollection<string> _recentCharacters = [];
+
     /// <summary>
     /// 현재 필터링된 문자 수
     /// </summary>
@@ -52,14 +57,36 @@ public partial class MainViewModel : ObservableObject
     /// </summary>
     public int TotalCount => _allCharacters.Count;
 
+    /// <summary>
+    /// 설정
+    /// </summary>
+    public UserSettings Settings => _settingsService.Settings;
+
+    /// <summary>
+    /// 창 닫기 요청 이벤트
+    /// </summary>
+    public event EventHandler? CloseWindowRequested;
+
+    /// <summary>
+    /// 문자가 복사되었을 때 발생
+    /// </summary>
+    public event EventHandler<string>? CharacterCopied;
+
     public MainViewModel(
         ICharacterDataService characterDataService,
         ISearchService searchService,
-        IClipboardService clipboardService)
+        IClipboardService clipboardService,
+        IRecentCharactersService recentCharactersService,
+        ISettingsService settingsService)
     {
         _characterDataService = characterDataService;
         _searchService = searchService;
         _clipboardService = clipboardService;
+        _recentCharactersService = recentCharactersService;
+        _settingsService = settingsService;
+
+        // 최근 사용 문자 변경 이벤트 구독
+        _recentCharactersService.RecentCharactersChanged += (_, _) => UpdateRecentCharacters();
     }
 
     /// <summary>
@@ -72,6 +99,14 @@ public partial class MainViewModel : ObservableObject
 
         try
         {
+            // 설정 로드
+            await _settingsService.LoadAsync();
+
+            // 최근 사용 문자 로드
+            await _recentCharactersService.LoadAsync();
+            UpdateRecentCharacters();
+
+            // 문자 데이터 로드
             await _characterDataService.LoadDataAsync();
 
             _allCharacters = _characterDataService.Characters;
@@ -105,6 +140,11 @@ public partial class MainViewModel : ObservableObject
         {
             IsLoading = false;
         }
+    }
+
+    private void UpdateRecentCharacters()
+    {
+        RecentCharacters = new ObservableCollection<string>(_recentCharactersService.RecentCharacters);
     }
 
     partial void OnSearchQueryChanged(string value)
@@ -190,7 +230,18 @@ public partial class MainViewModel : ObservableObject
     {
         if (SelectedCharacter == null) return;
 
-        CopyCharacter(SelectedCharacter);
+        CopyCharacterInternal(SelectedCharacter.Char, closeWindow: false);
+    }
+
+    /// <summary>
+    /// 선택된 문자를 복사하고 창 닫기
+    /// </summary>
+    [RelayCommand]
+    private void CopyAndClose()
+    {
+        if (SelectedCharacter == null) return;
+
+        CopyCharacterInternal(SelectedCharacter.Char, closeWindow: true);
     }
 
     /// <summary>
@@ -199,9 +250,45 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private void CopyCharacter(UnicodeCharacter character)
     {
-        if (_clipboardService.Copy(character.Char))
+        CopyCharacterInternal(character.Char, closeWindow: Settings.Behavior.CloseOnSelect);
+    }
+
+    /// <summary>
+    /// 최근 사용 문자 복사
+    /// </summary>
+    [RelayCommand]
+    private void CopyRecentCharacter(string character)
+    {
+        CopyCharacterInternal(character, closeWindow: true);
+    }
+
+    /// <summary>
+    /// 인덱스로 최근 사용 문자 복사 (1-9)
+    /// </summary>
+    public void CopyRecentByIndex(int index)
+    {
+        if (index >= 0 && index < RecentCharacters.Count)
         {
-            StatusMessage = $"'{character.Char}' 복사됨";
+            CopyCharacterInternal(RecentCharacters[index], closeWindow: true);
+        }
+    }
+
+    private void CopyCharacterInternal(string character, bool closeWindow)
+    {
+        if (_clipboardService.Copy(character))
+        {
+            StatusMessage = $"'{character}' 복사됨";
+
+            // 최근 사용에 추가
+            _recentCharactersService.AddCharacter(character);
+            _ = _recentCharactersService.SaveAsync();
+
+            CharacterCopied?.Invoke(this, character);
+
+            if (closeWindow)
+            {
+                CloseWindowRequested?.Invoke(this, EventArgs.Empty);
+            }
         }
         else
         {
@@ -217,7 +304,7 @@ public partial class MainViewModel : ObservableObject
     {
         if (FilteredCharacters.Count > 0)
         {
-            CopyCharacter(FilteredCharacters[0]);
+            CopyCharacterInternal(FilteredCharacters[0].Char, closeWindow: true);
         }
     }
 
@@ -308,5 +395,25 @@ public partial class MainViewModel : ObservableObject
     private void ClearSearch()
     {
         SearchQuery = string.Empty;
+    }
+
+    /// <summary>
+    /// 창이 닫힐 때 호출
+    /// </summary>
+    public void OnWindowClosing()
+    {
+        if (Settings.Behavior.ClearSearchOnClose)
+        {
+            SearchQuery = string.Empty;
+        }
+    }
+
+    /// <summary>
+    /// 앱 종료 시 저장
+    /// </summary>
+    public async Task SaveStateAsync()
+    {
+        await _settingsService.SaveAsync();
+        await _recentCharactersService.SaveAsync();
     }
 }

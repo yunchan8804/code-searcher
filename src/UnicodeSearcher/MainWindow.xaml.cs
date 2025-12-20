@@ -1,6 +1,8 @@
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using UnicodeSearcher.Helpers;
 using UnicodeSearcher.Models;
 using UnicodeSearcher.ViewModels;
 
@@ -16,6 +18,9 @@ public partial class MainWindow : Window
     // 그리드에서 한 행에 표시되는 문자 수 (대략적 계산용)
     private int ColumnsPerRow => (int)((CharacterGrid.ActualWidth - 16) / 54); // 48 + 6 margin
 
+    // 포커스 잃을 때 창 숨기기 여부
+    private bool _hideOnDeactivate = true;
+
     public MainWindow()
     {
         InitializeComponent();
@@ -27,6 +32,12 @@ public partial class MainWindow : Window
         SearchTextBox.Focus();
         SearchTextBox.SelectAll();
 
+        // ViewModel 이벤트 구독
+        if (DataContext is MainViewModel viewModel)
+        {
+            viewModel.CloseWindowRequested += OnCloseWindowRequested;
+        }
+
         // 데이터 로드
         await ViewModel.InitializeAsync();
 
@@ -34,12 +45,62 @@ public partial class MainWindow : Window
         SelectFirstCategory();
     }
 
+    private void OnCloseWindowRequested(object? sender, EventArgs e)
+    {
+        HideWindow();
+    }
+
+    /// <summary>
+    /// 창 표시
+    /// </summary>
+    public void ShowWindow(bool positionNearCursor = true)
+    {
+        _hideOnDeactivate = true;
+
+        if (positionNearCursor)
+        {
+            WindowHelper.PositionNearCursor(this);
+        }
+
+        WindowHelper.ActivateWindow(this);
+
+        // 검색창 포커스 및 전체 선택
+        SearchTextBox.Focus();
+        SearchTextBox.SelectAll();
+    }
+
+    /// <summary>
+    /// 창 숨기기
+    /// </summary>
+    public void HideWindow()
+    {
+        _hideOnDeactivate = false;
+        ViewModel.OnWindowClosing();
+        Hide();
+    }
+
+    private void Window_Deactivated(object sender, EventArgs e)
+    {
+        // 포커스 잃으면 창 숨기기 (설정에 따라)
+        if (_hideOnDeactivate && IsVisible)
+        {
+            HideWindow();
+        }
+    }
+
+    private void Window_Closing(object sender, CancelEventArgs e)
+    {
+        // 창 닫기 대신 숨기기 (시스템 트레이에서 계속 실행)
+        e.Cancel = true;
+        HideWindow();
+    }
+
     private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
     {
         // ESC: 창 닫기
         if (e.Key == Key.Escape)
         {
-            Close();
+            HideWindow();
             e.Handled = true;
             return;
         }
@@ -61,6 +122,34 @@ public partial class MainWindow : Window
             }
         }
 
+        // 숫자키: 최근 사용 문자 (검색어 비었을 때)
+        if (string.IsNullOrEmpty(ViewModel.SearchQuery))
+        {
+            if (e.Key >= Key.D1 && e.Key <= Key.D9)
+            {
+                int index = e.Key - Key.D1;
+                ViewModel.CopyRecentByIndex(index);
+                e.Handled = true;
+                return;
+            }
+        }
+
+        // Ctrl+숫자키: N번째 검색 결과
+        if (Keyboard.Modifiers == ModifierKeys.Control)
+        {
+            if (e.Key >= Key.D1 && e.Key <= Key.D9)
+            {
+                int index = e.Key - Key.D1;
+                if (index < ViewModel.FilteredCharacters.Count)
+                {
+                    ViewModel.SelectedIndex = index;
+                    ViewModel.CopyAndCloseCommand.Execute(null);
+                }
+                e.Handled = true;
+                return;
+            }
+        }
+
         // 검색창에 포커스가 있을 때
         if (SearchTextBox.IsFocused)
         {
@@ -77,7 +166,7 @@ public partial class MainWindow : Window
         switch (e.Key)
         {
             case Key.Enter:
-                // 첫 번째 결과 복사
+                // 첫 번째 결과 복사 + 닫기
                 if (ViewModel.FilteredCharacters.Count > 0)
                 {
                     ViewModel.CopyFirstResultCommand.Execute(null);
@@ -141,12 +230,13 @@ public partial class MainWindow : Window
                 break;
 
             case Key.Enter:
-                ViewModel.CopySelectedCharacterCommand.Execute(null);
+                // 복사 + 창 닫기
+                ViewModel.CopyAndCloseCommand.Execute(null);
                 e.Handled = true;
                 break;
 
             case Key.Space:
-                // Space: 복사 (창 유지)
+                // Space: 복사 (창 유지) - 여러 개 복사 시 유용
                 ViewModel.CopySelectedCharacterCommand.Execute(null);
                 e.Handled = true;
                 break;
@@ -158,6 +248,18 @@ public partial class MainWindow : Window
 
             case Key.End:
                 ViewModel.MoveToLast();
+                e.Handled = true;
+                break;
+
+            case Key.PageUp:
+                // 한 페이지 위로 (대략 5행)
+                ViewModel.MoveSelection(0, -5, columns);
+                e.Handled = true;
+                break;
+
+            case Key.PageDown:
+                // 한 페이지 아래로 (대략 5행)
+                ViewModel.MoveSelection(0, 5, columns);
                 e.Handled = true;
                 break;
 

@@ -11,8 +11,12 @@
         MaxHeight="700" MaxWidth="900"
         WindowStartupLocation="CenterScreen"
         Background="#FAFAFA"
+        ShowInTaskbar="True"
+        Topmost="True"
         PreviewKeyDown="Window_PreviewKeyDown"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        Deactivated="Window_Deactivated"
+        Closing="Window_Closing">
 
     <Window.Resources>
         <!-- 문자 아이템 스타일 -->
@@ -29,6 +33,16 @@
                     <Setter Property="BorderBrush" Value="#2196F3"/>
                 </Trigger>
             </Style.Triggers>
+        </Style>
+
+        <!-- 선택된 문자 아이템 스타일 -->
+        <Style x:Key="SelectedCharacterItemStyle" TargetType="Border">
+            <Setter Property="Background" Value="#BBDEFB"/>
+            <Setter Property="BorderBrush" Value="#1976D2"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Cursor" Value="Hand"/>
         </Style>
 
         <!-- 카테고리 버튼 스타일 -->
@@ -57,10 +71,44 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- 최근 사용 문자 버튼 스타일 -->
+        <Style x:Key="RecentCharacterStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FFF3E0"/>
+            <Setter Property="BorderBrush" Value="#FFB74D"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFE0B2"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF9800"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFCC80"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -77,7 +125,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0"
-                           Text="🔍"
+                           Text="&#x1F50D;"
                            FontSize="18"
                            VerticalAlignment="Center"
                            Margin="0,0,10,0"/>
@@ -98,7 +146,7 @@
                                         <Setter.Value>
                                             <VisualBrush AlignmentX="Left" AlignmentY="Center" Stretch="None">
                                                 <VisualBrush.Visual>
-                                                    <Label Content="검색어를 입력하세요..." Foreground="Gray" Padding="8,0,0,0"/>
+                                                    <Label Content="검색어를 입력하세요... (Ctrl+Alt+Space)" Foreground="Gray" Padding="8,0,0,0"/>
                                                 </VisualBrush.Visual>
                                             </VisualBrush>
                                         </Setter.Value>
@@ -118,8 +166,44 @@
             </Grid>
         </Border>
 
+        <!-- 최근 사용 문자 -->
+        <Border Grid.Row="1" Background="#FFFAF0" Padding="8,6" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1"
+                Visibility="{Binding RecentCharacters.Count, Converter={StaticResource CountToVisibilityConverter}, FallbackValue=Collapsed}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           Text="&#x23F1; 최근:"
+                           FontSize="12"
+                           Foreground="#666"
+                           VerticalAlignment="Center"
+                           Margin="0,0,8,0"/>
+
+                <ItemsControl Grid.Column="1" ItemsSource="{Binding RecentCharacters}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Style="{StaticResource RecentCharacterStyle}"
+                                    Content="{Binding}"
+                                    FontSize="16"
+                                    Command="{Binding DataContext.CopyRecentCharacterCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}"
+                                    ToolTip="클릭하여 복사"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </Border>
+
         <!-- 카테고리 탭 -->
-        <Border Grid.Row="1" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+        <Border Grid.Row="2" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                 <ItemsControl x:Name="CategoryTabs"
                               ItemsSource="{Binding Categories}">
@@ -147,13 +231,14 @@
         </Border>
 
         <!-- 문자 그리드 -->
-        <Border Grid.Row="2" Background="White">
+        <Border Grid.Row="3" Background="White">
             <ScrollViewer x:Name="CharacterScrollViewer"
                           VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Disabled">
                 <ItemsControl x:Name="CharacterGrid"
                               ItemsSource="{Binding FilteredCharacters}"
-                              Padding="8">
+                              Padding="8"
+                              Focusable="True">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal"/>
@@ -179,7 +264,7 @@
         </Border>
 
         <!-- 상태 바 -->
-        <Border Grid.Row="3" Background="#F5F5F5" Padding="12,8" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0">
+        <Border Grid.Row="4" Background="#F5F5F5" Padding="12,8" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -213,8 +298,8 @@
 
                 <!-- 복사 버튼 -->
                 <Button Grid.Column="2"
-                        Content="복사"
-                        Command="{Binding CopySelectedCharacterCommand}"
+                        Content="복사 (Enter)"
+                        Command="{Binding CopyAndCloseCommand}"
                         Padding="16,6"
                         Background="#2196F3"
                         Foreground="White"
@@ -252,7 +337,7 @@
         </Border>
 
         <!-- 로딩 오버레이 -->
-        <Border Grid.RowSpan="4"
+        <Border Grid.RowSpan="5"
                 Background="#80FFFFFF"
                 Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
