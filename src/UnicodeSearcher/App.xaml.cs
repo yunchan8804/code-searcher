@@ -25,6 +25,28 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
+        // 전역 예외 핸들러
+        DispatcherUnhandledException += (s, args) =>
+        {
+            Console.WriteLine($"[UI 오류] {args.Exception.Message}");
+            Console.WriteLine(args.Exception.StackTrace);
+            args.Handled = true;
+        };
+
+        AppDomain.CurrentDomain.UnhandledException += (s, args) =>
+        {
+            var ex = args.ExceptionObject as Exception;
+            Console.WriteLine($"[전역 오류] {ex?.Message}");
+            Console.WriteLine(ex?.StackTrace);
+        };
+
+        TaskScheduler.UnobservedTaskException += (s, args) =>
+        {
+            Console.WriteLine($"[Task 오류] {args.Exception.Message}");
+            Console.WriteLine(args.Exception.StackTrace);
+            args.SetObserved();
+        };
+
         // 서비스 생성
         var characterDataService = new CharacterDataService();
         var searchService = new SearchService();

@@ -1,7 +1,7 @@
+using System.Runtime.InteropServices;
 using H.Hooks;
 using WpfKey = System.Windows.Input.Key;
 using WpfModifierKeys = System.Windows.Input.ModifierKeys;
-using WpfKeyboard = System.Windows.Input.Keyboard;
 
 namespace UnicodeSearcher.Services;
 
@@ -15,6 +15,16 @@ public class HotkeyService : IHotkeyService
     private WpfKey _key = WpfKey.Space;
     private bool _isRegistered;
     private bool _disposed;
+
+    // Win32 API로 키 상태 확인 (스레드 안전)
+    [DllImport("user32.dll")]
+    private static extern short GetAsyncKeyState(int vKey);
+
+    private const int VK_CONTROL = 0x11;
+    private const int VK_MENU = 0x12;    // Alt
+    private const int VK_SHIFT = 0x10;
+    private const int VK_LWIN = 0x5B;
+    private const int VK_RWIN = 0x5C;
 
     public event EventHandler? HotkeyPressed;
 
@@ -30,7 +40,7 @@ public class HotkeyService : IHotkeyService
     {
         if (!_isRegistered) return;
 
-        // 현재 눌린 모디파이어 키 확인
+        // 현재 눌린 모디파이어 키 확인 (Win32 API 사용)
         var currentModifiers = GetCurrentModifiers();
 
         // H.Hooks Key를 WPF Key로 변환
@@ -53,16 +63,17 @@ public class HotkeyService : IHotkeyService
     {
         var modifiers = WpfModifierKeys.None;
 
-        if (WpfKeyboard.IsKeyDown(WpfKey.LeftCtrl) || WpfKeyboard.IsKeyDown(WpfKey.RightCtrl))
+        // GetAsyncKeyState: 최상위 비트가 1이면 키가 눌린 상태
+        if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0)
             modifiers |= WpfModifierKeys.Control;
 
-        if (WpfKeyboard.IsKeyDown(WpfKey.LeftAlt) || WpfKeyboard.IsKeyDown(WpfKey.RightAlt))
+        if ((GetAsyncKeyState(VK_MENU) & 0x8000) != 0)
             modifiers |= WpfModifierKeys.Alt;
 
-        if (WpfKeyboard.IsKeyDown(WpfKey.LeftShift) || WpfKeyboard.IsKeyDown(WpfKey.RightShift))
+        if ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0)
             modifiers |= WpfModifierKeys.Shift;
 
-        if (WpfKeyboard.IsKeyDown(WpfKey.LWin) || WpfKeyboard.IsKeyDown(WpfKey.RWin))
+        if ((GetAsyncKeyState(VK_LWIN) & 0x8000) != 0 || (GetAsyncKeyState(VK_RWIN) & 0x8000) != 0)
             modifiers |= WpfModifierKeys.Windows;
 
         return modifiers;
