@@ -538,6 +538,27 @@ dotnet add package Emoji.Wpf
 - 현대 PC에서 이모지 수천 개 렌더링은 문제 없음
 - 필요시 가상화 리스트 적용으로 최적화 가능
 
+### 배포 및 릴리즈
+
+#### 현재 방식
+- **zip 배포**: single-file self-contained exe를 zip으로 묶어 GitHub Releases에 업로드
+- **git tag**: `v1.0.0` 형식의 semantic versioning
+
+#### 향후 개선 계획
+- [ ] **GitHub Actions 자동화**: tag push 시 자동 빌드 → Release 생성 → zip 업로드
+- [ ] **MSIX 패키징**: Windows 10+ 네이티브 설치 경험
+  - 자체 서명 (self-signed certificate)으로 사이드로드 배포
+  - 자동 업데이트 지원
+  - 깔끔한 설치/제거 (샌드박스)
+- [ ] **Microsoft Store 배포** (선택): 개발자 계정 필요 ($19 일회성)
+
+#### 배포 방식 비교
+| 방식 | 장점 | 단점 |
+|------|------|------|
+| zip + exe | 심플, 설치 불필요 | 자동 업데이트 없음 |
+| MSIX 사이드로드 | 자동 업데이트, 깔끔한 설치 | 설정 복잡 |
+| Microsoft Store | 검색 노출, 신뢰성 | 개발자 계정 비용 |
+
 ### 기타 미래 기능
 - [ ] 클라우드 동기화 (즐겨찾기, 설정)
 - [ ] 플러그인 시스템 (사용자 정의 문자셋)
