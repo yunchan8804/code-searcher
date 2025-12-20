@@ -50,10 +50,23 @@ public class HotkeySettings
             if (Modifiers.Contains("Win")) result |= ModifierKeys.Windows;
             return result;
         }
+        set
+        {
+            var parts = new List<string>();
+            if (value.HasFlag(ModifierKeys.Control)) parts.Add("Ctrl");
+            if (value.HasFlag(ModifierKeys.Alt)) parts.Add("Alt");
+            if (value.HasFlag(ModifierKeys.Shift)) parts.Add("Shift");
+            if (value.HasFlag(ModifierKeys.Windows)) parts.Add("Win");
+            Modifiers = string.Join("+", parts);
+        }
     }
 
     [JsonIgnore]
-    public Key KeyValue => Enum.TryParse<Key>(Key, out var key) ? key : System.Windows.Input.Key.Space;
+    public Key KeyValue
+    {
+        get => Enum.TryParse<Key>(Key, out var key) ? key : System.Windows.Input.Key.Space;
+        set => Key = value.ToString();
+    }
 }
 
 /// <summary>
@@ -90,6 +103,12 @@ public class BehaviorSettings
     /// </summary>
     [JsonPropertyName("maxRecentCharacters")]
     public int MaxRecentCharacters { get; set; } = 20;
+
+    /// <summary>
+    /// 작업 표시줄에 표시
+    /// </summary>
+    [JsonPropertyName("showInTaskbar")]
+    public bool ShowInTaskbar { get; set; } = false;
 }
 
 /// <summary>

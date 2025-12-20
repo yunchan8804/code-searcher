@@ -88,6 +88,10 @@ public partial class App : Application
         openMenuItem.Click += (_, _) => ShowMainWindow();
         contextMenu.Items.Add(openMenuItem);
 
+        var settingsMenuItem = new System.Windows.Controls.MenuItem { Header = "설정..." };
+        settingsMenuItem.Click += (_, _) => ShowSettingsWindow();
+        contextMenu.Items.Add(settingsMenuItem);
+
         contextMenu.Items.Add(new System.Windows.Controls.Separator());
 
         var exitMenuItem = new System.Windows.Controls.MenuItem { Header = "종료" };
@@ -156,6 +160,40 @@ public partial class App : Application
 
         WindowHelper.SaveActiveWindow();
         _mainWindow.ShowWindow(positionNearCursor: false);
+    }
+
+    private void ShowSettingsWindow()
+    {
+        if (_settingsService == null || _themeService == null) return;
+
+        var settingsViewModel = new ViewModels.SettingsViewModel(_settingsService, _themeService);
+        var settingsWindow = new SettingsWindow
+        {
+            DataContext = settingsViewModel,
+            Owner = _mainWindow
+        };
+
+        var result = settingsWindow.ShowDialog();
+
+        if (result == true)
+        {
+            // 핫키 재등록
+            ReregisterHotkey();
+        }
+    }
+
+    private void ReregisterHotkey()
+    {
+        if (_hotkeyService == null || _settingsService == null) return;
+
+        // 기존 핫키 해제 및 새 핫키 등록
+        _hotkeyService.Stop();
+
+        var modifiers = _settingsService.Settings.Hotkey.ModifierKeys;
+        var key = _settingsService.Settings.Hotkey.KeyValue;
+
+        _hotkeyService.RegisterHotkey(modifiers, key);
+        _hotkeyService.Start();
     }
 
     private async void ExitApplication()
