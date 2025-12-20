@@ -101,20 +101,14 @@ public partial class App : Application
 
     private void SetupTrayIcon()
     {
+        // 앱 아이콘 로드
+        var iconUri = new Uri("pack://application:,,,/Resources/Icons/app.ico", UriKind.Absolute);
+
         _trayIcon = new TaskbarIcon
         {
+            IconSource = new System.Windows.Media.Imaging.BitmapImage(iconUri),
             ToolTipText = "유니코드 검색기 (Ctrl+Alt+Space)",
             Visibility = Visibility.Visible
-        };
-
-        // 텍스트 기반 아이콘 생성 (실제 아이콘 대신)
-        var iconText = new System.Windows.Controls.TextBlock
-        {
-            Text = "★",
-            FontSize = 14,
-            Foreground = System.Windows.Media.Brushes.Black,
-            HorizontalAlignment = HorizontalAlignment.Center,
-            VerticalAlignment = VerticalAlignment.Center
         };
 
         // 컨텍스트 메뉴 생성

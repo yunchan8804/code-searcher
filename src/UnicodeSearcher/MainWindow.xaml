@@ -6,6 +6,7 @@
         xmlns:vm="clr-namespace:UnicodeSearcher.ViewModels"
         mc:Ignorable="d"
         Title="유니코드 검색기"
+        Icon="Resources/Icons/app.ico"
         Height="500" Width="550"
         MinHeight="350" MinWidth="400"
         MaxHeight="700" MaxWidth="900"

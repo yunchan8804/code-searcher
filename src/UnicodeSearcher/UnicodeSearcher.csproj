@@ -17,6 +17,9 @@
     <Product>유니코드 검색기</Product>
     <Copyright>Copyright 2024</Copyright>
 
+    <!-- 앱 아이콘 -->
+    <ApplicationIcon>Resources\Icons\app.ico</ApplicationIcon>
+
     <!-- 배포 설정 -->
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>false</SelfContained>
@@ -37,6 +40,7 @@
   <ItemGroup>
     <Resource Include="Resources\Themes\LightTheme.xaml" />
     <Resource Include="Resources\Themes\DarkTheme.xaml" />
+    <Resource Include="Resources\Icons\app.ico" />
   </ItemGroup>
 
 </Project>

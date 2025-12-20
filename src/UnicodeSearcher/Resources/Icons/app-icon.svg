@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- 배경: 둥근 사각형 -->
+  <rect x="8" y="8" width="240" height="240" rx="48" ry="48" fill="#7C4DFF"/>
+
+  <!-- 별: 5각 별 (중앙에서 살짝 좌상단) -->
+  <polygon
+    points="118,45 138,95 192,95 148,130 168,182 118,150 68,182 88,130 44,95 98,95"
+    fill="#FFFFFF"
+  />
+
+  <!-- 돋보기: 원형 렌즈 -->
+  <circle
+    cx="185"
+    cy="175"
+    r="28"
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="8"
+    opacity="0.9"
+  />
+
+  <!-- 돋보기: 손잡이 -->
+  <line
+    x1="205"
+    y1="197"
+    x2="230"
+    y2="222"
+    stroke="#FFFFFF"
+    stroke-width="8"
+    stroke-linecap="round"
+    opacity="0.9"
+  />
+</svg>

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <!-- 돋보기 영역을 제외하는 클립 마스크 -->
+    <mask id="starMask">
+      <rect width="256" height="256" fill="white"/>
+      <!-- 돋보기가 들어갈 원형 영역을 잘라냄 (더 작게) -->
+      <circle cx="190" cy="180" r="42" fill="black"/>
+    </mask>
+  </defs>
+
+  <!-- 배경: 둥근 사각형 -->
+  <rect x="8" y="8" width="240" height="240" rx="48" ry="48" fill="#7C4DFF"/>
+
+  <!-- 별: 마스크 적용하여 우하단 부분 제외 -->
+  <polygon
+    points="118,40 140,100 200,100 152,138 172,195 118,158 64,195 84,138 36,100 96,100"
+    fill="#FFFFFF"
+    mask="url(#starMask)"
+  />
+
+  <!-- 돋보기: 원형 렌즈 -->
+  <circle
+    cx="190"
+    cy="180"
+    r="30"
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="8"
+  />
+
+  <!-- 돋보기: 손잡이 -->
+  <line
+    x1="212"
+    y1="202"
+    x2="238"
+    y2="228"
+    stroke="#FFFFFF"
+    stroke-width="8"
+    stroke-linecap="round"
+  />
+</svg>
