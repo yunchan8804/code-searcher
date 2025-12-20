@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="설정"
-        Height="450" Width="400"
+        Height="520" Width="400"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         Background="#FAFAFA"
@@ -13,6 +13,7 @@
 
     <Grid Margin="20">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -83,8 +84,20 @@
             </StackPanel>
         </GroupBox>
 
+        <!-- 시작 설정 -->
+        <GroupBox Grid.Row="3" Header="시작" Padding="12" Margin="0,0,0,12">
+            <StackPanel>
+                <CheckBox Content="Windows 시작 시 자동 실행"
+                          IsChecked="{Binding RunAtStartup}"
+                          Margin="0,0,0,8"/>
+                <CheckBox Content="시작 시 트레이로 최소화"
+                          IsChecked="{Binding StartMinimized}"
+                          IsEnabled="{Binding RunAtStartup}"/>
+            </StackPanel>
+        </GroupBox>
+
         <!-- 버튼 -->
-        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="기본값"
                     Command="{Binding ResetToDefaultsCommand}"
                     Padding="16,8"

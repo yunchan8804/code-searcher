@@ -13,6 +13,7 @@ public partial class SettingsViewModel : ObservableObject
 {
     private readonly ISettingsService _settingsService;
     private readonly IThemeService _themeService;
+    private readonly IStartupService _startupService;
 
     [ObservableProperty]
     private string _selectedTheme = "System";
@@ -35,6 +36,12 @@ public partial class SettingsViewModel : ObservableObject
     [ObservableProperty]
     private Key _hotkeyKey = Key.Space;
 
+    [ObservableProperty]
+    private bool _runAtStartup = false;
+
+    [ObservableProperty]
+    private bool _startMinimized = true;
+
     /// <summary>
     /// 저장 완료 이벤트
     /// </summary>
@@ -45,10 +52,11 @@ public partial class SettingsViewModel : ObservableObject
     /// </summary>
     public event EventHandler? Cancelled;
 
-    public SettingsViewModel(ISettingsService settingsService, IThemeService themeService)
+    public SettingsViewModel(ISettingsService settingsService, IThemeService themeService, IStartupService startupService)
     {
         _settingsService = settingsService;
         _themeService = themeService;
+        _startupService = startupService;
 
         LoadSettings();
     }
@@ -69,6 +77,10 @@ public partial class SettingsViewModel : ObservableObject
         HotkeyModifiers = settings.Hotkey.ModifierKeys;
         HotkeyKey = settings.Hotkey.KeyValue;
         UpdateHotkeyDisplay();
+
+        // 시작 설정
+        RunAtStartup = settings.Startup.RunAtStartup;
+        StartMinimized = settings.Startup.StartMinimized;
     }
 
     private void UpdateHotkeyDisplay()
@@ -119,8 +131,22 @@ public partial class SettingsViewModel : ObservableObject
         settings.Hotkey.ModifierKeys = HotkeyModifiers;
         settings.Hotkey.KeyValue = HotkeyKey;
 
+        // 시작 설정
+        settings.Startup.RunAtStartup = RunAtStartup;
+        settings.Startup.StartMinimized = StartMinimized;
+
         // 저장
         await _settingsService.SaveAsync();
+
+        // 자동 시작 설정 적용
+        if (RunAtStartup)
+        {
+            _startupService.Register(StartMinimized);
+        }
+        else
+        {
+            _startupService.Unregister();
+        }
 
         // 테마 적용
         var themeMode = SelectedTheme switch
@@ -156,5 +182,7 @@ public partial class SettingsViewModel : ObservableObject
         HotkeyModifiers = ModifierKeys.Control | ModifierKeys.Alt;
         HotkeyKey = Key.Space;
         UpdateHotkeyDisplay();
+        RunAtStartup = false;
+        StartMinimized = true;
     }
 }

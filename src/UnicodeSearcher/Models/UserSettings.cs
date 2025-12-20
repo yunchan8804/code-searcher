@@ -25,6 +25,12 @@ public class UserSettings
     /// </summary>
     [JsonPropertyName("appearance")]
     public AppearanceSettings Appearance { get; set; } = new();
+
+    /// <summary>
+    /// 시작 설정
+    /// </summary>
+    [JsonPropertyName("startup")]
+    public StartupSettings Startup { get; set; } = new();
 }
 
 /// <summary>
@@ -133,4 +139,22 @@ public class AppearanceSettings
     /// </summary>
     [JsonPropertyName("theme")]
     public string Theme { get; set; } = "light";
+}
+
+/// <summary>
+/// 시작 설정
+/// </summary>
+public class StartupSettings
+{
+    /// <summary>
+    /// Windows 시작 시 자동 실행
+    /// </summary>
+    [JsonPropertyName("runAtStartup")]
+    public bool RunAtStartup { get; set; } = false;
+
+    /// <summary>
+    /// 시작 시 최소화 (트레이로)
+    /// </summary>
+    [JsonPropertyName("startMinimized")]
+    public bool StartMinimized { get; set; } = true;
 }

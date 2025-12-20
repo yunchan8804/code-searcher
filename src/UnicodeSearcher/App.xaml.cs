@@ -20,6 +20,7 @@ public partial class App : Application
     private IRecentCharactersService? _recentCharactersService;
     private IFavoriteService? _favoriteService;
     private IThemeService? _themeService;
+    private IStartupService? _startupService;
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -56,6 +57,7 @@ public partial class App : Application
         _favoriteService = new FavoriteService();
         _themeService = new ThemeService();
         _hotkeyService = new HotkeyService();
+        _startupService = new StartupService();
 
         // ViewModel 생성
         _viewModel = new MainViewModel(
@@ -81,8 +83,14 @@ public partial class App : Application
         // 테마 설정 적용
         SetupTheme();
 
-        // 창 표시 (처음에는 표시)
-        _mainWindow.Show();
+        // --minimized 인자 확인
+        var startMinimized = e.Args.Contains("--minimized");
+
+        // 창 표시 (--minimized 인자가 없으면 표시)
+        if (!startMinimized)
+        {
+            _mainWindow.Show();
+        }
     }
 
     private void SetupTrayIcon()
@@ -186,9 +194,9 @@ public partial class App : Application
 
     private void ShowSettingsWindow()
     {
-        if (_settingsService == null || _themeService == null) return;
+        if (_settingsService == null || _themeService == null || _startupService == null) return;
 
-        var settingsViewModel = new ViewModels.SettingsViewModel(_settingsService, _themeService);
+        var settingsViewModel = new ViewModels.SettingsViewModel(_settingsService, _themeService, _startupService);
         var settingsWindow = new SettingsWindow
         {
             DataContext = settingsViewModel,

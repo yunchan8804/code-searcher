@@ -13,8 +13,8 @@ Windows 기본 `Win + .` 이모지 창의 특수문자 검색 기능이 부실�
 |-------|------|--------|
 | Phase 1: MVP | ✅ 완료 | 2024-12-19 |
 | Phase 2: 핵심 기능 | ✅ 완료 | 2024-12-20 |
-| Phase 3: 완성도 | ✅ 완료 | 2024-12-20 |
-| 버그 수정 | ✅ 완료 | 2024-12-20 |
+| Phase 3: 완성도 (v1.0) | ✅ 완료 | 2024-12-20 |
+| Phase 4: UX 개선 (v1.1) | 🚧 진행 중 | - |
 
 ### 최근 버그 수정 (2024-12-20)
 
@@ -24,10 +24,11 @@ Windows 기본 `Win + .` 이모지 창의 특수문자 검색 기능이 부실�
 | 싱글파일 앱에서 경로 오류 (IL3000 경고) | `Assembly.Location`이 싱글파일 앱에서 빈 문자열 반환 | `AppContext.BaseDirectory` 사용 |
 | JSON 파싱 오류 | characters.json 인코딩 손상 | UTF-8 (BOM 없음)으로 재생성 |
 
-### 추가된 테스트 (68개)
+### 추가된 테스트 (76개)
 
 - **HotkeyServiceTests** (10개): 핫키 등록/해제, Start/Stop, Dispose 안전성
 - **CharacterDataServiceTests** (16개): JSON 로딩, UTF-8 인코딩, 카테고리 필터링
+- **StartupServiceTests** (8개): Windows 자동 시작 레지스트리 관리
 - **SearchServiceTests** (11개): 검색 로직
 - **FavoriteServiceTests**: 즐겨찾기 기능
 - **RecentCharactersServiceTests**: 최근 사용 문자

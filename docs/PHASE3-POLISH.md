@@ -87,6 +87,16 @@ var baseDir = AppContext.BaseDirectory;
 - `Categories_ContainsExpectedCategories`
 - `WonSign_IsProperlyEncoded` (UTF-8 수정 검증)
 
+### StartupServiceTests (8개)
+- `IsRegistered_WhenNotRegistered_ReturnsFalse`
+- `Register_CreatesRegistryEntry`
+- `Register_WithMinimized_IncludesMinimizedArgument`
+- `Register_WithoutMinimized_DoesNotIncludeMinimizedArgument`
+- `Unregister_RemovesRegistryEntry`
+- `Unregister_WhenNotRegistered_DoesNotThrow`
+- `CheckRegistration_ReturnsCorrectState`
+- `Register_MultipleTimes_DoesNotThrow`
+
 ---
 
 ## 작업 목록
@@ -487,7 +497,7 @@ docs/
 - [x] 설정 UI 모든 항목 동작
 - [x] 핫키 변경 가능
 - [x] 테마 변경 동작
-- [ ] Windows 자동 시작 동작 (TODO)
+- [x] Windows 자동 시작 동작
 - [x] 110개+ 문자 포함 (20개 카테고리)
 
 ### 성능
@@ -501,7 +511,7 @@ docs/
 - [x] 모든 기능 키보드 접근 가능
 - [x] 다크/라이트 테마 정상
 - [x] 설정 저장/로드 정상
-- [x] Unit Tests 68개 통과
+- [x] Unit Tests 76개 통과
 
 ### 버그 수정
 - [x] STA 스레드 크래시 수정 (GetAsyncKeyState 사용)
@@ -511,7 +521,7 @@ docs/
 ### 배포
 - [x] 단일 exe 파일 생성
 - [x] exe 실행 시 정상 동작
-- [ ] README 완성 (TODO)
+- [x] README 완성
 
 ---
 
