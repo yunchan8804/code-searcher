@@ -22,7 +22,7 @@ public partial class App : Application
     private IThemeService? _themeService;
     private IStartupService? _startupService;
 
-    protected override void OnStartup(StartupEventArgs e)
+    protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
 
@@ -58,6 +58,9 @@ public partial class App : Application
         _themeService = new ThemeService();
         _hotkeyService = new HotkeyService();
         _startupService = new StartupService();
+
+        // 설정 먼저 로드
+        await _settingsService.LoadAsync();
 
         // ViewModel 생성
         _viewModel = new MainViewModel(

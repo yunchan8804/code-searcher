@@ -7,6 +7,9 @@ namespace UnicodeSearcher.Services;
 /// </summary>
 public class ClipboardService : IClipboardService
 {
+    private const int MaxRetries = 3;
+    private const int RetryDelayMs = 50;
+
     public bool Copy(string text)
     {
         if (string.IsNullOrEmpty(text))
@@ -21,7 +24,7 @@ public class ClipboardService : IClipboardService
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Failed to copy to clipboard: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Clipboard failed: {ex.Message}");
             return false;
         }
     }

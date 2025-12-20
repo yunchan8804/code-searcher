@@ -87,21 +87,48 @@ public partial class SettingsWindow : Window
         ViewModel.SetHotkey(modifiers, key);
 
         _isCapturingHotkey = false;
-        HotkeyTextBox.Background = System.Windows.Media.Brushes.WhiteSmoke;
+
+        // 새 핫키 표시 + 성공 피드백
+        HotkeyTextBox.Text = ViewModel.HotkeyDisplay;
+        HotkeyTextBox.Background = System.Windows.Media.Brushes.LightGreen;
+
+        // 1초 후 원래 배경색으로
+        var timer = new System.Windows.Threading.DispatcherTimer
+        {
+            Interval = TimeSpan.FromMilliseconds(1000)
+        };
+        timer.Tick += (_, _) =>
+        {
+            HotkeyTextBox.Background = System.Windows.Media.Brushes.WhiteSmoke;
+            timer.Stop();
+        };
+        timer.Start();
     }
 
     private void HotkeyTextBox_GotFocus(object sender, RoutedEventArgs e)
     {
         _isCapturingHotkey = true;
         HotkeyTextBox.Background = System.Windows.Media.Brushes.LightYellow;
+        // 플레이스홀더 표시 (바인딩 해제 후 직접 설정)
+        var binding = HotkeyTextBox.GetBindingExpression(System.Windows.Controls.TextBox.TextProperty);
         HotkeyTextBox.Text = "키를 입력하세요...";
     }
 
     private void HotkeyTextBox_LostFocus(object sender, RoutedEventArgs e)
     {
-        _isCapturingHotkey = false;
-        HotkeyTextBox.Background = System.Windows.Media.Brushes.WhiteSmoke;
+        if (_isCapturingHotkey)
+        {
+            _isCapturingHotkey = false;
+            HotkeyTextBox.Background = System.Windows.Media.Brushes.WhiteSmoke;
+        }
         // 원래 핫키 표시 복원
-        HotkeyTextBox.GetBindingExpression(System.Windows.Controls.TextBox.TextProperty)?.UpdateTarget();
+        HotkeyTextBox.Text = ViewModel.HotkeyDisplay;
+    }
+
+    private void HotkeyTextBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        // 마우스 클릭 시 포커스 확보
+        HotkeyTextBox.Focus();
+        e.Handled = true;
     }
 }

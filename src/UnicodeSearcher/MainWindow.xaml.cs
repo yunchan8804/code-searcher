@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 using UnicodeSearcher.Helpers;
 using UnicodeSearcher.Models;
 using UnicodeSearcher.ViewModels;
@@ -21,6 +22,9 @@ public partial class MainWindow : Window
     // 포커스 잃을 때 창 숨기기 여부
     private bool _hideOnDeactivate = true;
 
+    // 창 표시 직후 Deactivated 무시용 타이머
+    private DateTime _lastShowTime = DateTime.MinValue;
+
     public MainWindow()
     {
         InitializeComponent();
@@ -36,6 +40,7 @@ public partial class MainWindow : Window
         if (DataContext is MainViewModel viewModel)
         {
             viewModel.CloseWindowRequested += OnCloseWindowRequested;
+            viewModel.PasteRequested += OnPasteRequested;
         }
 
         // 데이터 로드
@@ -50,23 +55,54 @@ public partial class MainWindow : Window
         HideWindow();
     }
 
+    private void OnPasteRequested(object? sender, EventArgs e)
+    {
+        Helpers.DebugLogger.Log("OnPasteRequested START");
+
+        Helpers.DebugLogger.Log("Before HideWindow");
+        HideWindow();
+        Helpers.DebugLogger.Log("After HideWindow");
+
+        // 완전히 백그라운드 스레드에서 실행
+        Task.Run(async () =>
+        {
+            Helpers.DebugLogger.Log("Task.Run START");
+            await Task.Delay(150);
+            Helpers.DebugLogger.Log("Before PasteToActiveWindow");
+            WindowHelper.PasteToActiveWindow();
+            Helpers.DebugLogger.Log("After PasteToActiveWindow");
+        });
+
+        Helpers.DebugLogger.Log("OnPasteRequested END");
+    }
+
     /// <summary>
     /// 창 표시
     /// </summary>
     public void ShowWindow(bool positionNearCursor = true)
     {
         _hideOnDeactivate = true;
+        _lastShowTime = DateTime.Now;
 
         if (positionNearCursor)
         {
             WindowHelper.PositionNearCursor(this);
         }
 
-        WindowHelper.ActivateWindow(this);
+        // 창 표시 및 활성화
+        Show();
+        WindowState = WindowState.Normal;
+        Topmost = true;  // 일시적으로 최상단
+        Activate();
 
-        // 검색창 포커스 및 전체 선택
-        SearchTextBox.Focus();
-        SearchTextBox.SelectAll();
+        // 잠시 후 Topmost 해제 및 포커스 설정
+        Dispatcher.BeginInvoke(() =>
+        {
+            Topmost = true;  // 계속 최상단 유지 (원래 설정)
+            Focus();
+            SearchTextBox.Focus();
+            SearchTextBox.SelectAll();
+        }, DispatcherPriority.Input);
     }
 
     /// <summary>
@@ -74,13 +110,25 @@ public partial class MainWindow : Window
     /// </summary>
     public void HideWindow()
     {
+        Helpers.DebugLogger.Log("HideWindow START");
         _hideOnDeactivate = false;
-        ViewModel.OnWindowClosing();
+        Helpers.DebugLogger.Log("Before Hide()");
         Hide();
+        Helpers.DebugLogger.Log("After Hide()");
+
+        // 창 숨긴 후 백그라운드에서 정리
+        Dispatcher.BeginInvoke(() => ViewModel.OnWindowClosing(), DispatcherPriority.Background);
+        Helpers.DebugLogger.Log("HideWindow END");
     }
 
     private void Window_Deactivated(object sender, EventArgs e)
     {
+        // 창 표시 직후 500ms 동안은 Deactivated 무시
+        if ((DateTime.Now - _lastShowTime).TotalMilliseconds < 500)
+        {
+            return;
+        }
+
         // 포커스 잃으면 창 숨기기 (설정에 따라)
         if (_hideOnDeactivate && IsVisible)
         {
@@ -164,6 +212,13 @@ public partial class MainWindow : Window
             return;
         }
 
+        // 카테고리 탭에 포커스가 있을 때
+        if (CategoryTabs.IsFocused)
+        {
+            HandleCategoryKeyDown(e);
+            return;
+        }
+
         // 그리드 탐색
         HandleGridKeyDown(e);
     }
@@ -173,15 +228,54 @@ public partial class MainWindow : Window
         switch (e.Key)
         {
             case Key.Enter:
-                // 첫 번째 결과 복사 + 닫기
+                // 첫 번째 결과 붙여넣기 + 닫기
                 if (ViewModel.FilteredCharacters.Count > 0)
                 {
-                    ViewModel.CopyFirstResultCommand.Execute(null);
+                    ViewModel.SelectedIndex = 0;
+                    ViewModel.PasteAndCloseCommand.Execute(null);
                 }
                 e.Handled = true;
                 break;
 
             case Key.Down:
+                // 카테고리 탭으로 포커스 이동
+                FocusOnCategory();
+                e.Handled = true;
+                break;
+
+            case Key.Tab:
+                if (Keyboard.Modifiers != ModifierKeys.Shift)
+                {
+                    FocusOnCategory();
+                    e.Handled = true;
+                }
+                break;
+        }
+    }
+
+    private void HandleCategoryKeyDown(KeyEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case Key.Left:
+                ViewModel.PreviousCategoryCommand.Execute(null);
+                e.Handled = true;
+                break;
+
+            case Key.Right:
+                ViewModel.NextCategoryCommand.Execute(null);
+                e.Handled = true;
+                break;
+
+            case Key.Up:
+                // 검색창으로 포커스 이동
+                SearchTextBox.Focus();
+                SearchTextBox.SelectAll();
+                e.Handled = true;
+                break;
+
+            case Key.Down:
+            case Key.Enter:
                 // 그리드로 포커스 이동
                 if (ViewModel.FilteredCharacters.Count > 0)
                 {
@@ -192,13 +286,22 @@ public partial class MainWindow : Window
                 break;
 
             case Key.Tab:
-                if (Keyboard.Modifiers != ModifierKeys.Shift)
+                if (Keyboard.Modifiers == ModifierKeys.Shift)
+                {
+                    SearchTextBox.Focus();
+                }
+                else
                 {
                     FocusOnGrid();
-                    e.Handled = true;
                 }
+                e.Handled = true;
                 break;
         }
+    }
+
+    private void CategoryTabs_KeyDown(object sender, KeyEventArgs e)
+    {
+        HandleCategoryKeyDown(e);
     }
 
     private void HandleGridKeyDown(KeyEventArgs e)
@@ -220,9 +323,8 @@ public partial class MainWindow : Window
             case Key.Up:
                 if (ViewModel.SelectedIndex < columns)
                 {
-                    // 첫 행에서 위로 가면 검색창으로
-                    SearchTextBox.Focus();
-                    SearchTextBox.SelectAll();
+                    // 첫 행에서 위로 가면 카테고리 탭으로
+                    FocusOnCategory();
                 }
                 else
                 {
@@ -237,9 +339,18 @@ public partial class MainWindow : Window
                 break;
 
             case Key.Enter:
-                // 복사 + 창 닫기
-                ViewModel.CopyAndCloseCommand.Execute(null);
+                // 복사 + 이전 창에 붙여넣기 + 창 닫기
+                ViewModel.PasteAndCloseCommand.Execute(null);
                 e.Handled = true;
+                break;
+
+            case Key.C:
+                // Ctrl+C: 복사만 (창 유지)
+                if (Keyboard.Modifiers == ModifierKeys.Control)
+                {
+                    ViewModel.CopySelectedCharacterCommand.Execute(null);
+                    e.Handled = true;
+                }
                 break;
 
             case Key.Space:
@@ -314,6 +425,12 @@ public partial class MainWindow : Window
         CharacterGrid.Focus();
     }
 
+    private void FocusOnCategory()
+    {
+        // 카테고리 탭에 포커스
+        CategoryTabs.Focus();
+    }
+
     private void SelectFirstCategory()
     {
         // 첫 번째 카테고리 버튼 선택
@@ -339,23 +456,13 @@ public partial class MainWindow : Window
         }
     }
 
-    private void CharacterItem_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private void CharacterGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (sender is Border border && border.Tag is UnicodeCharacter character)
+        // 선택된 아이템이 보이도록 스크롤
+        if (CharacterGrid.SelectedItem != null)
         {
-            ViewModel.SelectedCharacter = character;
-
-            // 더블클릭 처리
-            if (e.ClickCount == 2)
-            {
-                ViewModel.CopyCharacterCommand.Execute(character);
-            }
+            CharacterGrid.ScrollIntoView(CharacterGrid.SelectedItem);
         }
-    }
-
-    private void CharacterItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-    {
-        // 싱글클릭: 선택만 (복사는 더블클릭 또는 버튼/Enter로)
     }
 
     private static T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject

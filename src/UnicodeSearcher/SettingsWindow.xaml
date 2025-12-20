@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="설정"
-        Height="520" Width="400"
+        Height="580" Width="400"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         Background="#FAFAFA"
@@ -64,9 +64,12 @@
                              Grid.Column="0"
                              Text="{Binding HotkeyDisplay, Mode=OneWay}"
                              IsReadOnly="True"
+                             IsReadOnlyCaretVisible="True"
+                             Focusable="True"
                              Padding="8,6"
                              Background="#F0F0F0"
                              PreviewKeyDown="HotkeyTextBox_PreviewKeyDown"
+                             PreviewMouseDown="HotkeyTextBox_PreviewMouseDown"
                              GotFocus="HotkeyTextBox_GotFocus"
                              LostFocus="HotkeyTextBox_LostFocus"/>
 
@@ -112,7 +115,8 @@
                     Background="#F5F5F5"
                     BorderBrush="#E0E0E0"/>
 
-            <Button Content="저장"
+            <Button x:Name="SaveButton"
+                    Content="저장"
                     Command="{Binding SaveCommand}"
                     Padding="16,8"
                     Background="#2196F3"

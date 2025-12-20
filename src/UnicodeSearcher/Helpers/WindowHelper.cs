@@ -16,6 +16,13 @@ public static class WindowHelper
     private static extern bool SetForegroundWindow(IntPtr hWnd);
 
     [DllImport("user32.dll")]
+    private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
+
+    private const byte VK_CONTROL = 0x11;
+    private const byte VK_V = 0x56;
+    private const uint KEYEVENTF_KEYUP = 0x0002;
+
+    [DllImport("user32.dll")]
     private static extern bool GetCursorPos(out POINT lpPoint);
 
     [DllImport("user32.dll")]
@@ -70,6 +77,30 @@ public static class WindowHelper
         {
             SetForegroundWindow(_lastActiveWindow);
         }
+    }
+
+    /// <summary>
+    /// 이전 활성 창에 붙여넣기 (Ctrl+V)
+    /// </summary>
+    public static void PasteToActiveWindow()
+    {
+        DebugLogger.Log($"PasteToActiveWindow START, handle={_lastActiveWindow}");
+
+        if (_lastActiveWindow == IntPtr.Zero)
+        {
+            DebugLogger.Log("PasteToActiveWindow SKIP - no window");
+            return;
+        }
+
+        DebugLogger.Log("Before SetForegroundWindow");
+        SetForegroundWindow(_lastActiveWindow);
+        DebugLogger.Log("After SetForegroundWindow");
+
+        DebugLogger.Log("Before SendKeys.SendWait");
+        System.Windows.Forms.SendKeys.SendWait("^v");
+        DebugLogger.Log("After SendKeys.SendWait");
+
+        DebugLogger.Log("PasteToActiveWindow END");
     }
 
     /// <summary>

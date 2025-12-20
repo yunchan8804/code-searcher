@@ -276,7 +276,9 @@
         <Border Grid.Row="3" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                 <ItemsControl x:Name="CategoryTabs"
-                              ItemsSource="{Binding Categories}">
+                              ItemsSource="{Binding Categories}"
+                              Focusable="True"
+                              KeyDown="CategoryTabs_KeyDown">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal"/>
@@ -305,31 +307,63 @@
             <ScrollViewer x:Name="CharacterScrollViewer"
                           VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Disabled">
-                <ItemsControl x:Name="CharacterGrid"
-                              ItemsSource="{Binding FilteredCharacters}"
-                              Padding="8"
-                              Focusable="True">
-                    <ItemsControl.ItemsPanel>
+                <ListBox x:Name="CharacterGrid"
+                         ItemsSource="{Binding FilteredCharacters}"
+                         SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+                         SelectedItem="{Binding SelectedCharacter, Mode=TwoWay}"
+                         Padding="8"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         SelectionChanged="CharacterGrid_SelectionChanged">
+                    <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border x:Name="border"
+                                                Background="White"
+                                                BorderBrush="#E0E0E0"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                Margin="3"
+                                                Width="48" Height="48"
+                                                Cursor="Hand">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#E3F2FD"/>
+                                                <Setter TargetName="border" Property="BorderBrush" Value="#2196F3"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#BBDEFB"/>
+                                                <Setter TargetName="border" Property="BorderBrush" Value="#1976D2"/>
+                                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border Style="{StaticResource CharacterItemStyle}"
-                                    Width="48" Height="48"
-                                    MouseLeftButtonDown="CharacterItem_MouseLeftButtonDown"
-                                    MouseLeftButtonUp="CharacterItem_MouseLeftButtonUp"
-                                    Tag="{Binding}">
-                                <TextBlock Text="{Binding Char}"
-                                           FontSize="24"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           ToolTip="{Binding Name}"/>
-                            </Border>
+                            <TextBlock Text="{Binding Char}"
+                                       FontSize="24"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       ToolTip="{Binding Name}"/>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </ScrollViewer>
         </Border>
 
@@ -407,10 +441,10 @@
                     </Button.Style>
                 </Button>
 
-                <!-- 복사 버튼 -->
+                <!-- 입력 버튼 -->
                 <Button Grid.Column="3"
-                        Content="복사 (Enter)"
-                        Command="{Binding CopyAndCloseCommand}"
+                        Content="입력 (Enter)"
+                        Command="{Binding PasteAndCloseCommand}"
                         Padding="16,6"
                         Background="#2196F3"
                         Foreground="White"
