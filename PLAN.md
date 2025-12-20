@@ -31,11 +31,14 @@ Windows 기본 `Win + .` 이모지 창의 특수문자 검색 기능이 부실�
 | 앱 아이콘 추가 | ★+🔍 컨셉, 다중 해상도 ICO (16~256px) |
 | 가상화 적용 | VirtualizingWrapPanel로 1300개 문자 렌더링 최적화 |
 | 핫키 포커스 수정 | SetForegroundWindow API로 창 활성화 문제 해결 |
+| 즐겨찾기 배지 | 그리드 아이템 우측 상단에 금색 ★ 배지 표시 |
+| 핫키 라이브러리 교체 | H.Hooks → NHotkey.Wpf (RegisterHotKey API로 키 완전 소비) |
 
-### 최근 버그 수정 (2024-12-20)
+### 최근 버그 수정 (2024-12-21)
 
 | 문제 | 원인 | 해결 방법 |
 |------|------|-----------|
+| 핫키 호출 시 문자 입력됨 | H.Hooks의 low-level hook이 키를 완전히 소비하지 못함 | NHotkey.Wpf로 교체 (RegisterHotKey API 사용) |
 | 검색 시 앱 크래시 (STA 스레드 오류) | `Keyboard.IsKeyDown()` 이 H.Hooks 백그라운드 스레드에서 호출됨 | Win32 `GetAsyncKeyState` API로 교체 (스레드 안전) |
 | 싱글파일 앱에서 경로 오류 (IL3000 경고) | `Assembly.Location`이 싱글파일 앱에서 빈 문자열 반환 | `AppContext.BaseDirectory` 사용 |
 | JSON 파싱 오류 | characters.json 인코딩 손상 | UTF-8 (BOM 없음)으로 재생성 |

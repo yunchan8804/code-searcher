@@ -1,30 +1,23 @@
-using System.Runtime.InteropServices;
-using H.Hooks;
+using NHotkey;
+using NHotkey.Wpf;
 using WpfKey = System.Windows.Input.Key;
 using WpfModifierKeys = System.Windows.Input.ModifierKeys;
 
 namespace UnicodeSearcher.Services;
 
 /// <summary>
-/// 글로벌 핫키 서비스 구현
+/// 글로벌 핫키 서비스 구현 (NHotkey 사용)
+/// RegisterHotKey Win32 API를 사용하여 키 입력을 완전히 소비함
 /// </summary>
 public class HotkeyService : IHotkeyService
 {
-    private readonly LowLevelKeyboardHook _hook;
+    private const string HotkeyName = "UnicodeSearcher_GlobalHotkey";
+
     private WpfModifierKeys _modifiers = WpfModifierKeys.Control | WpfModifierKeys.Alt;
     private WpfKey _key = WpfKey.Space;
     private bool _isRegistered;
+    private bool _isStarted;
     private bool _disposed;
-
-    // Win32 API로 키 상태 확인 (스레드 안전)
-    [DllImport("user32.dll")]
-    private static extern short GetAsyncKeyState(int vKey);
-
-    private const int VK_CONTROL = 0x11;
-    private const int VK_MENU = 0x12;    // Alt
-    private const int VK_SHIFT = 0x10;
-    private const int VK_LWIN = 0x5B;
-    private const int VK_RWIN = 0x5C;
 
     public event EventHandler? HotkeyPressed;
 
@@ -32,59 +25,33 @@ public class HotkeyService : IHotkeyService
 
     public HotkeyService()
     {
-        _hook = new LowLevelKeyboardHook();
-        _hook.Down += OnKeyDown;
     }
 
-    private void OnKeyDown(object? sender, KeyboardEventArgs e)
+    private void OnHotkeyPressed(object? sender, HotkeyEventArgs e)
     {
-        if (!_isRegistered) return;
-
-        // 현재 눌린 모디파이어 키 확인 (Win32 API 사용)
-        var currentModifiers = GetCurrentModifiers();
-
-        // H.Hooks Key를 WPF Key로 변환
-        var virtualKeyCode = (int)e.CurrentKey;
-        var currentKey = System.Windows.Input.KeyInterop.KeyFromVirtualKey(virtualKeyCode);
-
-        if (currentModifiers == _modifiers && currentKey == _key)
-        {
-            e.IsHandled = true;
-
-            // UI 스레드에서 이벤트 발생
-            System.Windows.Application.Current?.Dispatcher.InvokeAsync(() =>
-            {
-                HotkeyPressed?.Invoke(this, EventArgs.Empty);
-            });
-        }
-    }
-
-    private static WpfModifierKeys GetCurrentModifiers()
-    {
-        var modifiers = WpfModifierKeys.None;
-
-        // GetAsyncKeyState: 최상위 비트가 1이면 키가 눌린 상태
-        if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0)
-            modifiers |= WpfModifierKeys.Control;
-
-        if ((GetAsyncKeyState(VK_MENU) & 0x8000) != 0)
-            modifiers |= WpfModifierKeys.Alt;
-
-        if ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0)
-            modifiers |= WpfModifierKeys.Shift;
-
-        if ((GetAsyncKeyState(VK_LWIN) & 0x8000) != 0 || (GetAsyncKeyState(VK_RWIN) & 0x8000) != 0)
-            modifiers |= WpfModifierKeys.Windows;
-
-        return modifiers;
+        e.Handled = true;
+        HotkeyPressed?.Invoke(this, EventArgs.Empty);
     }
 
     public bool RegisterHotkey(WpfModifierKeys modifiers, WpfKey key)
     {
         try
         {
+            // 기존 핫키 제거
+            if (_isRegistered)
+            {
+                UnregisterHotkey();
+            }
+
             _modifiers = modifiers;
             _key = key;
+
+            // 이미 시작된 상태면 바로 등록
+            if (_isStarted)
+            {
+                HotkeyManager.Current.AddOrReplace(HotkeyName, _key, _modifiers, OnHotkeyPressed);
+            }
+
             _isRegistered = true;
             return true;
         }
@@ -97,22 +64,50 @@ public class HotkeyService : IHotkeyService
 
     public void UnregisterHotkey()
     {
+        try
+        {
+            HotkeyManager.Current.Remove(HotkeyName);
+        }
+        catch
+        {
+            // 핫키가 등록되지 않은 경우 무시
+        }
         _isRegistered = false;
     }
 
     public void Start()
     {
-        if (!_hook.IsStarted)
+        if (_isStarted) return;
+
+        _isStarted = true;
+
+        // 등록된 핫키가 있으면 활성화
+        if (_isRegistered)
         {
-            _hook.Start();
+            try
+            {
+                HotkeyManager.Current.AddOrReplace(HotkeyName, _key, _modifiers, OnHotkeyPressed);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to start hotkey: {ex.Message}");
+            }
         }
     }
 
     public void Stop()
     {
-        if (_hook.IsStarted)
+        if (!_isStarted) return;
+
+        _isStarted = false;
+
+        try
         {
-            _hook.Stop();
+            HotkeyManager.Current.Remove(HotkeyName);
+        }
+        catch
+        {
+            // 무시
         }
     }
 
@@ -122,7 +117,6 @@ public class HotkeyService : IHotkeyService
 
         Stop();
         UnregisterHotkey();
-        _hook.Dispose();
         _disposed = true;
 
         GC.SuppressFinalize(this);

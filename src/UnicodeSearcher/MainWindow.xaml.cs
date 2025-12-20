@@ -163,8 +163,8 @@ public partial class MainWindow : Window
         WindowState = WindowState.Normal;
         Topmost = true;
 
-        // 핫키 이벤트가 완전히 처리될 때까지 약간 대기
-        await Task.Delay(50);
+        // 핫키 이벤트가 완전히 처리될 때까지 대기 (KeyUp 포함)
+        await Task.Delay(100);
 
         // Win32 API로 강제 포커스
         var hwnd = new WindowInteropHelper(this).Handle;
@@ -176,8 +176,10 @@ public partial class MainWindow : Window
 
         Activate();
         Focus();
+
+        // 검색창 초기화 (핫키 문자 제거)
+        ViewModel.SearchQuery = string.Empty;
         SearchTextBox.Focus();
-        SearchTextBox.SelectAll();
         HighlightSection("search");
     }
 

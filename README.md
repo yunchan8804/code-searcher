@@ -1,8 +1,9 @@
 # Unicode Searcher (유니코드 검색기)
 
-[![Version](https://img.shields.io/badge/version-1.2-blue.svg)](https://github.com/username/UnicodeSearcher/releases)
+[![Version](https://img.shields.io/badge/version-1.2-blue.svg)](https://github.com/yunchan8804/code-searcher/releases)
 [![.NET](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Build](https://github.com/yunchan8804/code-searcher/actions/workflows/build.yml/badge.svg)](https://github.com/yunchan8804/code-searcher/actions)
 
 Windows용 유니코드 특수문자 검색 및 복사 도구입니다.
 
@@ -90,8 +91,8 @@ Windows용 유니코드 특수문자 검색 및 복사 도구입니다.
 ### 빌드하기
 ```bash
 # .NET 8 SDK 필요
-git clone https://github.com/username/UnicodeSearcher.git
-cd UnicodeSearcher
+git clone https://github.com/yunchan8804/code-searcher.git
+cd code-searcher
 dotnet build
 dotnet run --project src/UnicodeSearcher
 ```
