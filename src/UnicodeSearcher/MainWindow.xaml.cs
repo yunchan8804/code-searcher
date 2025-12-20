@@ -630,8 +630,7 @@ public partial class MainWindow : Window
     {
         // 모든 섹션 기본 배경으로 초기화
         SearchSection.Background = (System.Windows.Media.Brush)FindResource("SurfaceBrush");
-        RecentSection.Background = (System.Windows.Media.Brush)FindResource("RecentBackgroundBrush");
-        FavoriteSection.Background = (System.Windows.Media.Brush)FindResource("FavoriteBackgroundBrush");
+        RecentFavoriteSection.Background = (System.Windows.Media.Brush)FindResource("SurfaceBrush");
         CategorySection.Background = (System.Windows.Media.Brush)FindResource("SurfaceBrush");
         GridSection.Background = (System.Windows.Media.Brush)FindResource("SurfaceBrush");
 
@@ -642,10 +641,8 @@ public partial class MainWindow : Window
                 SearchSection.Background = (System.Windows.Media.Brush)FindResource("FocusedSectionBrush");
                 break;
             case "recent":
-                RecentSection.Background = (System.Windows.Media.Brush)FindResource("RecentFocusedBrush");
-                break;
             case "favorite":
-                FavoriteSection.Background = (System.Windows.Media.Brush)FindResource("FavoriteFocusedBrush");
+                RecentFavoriteSection.Background = (System.Windows.Media.Brush)FindResource("FocusedSectionBrush");
                 break;
             case "category":
                 CategorySection.Background = (System.Windows.Media.Brush)FindResource("FocusedSectionBrush");

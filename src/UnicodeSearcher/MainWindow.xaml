@@ -67,7 +67,7 @@
                                 Background="Transparent"
                                 BorderBrush="Transparent"
                                 BorderThickness="0,0,0,2"
-                                Padding="12,8"
+                                Padding="8,4"
                                 Cursor="Hand">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
@@ -99,8 +99,8 @@
             <Setter Property="BorderBrush" Value="{DynamicResource FavoriteBorderBrush}"/>
             <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="8,4"/>
-            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Padding" Value="5,2"/>
+            <Setter Property="Margin" Value="1"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -135,8 +135,8 @@
             <Setter Property="BorderBrush" Value="{DynamicResource RecentBorderBrush}"/>
             <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="8,4"/>
-            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Padding" Value="5,2"/>
+            <Setter Property="Margin" Value="1"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -230,7 +230,6 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
@@ -267,7 +266,7 @@
             </Border>
 
             <!-- 검색창 -->
-            <Border x:Name="SearchSection" Grid.Row="1" Background="{DynamicResource SurfaceBrush}" Padding="12" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+            <Border x:Name="SearchSection" Grid.Row="1" Background="{DynamicResource SurfaceBrush}" Padding="8,4" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -278,16 +277,16 @@
                 <Path Grid.Column="0"
                       Data="M9.5,3 C13.09,3 16,5.91 16,9.5 C16,11.11 15.41,12.59 14.44,13.73 L14.71,14 L15.5,14 L20.5,19 L19,20.5 L14,15.5 L14,14.71 L13.73,14.44 C12.59,15.41 11.11,16 9.5,16 C5.91,16 3,13.09 3,9.5 C3,5.91 5.91,3 9.5,3 M9.5,5 C7,5 5,7 5,9.5 C5,12 7,14 9.5,14 C12,14 14,12 14,9.5 C14,7 12,5 9.5,5 Z"
                       Fill="{DynamicResource SecondaryForegroundBrush}"
-                      Width="18" Height="18"
+                      Width="16" Height="16"
                       Stretch="Uniform"
                       VerticalAlignment="Center"
-                      Margin="0,0,10,0"/>
+                      Margin="0,0,8,0"/>
 
                 <TextBox x:Name="SearchTextBox"
                          Grid.Column="1"
                          Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
-                         FontSize="16"
-                         Padding="8,6"
+                         FontSize="14"
+                         Padding="4,2"
                          BorderThickness="0"
                          VerticalAlignment="Center"
                          Background="Transparent"
@@ -301,7 +300,7 @@
                                         <Setter.Value>
                                             <VisualBrush AlignmentX="Left" AlignmentY="Center" Stretch="None">
                                                 <VisualBrush.Visual>
-                                                    <Label Content="검색어를 입력하세요... (Ctrl+Alt+Space)" Foreground="{DynamicResource SecondaryForegroundBrush}" Padding="8,0,0,0"/>
+                                                    <Label Content="검색어 입력..." Foreground="{DynamicResource SecondaryForegroundBrush}" Padding="4,0,0,0" FontSize="13"/>
                                                 </VisualBrush.Visual>
                                             </VisualBrush>
                                         </Setter.Value>
@@ -314,99 +313,88 @@
 
                 <TextBlock Grid.Column="2"
                            Text="{Binding FilteredCount, StringFormat={}{0}개}"
-                           FontSize="12"
+                           FontSize="11"
                            Foreground="{DynamicResource SecondaryForegroundBrush}"
                            VerticalAlignment="Center"
-                           Margin="10,0,0,0"/>
+                           Margin="8,0,0,0"/>
             </Grid>
         </Border>
 
-        <!-- 최근 사용 문자 -->
-        <Border x:Name="RecentSection" Grid.Row="2" Background="{DynamicResource RecentBackgroundBrush}" Padding="8,6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
-                Visibility="{Binding RecentCharacters.Count, Converter={StaticResource CountToVisibilityConverter}, FallbackValue=Collapsed}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+        <!-- 최근 사용 + 즐겨찾기 (통합) -->
+        <Border x:Name="RecentFavoriteSection" Grid.Row="2" Background="{DynamicResource SurfaceBrush}" Padding="6,3" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal">
+                <!-- 최근 사용 -->
+                <StackPanel x:Name="RecentSection" Orientation="Horizontal"
+                            Visibility="{Binding RecentCharacters.Count, Converter={StaticResource CountToVisibilityConverter}, FallbackValue=Collapsed}">
+                    <TextBlock Text="⏱"
+                               FontSize="11"
+                               Foreground="{DynamicResource SecondaryForegroundBrush}"
+                               VerticalAlignment="Center"
+                               Margin="0,0,4,0"/>
+                    <ListBox x:Name="RecentList"
+                             ItemsSource="{Binding RecentCharacters}"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             Padding="0"
+                             ItemContainerStyle="{StaticResource RecentCharacterItemStyle}"
+                             KeyDown="RecentList_KeyDown"
+                             MouseDoubleClick="RecentList_MouseDoubleClick">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}"
+                                           FontSize="14"
+                                           Foreground="{DynamicResource ForegroundBrush}"
+                                           ToolTip="Enter로 복사 (1-9 숫자키)"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
 
-                <TextBlock Grid.Column="0"
-                           Text="&#x23F1; 최근:"
-                           FontSize="12"
-                           Foreground="{DynamicResource SecondaryForegroundBrush}"
-                           VerticalAlignment="Center"
-                           Margin="0,0,8,0"/>
+                <!-- 구분선 -->
+                <Border Width="1" Background="{DynamicResource BorderBrush}" Margin="8,2"
+                        Visibility="{Binding RecentCharacters.Count, Converter={StaticResource CountToVisibilityConverter}, FallbackValue=Collapsed}"/>
 
-                <ListBox x:Name="RecentList"
-                         Grid.Column="1"
-                         ItemsSource="{Binding RecentCharacters}"
-                         Background="Transparent"
-                         BorderThickness="0"
-                         Padding="0"
-                         ItemContainerStyle="{StaticResource RecentCharacterItemStyle}"
-                         KeyDown="RecentList_KeyDown"
-                         MouseDoubleClick="RecentList_MouseDoubleClick">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}"
-                                       FontSize="16"
-                                       Foreground="{DynamicResource ForegroundBrush}"
-                                       ToolTip="Enter로 복사 (1-9 숫자키)"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Grid>
-        </Border>
-
-        <!-- 즐겨찾기 문자 -->
-        <Border x:Name="FavoriteSection" Grid.Row="3" Background="{DynamicResource FavoriteBackgroundBrush}" Padding="8,6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
-                Visibility="{Binding FavoriteCharacters.Count, Converter={StaticResource CountToVisibilityConverter}, FallbackValue=Collapsed}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0"
-                           Text="⭐ 즐겨찾기:"
-                           FontSize="12"
-                           Foreground="{DynamicResource SecondaryForegroundBrush}"
-                           VerticalAlignment="Center"
-                           Margin="0,0,8,0"/>
-
-                <ListBox x:Name="FavoriteList"
-                         Grid.Column="1"
-                         ItemsSource="{Binding FavoriteCharacters}"
-                         Background="Transparent"
-                         BorderThickness="0"
-                         Padding="0"
-                         ItemContainerStyle="{StaticResource FavoriteCharacterItemStyle}"
-                         KeyDown="FavoriteList_KeyDown"
-                         MouseDoubleClick="FavoriteList_MouseDoubleClick">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}"
-                                       FontSize="16"
-                                       Foreground="{DynamicResource ForegroundBrush}"
-                                       ToolTip="Enter로 복사"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Grid>
+                <!-- 즐겨찾기 -->
+                <StackPanel x:Name="FavoriteSection" Orientation="Horizontal"
+                            Visibility="{Binding FavoriteCharacters.Count, Converter={StaticResource CountToVisibilityConverter}, FallbackValue=Collapsed}">
+                    <TextBlock Text="⭐"
+                               FontSize="11"
+                               Foreground="{DynamicResource SecondaryForegroundBrush}"
+                               VerticalAlignment="Center"
+                               Margin="0,0,4,0"/>
+                    <ListBox x:Name="FavoriteList"
+                             ItemsSource="{Binding FavoriteCharacters}"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             Padding="0"
+                             ItemContainerStyle="{StaticResource FavoriteCharacterItemStyle}"
+                             KeyDown="FavoriteList_KeyDown"
+                             MouseDoubleClick="FavoriteList_MouseDoubleClick">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}"
+                                           FontSize="14"
+                                           Foreground="{DynamicResource ForegroundBrush}"
+                                           ToolTip="Enter로 복사"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </StackPanel>
         </Border>
 
         <!-- 카테고리 탭 -->
-        <Border x:Name="CategorySection" Grid.Row="4" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+        <Border x:Name="CategorySection" Grid.Row="3" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
             <ScrollViewer x:Name="CategoryScrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" PreviewMouseWheel="CategoryScrollViewer_PreviewMouseWheel">
                 <ItemsControl x:Name="CategoryTabs"
                               ItemsSource="{Binding Categories}"
@@ -430,8 +418,8 @@
                                     </MultiBinding>
                                 </RadioButton.IsChecked>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Icon}" FontSize="14" Margin="0,0,4,0"/>
-                                    <TextBlock Text="{Binding NameKo}" FontSize="13"/>
+                                    <TextBlock Text="{Binding Icon}" FontSize="12" Margin="0,0,3,0"/>
+                                    <TextBlock Text="{Binding NameKo}" FontSize="11"/>
                                 </StackPanel>
                             </RadioButton>
                         </DataTemplate>
@@ -441,7 +429,7 @@
         </Border>
 
         <!-- 문자 그리드 -->
-        <Border x:Name="GridSection" Grid.Row="5" Background="{DynamicResource SurfaceBrush}">
+        <Border x:Name="GridSection" Grid.Row="4" Background="{DynamicResource SurfaceBrush}">
             <ScrollViewer x:Name="CharacterScrollViewer"
                           VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Disabled"
@@ -508,7 +496,7 @@
         </Border>
 
         <!-- 상태 바 -->
-        <Border Grid.Row="6" Background="{DynamicResource StatusBarBrush}" Padding="12,8" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0"
+        <Border Grid.Row="5" Background="{DynamicResource StatusBarBrush}" Padding="8,4" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0"
                 CornerRadius="0,0,7,7">
             <Grid>
                 <Grid.ColumnDefinitions>
