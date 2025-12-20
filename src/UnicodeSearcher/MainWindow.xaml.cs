@@ -246,6 +246,13 @@ public partial class MainWindow : Window
                 e.Handled = true;
                 return;
             }
+            if (e.Key == Key.OemComma)
+            {
+                // Ctrl+,: 설정 창 열기
+                OpenSettings();
+                e.Handled = true;
+                return;
+            }
         }
 
         // 숫자키: 최근 사용 문자 (검색어 비었을 때)
@@ -753,6 +760,26 @@ public partial class MainWindow : Window
     private void CloseButton_Click(object sender, RoutedEventArgs e)
     {
         HideWindow();
+    }
+
+    private void SettingsButton_Click(object sender, RoutedEventArgs e)
+    {
+        OpenSettings();
+    }
+
+    private void OpenSettings()
+    {
+        // 설정 창 열기 동안 Deactivated 무시
+        _hideOnDeactivate = false;
+
+        if (Application.Current is App app)
+        {
+            app.ShowSettingsWindow();
+        }
+
+        // 설정 창 닫힌 후 다시 활성화
+        _hideOnDeactivate = true;
+        _lastShowTime = DateTime.Now; // Deactivated 무시 타이머 재설정
     }
 
     private void CharacterGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)

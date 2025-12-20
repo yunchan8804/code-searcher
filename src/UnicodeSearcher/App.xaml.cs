@@ -198,7 +198,7 @@ public partial class App : Application
         _mainWindow.ShowWindow(positionNearCursor: false);
     }
 
-    private void ShowSettingsWindow()
+    public void ShowSettingsWindow()
     {
         if (_settingsService == null || _themeService == null || _startupService == null) return;
 
