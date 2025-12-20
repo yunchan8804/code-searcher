@@ -264,7 +264,7 @@
             </Grid>
 
             <!-- 검색창 -->
-            <Border Grid.Row="1" Background="{DynamicResource SurfaceBrush}" Padding="12" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+            <Border x:Name="SearchSection" Grid.Row="1" Background="{DynamicResource SurfaceBrush}" Padding="12" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -285,7 +285,9 @@
                          Padding="8,6"
                          BorderThickness="0"
                          VerticalAlignment="Center"
-                         Background="Transparent">
+                         Background="Transparent"
+                         Foreground="{DynamicResource ForegroundBrush}"
+                         CaretBrush="{DynamicResource ForegroundBrush}">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Style.Triggers>
@@ -315,7 +317,7 @@
         </Border>
 
         <!-- 최근 사용 문자 -->
-        <Border Grid.Row="2" Background="{DynamicResource RecentBackgroundBrush}" Padding="8,6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
+        <Border x:Name="RecentSection" Grid.Row="2" Background="{DynamicResource RecentBackgroundBrush}" Padding="8,6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
                 Visibility="{Binding RecentCharacters.Count, Converter={StaticResource CountToVisibilityConverter}, FallbackValue=Collapsed}">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -348,6 +350,7 @@
                         <DataTemplate>
                             <TextBlock Text="{Binding}"
                                        FontSize="16"
+                                       Foreground="{DynamicResource ForegroundBrush}"
                                        ToolTip="Enter로 복사 (1-9 숫자키)"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -356,7 +359,7 @@
         </Border>
 
         <!-- 즐겨찾기 문자 -->
-        <Border Grid.Row="3" Background="{DynamicResource FavoriteBackgroundBrush}" Padding="8,6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
+        <Border x:Name="FavoriteSection" Grid.Row="3" Background="{DynamicResource FavoriteBackgroundBrush}" Padding="8,6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
                 Visibility="{Binding FavoriteCharacters.Count, Converter={StaticResource CountToVisibilityConverter}, FallbackValue=Collapsed}">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -389,6 +392,7 @@
                         <DataTemplate>
                             <TextBlock Text="{Binding}"
                                        FontSize="16"
+                                       Foreground="{DynamicResource ForegroundBrush}"
                                        ToolTip="Enter로 복사"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -397,8 +401,8 @@
         </Border>
 
         <!-- 카테고리 탭 -->
-        <Border Grid.Row="4" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
-            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+        <Border x:Name="CategorySection" Grid.Row="4" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+            <ScrollViewer x:Name="CategoryScrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" PreviewMouseWheel="CategoryScrollViewer_PreviewMouseWheel">
                 <ItemsControl x:Name="CategoryTabs"
                               ItemsSource="{Binding Categories}"
                               Focusable="True"
@@ -432,10 +436,11 @@
         </Border>
 
         <!-- 문자 그리드 -->
-        <Border Grid.Row="5" Background="{DynamicResource SurfaceBrush}">
+        <Border x:Name="GridSection" Grid.Row="5" Background="{DynamicResource SurfaceBrush}">
             <ScrollViewer x:Name="CharacterScrollViewer"
                           VerticalScrollBarVisibility="Auto"
-                          HorizontalScrollBarVisibility="Disabled">
+                          HorizontalScrollBarVisibility="Disabled"
+                          PreviewMouseWheel="CharacterScrollViewer_PreviewMouseWheel">
                 <ListBox x:Name="CharacterGrid"
                          ItemsSource="{Binding FilteredCharacters}"
                          SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
@@ -487,6 +492,7 @@
                         <DataTemplate>
                             <TextBlock Text="{Binding Char}"
                                        FontSize="24"
+                                       Foreground="{DynamicResource ForegroundBrush}"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        ToolTip="{Binding Name}"/>
@@ -510,11 +516,13 @@
                 <StackPanel Grid.Column="0" Orientation="Horizontal" Visibility="{Binding SelectedCharacter, Converter={StaticResource NullToVisibilityConverter}, FallbackValue=Collapsed}">
                     <TextBlock Text="{Binding SelectedCharacter.Char}"
                                FontSize="24"
+                               Foreground="{DynamicResource StatusBarForegroundBrush}"
                                VerticalAlignment="Center"
                                Margin="0,0,12,0"/>
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock Text="{Binding SelectedCharacter.Name}"
                                    FontSize="12"
+                                   Foreground="{DynamicResource StatusBarForegroundBrush}"
                                    FontWeight="SemiBold"/>
                         <TextBlock Text="{Binding SelectedCharacter.Codepoint}"
                                    FontSize="11"
@@ -526,7 +534,7 @@
                 <TextBlock Grid.Column="1"
                            Text="{Binding StatusMessage}"
                            FontSize="12"
-                           Foreground="{DynamicResource SecondaryForegroundBrush}"
+                           Foreground="{DynamicResource StatusBarForegroundBrush}"
                            VerticalAlignment="Center"
                            Margin="12,0"/>
 

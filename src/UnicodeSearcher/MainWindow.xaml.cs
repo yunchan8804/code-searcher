@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using UnicodeSearcher.Helpers;
 using UnicodeSearcher.Models;
@@ -35,6 +36,7 @@ public partial class MainWindow : Window
         // 검색창에 포커스
         SearchTextBox.Focus();
         SearchTextBox.SelectAll();
+        HighlightSection("search");
 
         // ViewModel 이벤트 구독
         if (DataContext is MainViewModel viewModel)
@@ -128,6 +130,7 @@ public partial class MainWindow : Window
             Focus();
             SearchTextBox.Focus();
             SearchTextBox.SelectAll();
+            HighlightSection("search");
         }, DispatcherPriority.Input);
     }
 
@@ -206,6 +209,7 @@ public partial class MainWindow : Window
                 // Ctrl+F: 검색창으로 포커스
                 SearchTextBox.Focus();
                 SearchTextBox.SelectAll();
+                HighlightSection("search");
                 e.Handled = true;
                 return;
             }
@@ -313,11 +317,13 @@ public partial class MainWindow : Window
                 {
                     RecentList.Focus();
                     if (RecentList.SelectedIndex < 0) RecentList.SelectedIndex = 0;
+                    HighlightSection("recent");
                 }
                 else if (FavoriteList.Items.Count > 0 && FavoriteList.IsVisible)
                 {
                     FavoriteList.Focus();
                     if (FavoriteList.SelectedIndex < 0) FavoriteList.SelectedIndex = 0;
+                    HighlightSection("favorite");
                 }
                 else
                 {
@@ -330,6 +336,7 @@ public partial class MainWindow : Window
                 {
                     FavoriteList.Focus();
                     if (FavoriteList.SelectedIndex < 0) FavoriteList.SelectedIndex = 0;
+                    HighlightSection("favorite");
                 }
                 else
                 {
@@ -363,16 +370,19 @@ public partial class MainWindow : Window
                 {
                     FavoriteList.Focus();
                     if (FavoriteList.SelectedIndex < 0) FavoriteList.SelectedIndex = 0;
+                    HighlightSection("favorite");
                 }
                 else if (RecentList.Items.Count > 0 && RecentList.IsVisible)
                 {
                     RecentList.Focus();
                     if (RecentList.SelectedIndex < 0) RecentList.SelectedIndex = 0;
+                    HighlightSection("recent");
                 }
                 else
                 {
                     SearchTextBox.Focus();
                     SearchTextBox.SelectAll();
+                    HighlightSection("search");
                 }
                 break;
 
@@ -381,17 +391,20 @@ public partial class MainWindow : Window
                 {
                     RecentList.Focus();
                     if (RecentList.SelectedIndex < 0) RecentList.SelectedIndex = 0;
+                    HighlightSection("recent");
                 }
                 else
                 {
                     SearchTextBox.Focus();
                     SearchTextBox.SelectAll();
+                    HighlightSection("search");
                 }
                 break;
 
             case "recent":
                 SearchTextBox.Focus();
                 SearchTextBox.SelectAll();
+                HighlightSection("search");
                 break;
         }
     }
@@ -537,6 +550,7 @@ public partial class MainWindow : Window
                 if (IsTypingKey(e.Key))
                 {
                     SearchTextBox.Focus();
+                    HighlightSection("search");
                     // 키 이벤트는 계속 전달되어 검색창에 입력됨
                 }
                 break;
@@ -566,12 +580,47 @@ public partial class MainWindow : Window
     {
         // 그리드 자체에 포커스를 주어 키보드 네비게이션 활성화
         CharacterGrid.Focus();
+        HighlightSection("grid");
     }
 
     private void FocusOnCategory()
     {
         // 카테고리 탭에 포커스
         CategoryTabs.Focus();
+        HighlightSection("category");
+    }
+
+    /// <summary>
+    /// 현재 포커스된 섹션 하이라이트
+    /// </summary>
+    private void HighlightSection(string sectionName)
+    {
+        // 모든 섹션 기본 배경으로 초기화
+        SearchSection.Background = (System.Windows.Media.Brush)FindResource("SurfaceBrush");
+        RecentSection.Background = (System.Windows.Media.Brush)FindResource("RecentBackgroundBrush");
+        FavoriteSection.Background = (System.Windows.Media.Brush)FindResource("FavoriteBackgroundBrush");
+        CategorySection.Background = (System.Windows.Media.Brush)FindResource("SurfaceBrush");
+        GridSection.Background = (System.Windows.Media.Brush)FindResource("SurfaceBrush");
+
+        // 현재 섹션 하이라이트 (배경색 더 진하게)
+        switch (sectionName)
+        {
+            case "search":
+                SearchSection.Background = (System.Windows.Media.Brush)FindResource("FocusedSectionBrush");
+                break;
+            case "recent":
+                RecentSection.Background = (System.Windows.Media.Brush)FindResource("RecentFocusedBrush");
+                break;
+            case "favorite":
+                FavoriteSection.Background = (System.Windows.Media.Brush)FindResource("FavoriteFocusedBrush");
+                break;
+            case "category":
+                CategorySection.Background = (System.Windows.Media.Brush)FindResource("FocusedSectionBrush");
+                break;
+            case "grid":
+                GridSection.Background = (System.Windows.Media.Brush)FindResource("FocusedSectionBrush");
+                break;
+        }
     }
 
     private void SelectFirstCategory()
@@ -682,6 +731,37 @@ public partial class MainWindow : Window
         if (CharacterGrid.SelectedItem != null)
         {
             CharacterGrid.ScrollIntoView(CharacterGrid.SelectedItem);
+        }
+
+        // 그리드에서 선택 변경 시 섹션 하이라이트
+        if (CharacterGrid.IsKeyboardFocusWithin || CharacterGrid.IsFocused)
+        {
+            HighlightSection("grid");
+        }
+    }
+
+    /// <summary>
+    /// 카테고리 스크롤뷰어 마우스 휠 처리 (수평 스크롤)
+    /// </summary>
+    private void CategoryScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    {
+        if (sender is ScrollViewer scrollViewer)
+        {
+            // 수평 스크롤로 변환 (휠 위로 = 왼쪽, 휠 아래로 = 오른쪽)
+            scrollViewer.ScrollToHorizontalOffset(scrollViewer.HorizontalOffset - e.Delta);
+            e.Handled = true;
+        }
+    }
+
+    /// <summary>
+    /// 문자 그리드 스크롤뷰어 마우스 휠 처리
+    /// </summary>
+    private void CharacterScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    {
+        if (sender is ScrollViewer scrollViewer)
+        {
+            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
+            e.Handled = true;
         }
     }
 

@@ -86,6 +86,9 @@ public partial class App : Application
         // 테마 설정 적용
         SetupTheme();
 
+        // 동작 설정 적용
+        ApplyBehaviorSettings();
+
         // --minimized 인자 확인
         var startMinimized = e.Args.Contains("--minimized");
 
@@ -212,6 +215,34 @@ public partial class App : Application
         {
             // 핫키 재등록
             ReregisterHotkey();
+
+            // 동작 설정 적용
+            ApplyBehaviorSettings();
+        }
+    }
+
+    private void ApplyBehaviorSettings()
+    {
+        if (_mainWindow == null || _settingsService == null) return;
+
+        var showInTaskbar = _settingsService.Settings.Behavior.ShowInTaskbar;
+
+        // ShowInTaskbar 변경 시 창을 다시 표시해야 적용됨
+        if (_mainWindow.ShowInTaskbar != showInTaskbar)
+        {
+            var wasVisible = _mainWindow.IsVisible;
+            if (wasVisible)
+            {
+                _mainWindow.Hide();
+            }
+
+            _mainWindow.ShowInTaskbar = showInTaskbar;
+
+            if (wasVisible)
+            {
+                _mainWindow.Show();
+                _mainWindow.Activate();
+            }
         }
     }
 

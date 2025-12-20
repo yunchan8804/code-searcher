@@ -12,12 +12,16 @@
     <Color x:Key="HoverColor">#E3F2FD</Color>
     <Color x:Key="SelectedColor">#BBDEFB</Color>
     <Color x:Key="BorderColor">#E0E0E0</Color>
+    <Color x:Key="FocusedSectionColor">#F0F0F0</Color>
     <Color x:Key="RecentBackgroundColor">#FFFAF0</Color>
+    <Color x:Key="RecentFocusedColor">#FFF0E0</Color>
     <Color x:Key="RecentBorderColor">#FFB74D</Color>
     <Color x:Key="StatusBarColor">#F5F5F5</Color>
+    <Color x:Key="StatusBarForegroundColor">#333333</Color>
 
     <!-- 즐겨찾기 버튼 색상 -->
     <Color x:Key="FavoriteBackgroundColor">#E8F5E9</Color>
+    <Color x:Key="FavoriteFocusedColor">#D0EBD2</Color>
     <Color x:Key="FavoriteBorderColor">#4CAF50</Color>
     <Color x:Key="FavoriteHoverColor">#C8E6C9</Color>
     <Color x:Key="FavoritePressedColor">#A5D6A7</Color>
@@ -49,12 +53,16 @@
     <SolidColorBrush x:Key="HoverBrush" Color="{StaticResource HoverColor}"/>
     <SolidColorBrush x:Key="SelectedBrush" Color="{StaticResource SelectedColor}"/>
     <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}"/>
+    <SolidColorBrush x:Key="FocusedSectionBrush" Color="{StaticResource FocusedSectionColor}"/>
     <SolidColorBrush x:Key="RecentBackgroundBrush" Color="{StaticResource RecentBackgroundColor}"/>
+    <SolidColorBrush x:Key="RecentFocusedBrush" Color="{StaticResource RecentFocusedColor}"/>
     <SolidColorBrush x:Key="RecentBorderBrush" Color="{StaticResource RecentBorderColor}"/>
     <SolidColorBrush x:Key="StatusBarBrush" Color="{StaticResource StatusBarColor}"/>
+    <SolidColorBrush x:Key="StatusBarForegroundBrush" Color="{StaticResource StatusBarForegroundColor}"/>
 
     <!-- 즐겨찾기 버튼 브러시 -->
     <SolidColorBrush x:Key="FavoriteBackgroundBrush" Color="{StaticResource FavoriteBackgroundColor}"/>
+    <SolidColorBrush x:Key="FavoriteFocusedBrush" Color="{StaticResource FavoriteFocusedColor}"/>
     <SolidColorBrush x:Key="FavoriteBorderBrush" Color="{StaticResource FavoriteBorderColor}"/>
     <SolidColorBrush x:Key="FavoriteHoverBrush" Color="{StaticResource FavoriteHoverColor}"/>
     <SolidColorBrush x:Key="FavoritePressedBrush" Color="{StaticResource FavoritePressedColor}"/>

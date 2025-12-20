@@ -5,148 +5,414 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="설정"
-        Height="580" Width="400"
+        Height="650" Width="400"
+        MinHeight="500"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
-        Background="#FAFAFA"
+        Background="{DynamicResource BackgroundBrush}"
+        Foreground="{DynamicResource ForegroundBrush}"
         ShowInTaskbar="False">
 
-    <Grid Margin="20">
+    <Window.Resources>
+        <!-- GroupBox 스타일 -->
+        <Style TargetType="GroupBox">
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GroupBox">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="0"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1,1,1,0"
+                                    Background="{DynamicResource SurfaceBrush}"
+                                    CornerRadius="4,4,0,0">
+                                <TextBlock Text="{TemplateBinding Header}"
+                                           Foreground="{DynamicResource ForegroundBrush}"
+                                           FontWeight="SemiBold"
+                                           Margin="12,8"/>
+                            </Border>
+                            <Border Grid.Row="1"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1,0,1,1"
+                                    Background="{DynamicResource SurfaceBrush}"
+                                    CornerRadius="0,0,4,4"
+                                    Padding="{TemplateBinding Padding}">
+                                <ContentPresenter/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- CheckBox 스타일 -->
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="checkBorder"
+                                    Grid.Column="0"
+                                    Width="18" Height="18"
+                                    Background="{DynamicResource SurfaceBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="3"
+                                    VerticalAlignment="Center">
+                                <Path x:Name="checkMark"
+                                      Data="M 2,5 L 5,8 L 10,2"
+                                      Stroke="{DynamicResource AccentBrush}"
+                                      StrokeThickness="2"
+                                      Visibility="Collapsed"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Center"/>
+                            </Border>
+                            <ContentPresenter Grid.Column="1"
+                                              Margin="8,0,0,0"
+                                              VerticalAlignment="Center"
+                                              RecognizesAccessKey="True"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="checkMark" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="checkBorder" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                                <Setter TargetName="checkMark" Property="Stroke" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="checkBorder" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ComboBox Toggle Button 스타일 -->
+        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="32"/>
+                </Grid.ColumnDefinitions>
+                <Border x:Name="Border"
+                        Grid.ColumnSpan="2"
+                        Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4"/>
+                <Border Grid.Column="1"
+                        Background="Transparent"
+                        Margin="1">
+                    <Path x:Name="Arrow"
+                          Data="M 0,0 L 4,4 L 8,0"
+                          Fill="{DynamicResource ForegroundBrush}"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+                </Border>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <!-- ComboBox TextBox 스타일 -->
+        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
+            <Border x:Name="PART_ContentHost"
+                    Background="Transparent"
+                    Focusable="False"/>
+        </ControlTemplate>
+
+        <!-- ComboBox 스타일 -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton x:Name="ToggleButton"
+                                          Template="{StaticResource ComboBoxToggleButton}"
+                                          Focusable="False"
+                                          IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                          ClickMode="Press"/>
+                            <ContentPresenter x:Name="ContentSite"
+                                              IsHitTestVisible="False"
+                                              Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                              Margin="10,3,28,3"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Left"/>
+                            <Popup x:Name="Popup"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Grid x:Name="DropDown"
+                                      SnapsToDevicePixels="True"
+                                      MinWidth="{TemplateBinding ActualWidth}"
+                                      MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder"
+                                            Background="{DynamicResource SurfaceBrush}"
+                                            BorderBrush="{DynamicResource BorderBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="4"
+                                            Margin="0,2,0,0"/>
+                                    <ScrollViewer Margin="4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ComboBoxItem 스타일 -->
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="Border"
+                                Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}"
+                                CornerRadius="3">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource HoverBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource SelectedBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- TextBox 스타일 -->
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource ForegroundBrush}"/>
+            <Setter Property="SelectionBrush" Value="{DynamicResource AccentBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 일반 버튼 스타일 -->
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource HoverBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource SelectedBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 기본 버튼 스타일 -->
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryButtonForegroundBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource AccentHoverBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource AccentPressedBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- 외관 설정 -->
-        <GroupBox Grid.Row="0" Header="외관" Padding="12" Margin="0,0,0,12">
+        <!-- 스크롤 가능한 설정 영역 -->
+        <ScrollViewer Grid.Row="0"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      Padding="20,20,20,0">
             <StackPanel>
-                <TextBlock Text="테마:" Margin="0,0,0,6"/>
-                <ComboBox x:Name="ThemeComboBox"
-                          SelectedValue="{Binding SelectedTheme}"
-                          SelectedValuePath="Tag"
-                          Padding="8,6">
-                    <ComboBoxItem Content="시스템 설정 따르기" Tag="System"/>
-                    <ComboBoxItem Content="라이트 모드" Tag="Light"/>
-                    <ComboBoxItem Content="다크 모드" Tag="Dark"/>
-                </ComboBox>
+                <!-- 외관 설정 -->
+                <GroupBox Header="외관" Padding="12" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="테마:" Margin="0,0,0,6"/>
+                        <ComboBox x:Name="ThemeComboBox"
+                                  SelectedValue="{Binding SelectedTheme}"
+                                  SelectedValuePath="Tag">
+                            <ComboBoxItem Content="시스템 설정 따르기" Tag="System"/>
+                            <ComboBoxItem Content="라이트 모드" Tag="Light"/>
+                            <ComboBoxItem Content="다크 모드" Tag="Dark"/>
+                        </ComboBox>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- 동작 설정 -->
+                <GroupBox Header="동작" Padding="12" Margin="0,0,0,12">
+                    <StackPanel>
+                        <CheckBox Content="문자 선택 시 창 닫기"
+                                  IsChecked="{Binding CloseOnSelect}"
+                                  Margin="0,0,0,8"/>
+                        <CheckBox Content="창 닫을 때 검색어 초기화"
+                                  IsChecked="{Binding ClearSearchOnClose}"
+                                  Margin="0,0,0,8"/>
+                        <CheckBox Content="작업 표시줄에 표시"
+                                  IsChecked="{Binding ShowInTaskbar}"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- 핫키 설정 -->
+                <GroupBox Header="글로벌 핫키" Padding="12" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="현재 핫키:" Margin="0,0,0,6"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox x:Name="HotkeyTextBox"
+                                     Grid.Column="0"
+                                     Text="{Binding HotkeyDisplay, Mode=OneWay}"
+                                     IsReadOnly="True"
+                                     IsReadOnlyCaretVisible="True"
+                                     Focusable="True"
+                                     Padding="8,6"
+                                     PreviewKeyDown="HotkeyTextBox_PreviewKeyDown"
+                                     PreviewMouseDown="HotkeyTextBox_PreviewMouseDown"
+                                     GotFocus="HotkeyTextBox_GotFocus"
+                                     LostFocus="HotkeyTextBox_LostFocus"/>
+
+                            <TextBlock Grid.Column="1"
+                                       Text="클릭하고 키 입력"
+                                       FontSize="11"
+                                       Foreground="{DynamicResource SecondaryForegroundBrush}"
+                                       VerticalAlignment="Center"
+                                       Margin="8,0,0,0"/>
+                        </Grid>
+                        <TextBlock Text="Ctrl, Alt, Shift 중 하나 이상과 일반 키 조합"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryForegroundBrush}"
+                                   Margin="0,6,0,0"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- 시작 설정 -->
+                <GroupBox Header="시작" Padding="12" Margin="0,0,0,12">
+                    <StackPanel>
+                        <CheckBox Content="Windows 시작 시 자동 실행"
+                                  IsChecked="{Binding RunAtStartup}"
+                                  Margin="0,0,0,8"/>
+                        <CheckBox Content="시작 시 트레이로 최소화"
+                                  IsChecked="{Binding StartMinimized}"
+                                  IsEnabled="{Binding RunAtStartup}"/>
+                    </StackPanel>
+                </GroupBox>
             </StackPanel>
-        </GroupBox>
+        </ScrollViewer>
 
-        <!-- 동작 설정 -->
-        <GroupBox Grid.Row="1" Header="동작" Padding="12" Margin="0,0,0,12">
-            <StackPanel>
-                <CheckBox Content="문자 선택 시 창 닫기"
-                          IsChecked="{Binding CloseOnSelect}"
-                          Margin="0,0,0,8"/>
-                <CheckBox Content="창 닫을 때 검색어 초기화"
-                          IsChecked="{Binding ClearSearchOnClose}"
-                          Margin="0,0,0,8"/>
-                <CheckBox Content="작업 표시줄에 표시"
-                          IsChecked="{Binding ShowInTaskbar}"/>
+        <!-- 하단 고정 버튼 영역 -->
+        <Border Grid.Row="1"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="20,16">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="기본값"
+                        Command="{Binding ResetToDefaultsCommand}"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Padding="16,8"
+                        Margin="0,0,8,0"/>
+
+                <Button Content="취소"
+                        Command="{Binding CancelCommand}"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Padding="16,8"
+                        Margin="0,0,8,0"/>
+
+                <Button x:Name="SaveButton"
+                        Content="저장"
+                        Command="{Binding SaveCommand}"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Padding="16,8"/>
             </StackPanel>
-        </GroupBox>
-
-        <!-- 핫키 설정 -->
-        <GroupBox Grid.Row="2" Header="글로벌 핫키" Padding="12" Margin="0,0,0,12">
-            <StackPanel>
-                <TextBlock Text="현재 핫키:" Margin="0,0,0,6"/>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBox x:Name="HotkeyTextBox"
-                             Grid.Column="0"
-                             Text="{Binding HotkeyDisplay, Mode=OneWay}"
-                             IsReadOnly="True"
-                             IsReadOnlyCaretVisible="True"
-                             Focusable="True"
-                             Padding="8,6"
-                             Background="#F0F0F0"
-                             PreviewKeyDown="HotkeyTextBox_PreviewKeyDown"
-                             PreviewMouseDown="HotkeyTextBox_PreviewMouseDown"
-                             GotFocus="HotkeyTextBox_GotFocus"
-                             LostFocus="HotkeyTextBox_LostFocus"/>
-
-                    <TextBlock Grid.Column="1"
-                               Text="클릭하고 키 입력"
-                               FontSize="11"
-                               Foreground="Gray"
-                               VerticalAlignment="Center"
-                               Margin="8,0,0,0"/>
-                </Grid>
-                <TextBlock Text="Ctrl, Alt, Shift 중 하나 이상과 일반 키 조합"
-                           FontSize="11"
-                           Foreground="Gray"
-                           Margin="0,6,0,0"/>
-            </StackPanel>
-        </GroupBox>
-
-        <!-- 시작 설정 -->
-        <GroupBox Grid.Row="3" Header="시작" Padding="12" Margin="0,0,0,12">
-            <StackPanel>
-                <CheckBox Content="Windows 시작 시 자동 실행"
-                          IsChecked="{Binding RunAtStartup}"
-                          Margin="0,0,0,8"/>
-                <CheckBox Content="시작 시 트레이로 최소화"
-                          IsChecked="{Binding StartMinimized}"
-                          IsEnabled="{Binding RunAtStartup}"/>
-            </StackPanel>
-        </GroupBox>
-
-        <!-- 버튼 -->
-        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="기본값"
-                    Command="{Binding ResetToDefaultsCommand}"
-                    Padding="16,8"
-                    Margin="0,0,8,0"
-                    Background="#F5F5F5"
-                    BorderBrush="#E0E0E0"/>
-
-            <Button Content="취소"
-                    Command="{Binding CancelCommand}"
-                    Padding="16,8"
-                    Margin="0,0,8,0"
-                    Background="#F5F5F5"
-                    BorderBrush="#E0E0E0"/>
-
-            <Button x:Name="SaveButton"
-                    Content="저장"
-                    Command="{Binding SaveCommand}"
-                    Padding="16,8"
-                    Background="#2196F3"
-                    Foreground="White"
-                    BorderThickness="0">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border x:Name="border"
-                                            Background="{TemplateBinding Background}"
-                                            CornerRadius="4"
-                                            Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter TargetName="border" Property="Background" Value="#1976D2"/>
-                                        </Trigger>
-                                        <Trigger Property="IsPressed" Value="True">
-                                            <Setter TargetName="border" Property="Background" Value="#1565C0"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
-            </Button>
-        </StackPanel>
+        </Border>
     </Grid>
 </Window>
