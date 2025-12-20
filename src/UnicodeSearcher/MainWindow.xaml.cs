@@ -41,6 +41,7 @@ public partial class MainWindow : Window
         {
             viewModel.CloseWindowRequested += OnCloseWindowRequested;
             viewModel.PasteRequested += OnPasteRequested;
+            viewModel.PropertyChanged += ViewModel_PropertyChanged;
         }
 
         // 데이터 로드
@@ -53,6 +54,31 @@ public partial class MainWindow : Window
     private void OnCloseWindowRequested(object? sender, EventArgs e)
     {
         HideWindow();
+    }
+
+    private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(MainViewModel.SelectedCategory))
+        {
+            ScrollCategoryIntoView();
+        }
+    }
+
+    private void ScrollCategoryIntoView()
+    {
+        if (ViewModel.SelectedCategory == null) return;
+
+        // 선택된 카테고리의 인덱스 찾기
+        var index = ViewModel.Categories.IndexOf(ViewModel.SelectedCategory);
+        if (index < 0) return;
+
+        // ItemsControl에서 해당 컨테이너 찾기
+        var container = CategoryTabs.ItemContainerGenerator.ContainerFromIndex(index) as ContentPresenter;
+        if (container != null)
+        {
+            // BringIntoView로 스크롤
+            container.BringIntoView();
+        }
     }
 
     private void OnPasteRequested(object? sender, EventArgs e)
@@ -153,7 +179,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        // Ctrl + 방향키: 카테고리 이동, Ctrl+D: 즐겨찾기 토글
+        // Ctrl + 방향키: 카테고리 이동, Ctrl+D: 즐겨찾기 토글, Ctrl+F: 검색창 포커스
         if (Keyboard.Modifiers == ModifierKeys.Control)
         {
             if (e.Key == Key.Left)
@@ -172,6 +198,14 @@ public partial class MainWindow : Window
             {
                 // Ctrl+D: 즐겨찾기 토글
                 ViewModel.ToggleFavoriteCommand.Execute(null);
+                e.Handled = true;
+                return;
+            }
+            if (e.Key == Key.F)
+            {
+                // Ctrl+F: 검색창으로 포커스
+                SearchTextBox.Focus();
+                SearchTextBox.SelectAll();
                 e.Handled = true;
                 return;
             }
@@ -212,6 +246,20 @@ public partial class MainWindow : Window
             return;
         }
 
+        // 최근 사용 문자 리스트에 포커스가 있을 때
+        if (RecentList.IsKeyboardFocusWithin)
+        {
+            HandleQuickListKeyDown(RecentList, e);
+            return;
+        }
+
+        // 즐겨찾기 리스트에 포커스가 있을 때
+        if (FavoriteList.IsKeyboardFocusWithin)
+        {
+            HandleQuickListKeyDown(FavoriteList, e);
+            return;
+        }
+
         // 카테고리 탭에 포커스가 있을 때
         if (CategoryTabs.IsFocused)
         {
@@ -238,17 +286,112 @@ public partial class MainWindow : Window
                 break;
 
             case Key.Down:
-                // 카테고리 탭으로 포커스 이동
-                FocusOnCategory();
+                // 다음 영역으로 이동
+                FocusNextArea("search");
                 e.Handled = true;
                 break;
 
             case Key.Tab:
                 if (Keyboard.Modifiers != ModifierKeys.Shift)
                 {
-                    FocusOnCategory();
+                    FocusNextArea("search");
                     e.Handled = true;
                 }
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 다음 영역으로 포커스 이동 (검색 → 최근 → 즐겨찾기 → 카테고리 → 그리드)
+    /// </summary>
+    private void FocusNextArea(string currentArea)
+    {
+        switch (currentArea)
+        {
+            case "search":
+                if (RecentList.Items.Count > 0 && RecentList.IsVisible)
+                {
+                    RecentList.Focus();
+                    if (RecentList.SelectedIndex < 0) RecentList.SelectedIndex = 0;
+                }
+                else if (FavoriteList.Items.Count > 0 && FavoriteList.IsVisible)
+                {
+                    FavoriteList.Focus();
+                    if (FavoriteList.SelectedIndex < 0) FavoriteList.SelectedIndex = 0;
+                }
+                else
+                {
+                    FocusOnCategory();
+                }
+                break;
+
+            case "recent":
+                if (FavoriteList.Items.Count > 0 && FavoriteList.IsVisible)
+                {
+                    FavoriteList.Focus();
+                    if (FavoriteList.SelectedIndex < 0) FavoriteList.SelectedIndex = 0;
+                }
+                else
+                {
+                    FocusOnCategory();
+                }
+                break;
+
+            case "favorite":
+                FocusOnCategory();
+                break;
+
+            case "category":
+                FocusOnGrid();
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 이전 영역으로 포커스 이동 (그리드 → 카테고리 → 즐겨찾기 → 최근 → 검색)
+    /// </summary>
+    private void FocusPreviousArea(string currentArea)
+    {
+        switch (currentArea)
+        {
+            case "grid":
+                FocusOnCategory();
+                break;
+
+            case "category":
+                if (FavoriteList.Items.Count > 0 && FavoriteList.IsVisible)
+                {
+                    FavoriteList.Focus();
+                    if (FavoriteList.SelectedIndex < 0) FavoriteList.SelectedIndex = 0;
+                }
+                else if (RecentList.Items.Count > 0 && RecentList.IsVisible)
+                {
+                    RecentList.Focus();
+                    if (RecentList.SelectedIndex < 0) RecentList.SelectedIndex = 0;
+                }
+                else
+                {
+                    SearchTextBox.Focus();
+                    SearchTextBox.SelectAll();
+                }
+                break;
+
+            case "favorite":
+                if (RecentList.Items.Count > 0 && RecentList.IsVisible)
+                {
+                    RecentList.Focus();
+                    if (RecentList.SelectedIndex < 0) RecentList.SelectedIndex = 0;
+                }
+                else
+                {
+                    SearchTextBox.Focus();
+                    SearchTextBox.SelectAll();
+                }
+                break;
+
+            case "recent":
+                SearchTextBox.Focus();
+                SearchTextBox.SelectAll();
                 break;
         }
     }
@@ -268,9 +411,8 @@ public partial class MainWindow : Window
                 break;
 
             case Key.Up:
-                // 검색창으로 포커스 이동
-                SearchTextBox.Focus();
-                SearchTextBox.SelectAll();
+                // 이전 영역으로 이동 (즐겨찾기 → 최근 → 검색)
+                FocusPreviousArea("category");
                 e.Handled = true;
                 break;
 
@@ -288,11 +430,11 @@ public partial class MainWindow : Window
             case Key.Tab:
                 if (Keyboard.Modifiers == ModifierKeys.Shift)
                 {
-                    SearchTextBox.Focus();
+                    FocusPreviousArea("category");
                 }
                 else
                 {
-                    FocusOnGrid();
+                    FocusNextArea("category");
                 }
                 e.Handled = true;
                 break;
@@ -384,7 +526,8 @@ public partial class MainWindow : Window
             case Key.Tab:
                 if (Keyboard.Modifiers == ModifierKeys.Shift)
                 {
-                    SearchTextBox.Focus();
+                    // 이전 영역으로 (카테고리)
+                    FocusPreviousArea("grid");
                     e.Handled = true;
                 }
                 break;
@@ -454,6 +597,83 @@ public partial class MainWindow : Window
         {
             ViewModel.SelectedCategory = category;
         }
+    }
+
+    private void RecentList_KeyDown(object sender, KeyEventArgs e)
+    {
+        HandleQuickListKeyDown(RecentList, e);
+    }
+
+    private void RecentList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        if (RecentList.SelectedItem is string character)
+        {
+            ViewModel.CopyRecentCharacterCommand.Execute(character);
+        }
+    }
+
+    private void FavoriteList_KeyDown(object sender, KeyEventArgs e)
+    {
+        HandleQuickListKeyDown(FavoriteList, e);
+    }
+
+    private void FavoriteList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        if (FavoriteList.SelectedItem is string character)
+        {
+            ViewModel.CopyRecentCharacterCommand.Execute(character);
+        }
+    }
+
+    private void HandleQuickListKeyDown(System.Windows.Controls.ListBox listBox, KeyEventArgs e)
+    {
+        var areaName = listBox == RecentList ? "recent" : "favorite";
+
+        switch (e.Key)
+        {
+            case Key.Enter:
+                // 선택된 문자 복사 + 붙여넣기
+                if (listBox.SelectedItem is string character)
+                {
+                    ViewModel.CopyRecentCharacterCommand.Execute(character);
+                }
+                e.Handled = true;
+                break;
+
+            case Key.Up:
+                // 이전 영역으로 이동
+                FocusPreviousArea(areaName);
+                e.Handled = true;
+                break;
+
+            case Key.Down:
+                // 다음 영역으로 이동
+                FocusNextArea(areaName);
+                e.Handled = true;
+                break;
+
+            case Key.Tab:
+                if (Keyboard.Modifiers == ModifierKeys.Shift)
+                {
+                    FocusPreviousArea(areaName);
+                }
+                else
+                {
+                    FocusNextArea(areaName);
+                }
+                e.Handled = true;
+                break;
+        }
+    }
+
+    private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState.Minimized;
+    }
+
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        HideWindow();
     }
 
     private void CharacterGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -5,10 +5,16 @@
              xmlns:converters="clr-namespace:UnicodeSearcher.Converters">
     <Application.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- 스크롤바 스타일 -->
+                <ResourceDictionary Source="Resources/Styles/ScrollBarStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
             <!-- Converters -->
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
             <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
+            <converters:CategorySelectedConverter x:Key="CategorySelectedConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

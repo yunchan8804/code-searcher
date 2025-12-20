@@ -10,35 +10,46 @@
         MinHeight="350" MinWidth="400"
         MaxHeight="700" MaxWidth="900"
         WindowStartupLocation="CenterScreen"
-        Background="#FAFAFA"
+        Background="{DynamicResource BackgroundBrush}"
         ShowInTaskbar="True"
         Topmost="True"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="CanResizeWithGrip"
         PreviewKeyDown="Window_PreviewKeyDown"
         Loaded="Window_Loaded"
         Deactivated="Window_Deactivated"
         Closing="Window_Closing">
 
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="0"
+                      CornerRadius="8"
+                      CaptionHeight="32"
+                      ResizeBorderThickness="4"
+                      UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
+
     <Window.Resources>
         <!-- 문자 아이템 스타일 -->
         <Style x:Key="CharacterItemStyle" TargetType="Border">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="4"/>
             <Setter Property="Margin" Value="3"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#E3F2FD"/>
-                    <Setter Property="BorderBrush" Value="#2196F3"/>
+                    <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
         <!-- 선택된 문자 아이템 스타일 -->
         <Style x:Key="SelectedCharacterItemStyle" TargetType="Border">
-            <Setter Property="Background" Value="#BBDEFB"/>
-            <Setter Property="BorderBrush" Value="#1976D2"/>
+            <Setter Property="Background" Value="{DynamicResource SelectedBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource AccentHoverBrush}"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="CornerRadius" Value="4"/>
             <Setter Property="Margin" Value="3"/>
@@ -47,6 +58,8 @@
 
         <!-- 카테고리 버튼 스타일 -->
         <Style x:Key="CategoryButtonStyle" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+            <Setter Property="Focusable" Value="True"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
@@ -60,11 +73,19 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="border" Property="BorderBrush" Value="#2196F3"/>
-                                <Setter TargetName="border" Property="Background" Value="#E3F2FD"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource HoverBrush}"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#F5F5F5"/>
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource StatusBarBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="0,0,0,3"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="0,0,0,3"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -72,17 +93,18 @@
             </Setter>
         </Style>
 
-        <!-- 즐겨찾기 문자 버튼 스타일 -->
-        <Style x:Key="FavoriteCharacterStyle" TargetType="Button">
-            <Setter Property="Background" Value="#E8F5E9"/>
-            <Setter Property="BorderBrush" Value="#4CAF50"/>
+        <!-- 즐겨찾기 문자 ListBoxItem 스타일 -->
+        <Style x:Key="FavoriteCharacterItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Background" Value="{DynamicResource FavoriteBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource FavoriteBorderBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="8,4"/>
             <Setter Property="Margin" Value="2"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="Button">
+                    <ControlTemplate TargetType="ListBoxItem">
                         <Border x:Name="border"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -93,11 +115,13 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#C8E6C9"/>
-                                <Setter TargetName="border" Property="BorderBrush" Value="#388E3C"/>
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource FavoriteHoverBrush}"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
                             </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#A5D6A7"/>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource FavoriteHoverBrush}"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -105,17 +129,18 @@
             </Setter>
         </Style>
 
-        <!-- 최근 사용 문자 버튼 스타일 -->
-        <Style x:Key="RecentCharacterStyle" TargetType="Button">
-            <Setter Property="Background" Value="#FFF3E0"/>
-            <Setter Property="BorderBrush" Value="#FFB74D"/>
+        <!-- 최근 사용 문자 ListBoxItem 스타일 -->
+        <Style x:Key="RecentCharacterItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Background" Value="{DynamicResource RecentBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource RecentBorderBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="8,4"/>
             <Setter Property="Margin" Value="2"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="Button">
+                    <ControlTemplate TargetType="ListBoxItem">
                         <Border x:Name="border"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -126,11 +151,66 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#FFE0B2"/>
-                                <Setter TargetName="border" Property="BorderBrush" Value="#FF9800"/>
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource RecentHoverBrush}"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource RecentHoverBrush}"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 타이틀바 버튼 스타일 -->
+        <Style x:Key="TitleBarButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundBrush}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource HoverBrush}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#FFCC80"/>
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource SelectedBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 닫기 버튼 스타일 -->
+        <Style x:Key="CloseButtonStyle" TargetType="Button" BasedOn="{StaticResource TitleBarButtonStyle}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="0,8,0,0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#E81123"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#F1707A"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -139,18 +219,52 @@
         </Style>
     </Window.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <!-- 메인 컨테이너 (테두리 포함) -->
+    <Border Background="{DynamicResource BackgroundBrush}"
+            BorderBrush="{DynamicResource BorderBrush}"
+            BorderThickness="1"
+            CornerRadius="8">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- 검색창 -->
-        <Border Grid.Row="0" Background="White" Padding="12" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+            <!-- 커스텀 타이틀 바 -->
+            <Grid Grid.Row="0" Background="{DynamicResource SurfaceBrush}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 타이틀 -->
+                <TextBlock Grid.Column="0"
+                           Text="🔤 유니코드 검색기"
+                           FontSize="12"
+                           Foreground="{DynamicResource ForegroundBrush}"
+                           VerticalAlignment="Center"
+                           Margin="12,0,0,0"/>
+
+                <!-- 타이틀바 버튼들 -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Style="{StaticResource TitleBarButtonStyle}"
+                            Content="─"
+                            Click="MinimizeButton_Click"
+                            ToolTip="최소화"/>
+                    <Button Style="{StaticResource CloseButtonStyle}"
+                            Content="✕"
+                            Click="CloseButton_Click"
+                            ToolTip="닫기 (Esc)"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- 검색창 -->
+            <Border Grid.Row="1" Background="{DynamicResource SurfaceBrush}" Padding="12" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -180,7 +294,7 @@
                                         <Setter.Value>
                                             <VisualBrush AlignmentX="Left" AlignmentY="Center" Stretch="None">
                                                 <VisualBrush.Visual>
-                                                    <Label Content="검색어를 입력하세요... (Ctrl+Alt+Space)" Foreground="Gray" Padding="8,0,0,0"/>
+                                                    <Label Content="검색어를 입력하세요... (Ctrl+Alt+Space)" Foreground="{DynamicResource SecondaryForegroundBrush}" Padding="8,0,0,0"/>
                                                 </VisualBrush.Visual>
                                             </VisualBrush>
                                         </Setter.Value>
@@ -194,14 +308,14 @@
                 <TextBlock Grid.Column="2"
                            Text="{Binding FilteredCount, StringFormat={}{0}개}"
                            FontSize="12"
-                           Foreground="Gray"
+                           Foreground="{DynamicResource SecondaryForegroundBrush}"
                            VerticalAlignment="Center"
                            Margin="10,0,0,0"/>
             </Grid>
         </Border>
 
         <!-- 최근 사용 문자 -->
-        <Border Grid.Row="1" Background="#FFFAF0" Padding="8,6" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1"
+        <Border Grid.Row="2" Background="{DynamicResource RecentBackgroundBrush}" Padding="8,6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
                 Visibility="{Binding RecentCharacters.Count, Converter={StaticResource CountToVisibilityConverter}, FallbackValue=Collapsed}">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -212,32 +326,37 @@
                 <TextBlock Grid.Column="0"
                            Text="&#x23F1; 최근:"
                            FontSize="12"
-                           Foreground="#666"
+                           Foreground="{DynamicResource SecondaryForegroundBrush}"
                            VerticalAlignment="Center"
                            Margin="0,0,8,0"/>
 
-                <ItemsControl Grid.Column="1" ItemsSource="{Binding RecentCharacters}">
-                    <ItemsControl.ItemsPanel>
+                <ListBox x:Name="RecentList"
+                         Grid.Column="1"
+                         ItemsSource="{Binding RecentCharacters}"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Padding="0"
+                         ItemContainerStyle="{StaticResource RecentCharacterItemStyle}"
+                         KeyDown="RecentList_KeyDown"
+                         MouseDoubleClick="RecentList_MouseDoubleClick">
+                    <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Button Style="{StaticResource RecentCharacterStyle}"
-                                    Content="{Binding}"
-                                    FontSize="16"
-                                    Command="{Binding DataContext.CopyRecentCharacterCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                    CommandParameter="{Binding}"
-                                    ToolTip="클릭하여 복사"/>
+                            <TextBlock Text="{Binding}"
+                                       FontSize="16"
+                                       ToolTip="Enter로 복사 (1-9 숫자키)"/>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Grid>
         </Border>
 
         <!-- 즐겨찾기 문자 -->
-        <Border Grid.Row="2" Background="#F1F8E9" Padding="8,6" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1"
+        <Border Grid.Row="3" Background="{DynamicResource FavoriteBackgroundBrush}" Padding="8,6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
                 Visibility="{Binding FavoriteCharacters.Count, Converter={StaticResource CountToVisibilityConverter}, FallbackValue=Collapsed}">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -248,32 +367,37 @@
                 <TextBlock Grid.Column="0"
                            Text="⭐ 즐겨찾기:"
                            FontSize="12"
-                           Foreground="#666"
+                           Foreground="{DynamicResource SecondaryForegroundBrush}"
                            VerticalAlignment="Center"
                            Margin="0,0,8,0"/>
 
-                <ItemsControl Grid.Column="1" ItemsSource="{Binding FavoriteCharacters}">
-                    <ItemsControl.ItemsPanel>
+                <ListBox x:Name="FavoriteList"
+                         Grid.Column="1"
+                         ItemsSource="{Binding FavoriteCharacters}"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Padding="0"
+                         ItemContainerStyle="{StaticResource FavoriteCharacterItemStyle}"
+                         KeyDown="FavoriteList_KeyDown"
+                         MouseDoubleClick="FavoriteList_MouseDoubleClick">
+                    <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Button Style="{StaticResource FavoriteCharacterStyle}"
-                                    Content="{Binding}"
-                                    FontSize="16"
-                                    Command="{Binding DataContext.CopyRecentCharacterCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                    CommandParameter="{Binding}"
-                                    ToolTip="클릭하여 복사"/>
+                            <TextBlock Text="{Binding}"
+                                       FontSize="16"
+                                       ToolTip="Enter로 복사"/>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Grid>
         </Border>
 
         <!-- 카테고리 탭 -->
-        <Border Grid.Row="3" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+        <Border Grid.Row="4" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                 <ItemsControl x:Name="CategoryTabs"
                               ItemsSource="{Binding Categories}"
@@ -288,9 +412,14 @@
                         <DataTemplate>
                             <RadioButton Style="{StaticResource CategoryButtonStyle}"
                                          GroupName="Categories"
-                                         IsChecked="{Binding IsSelected, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=ContentPresenter}}"
                                          Click="CategoryButton_Click"
                                          Tag="{Binding}">
+                                <RadioButton.IsChecked>
+                                    <MultiBinding Converter="{StaticResource CategorySelectedConverter}" Mode="OneWay">
+                                        <Binding />
+                                        <Binding Path="DataContext.SelectedCategory" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                    </MultiBinding>
+                                </RadioButton.IsChecked>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Icon}" FontSize="14" Margin="0,0,4,0"/>
                                     <TextBlock Text="{Binding NameKo}" FontSize="13"/>
@@ -303,7 +432,7 @@
         </Border>
 
         <!-- 문자 그리드 -->
-        <Border Grid.Row="4" Background="White">
+        <Border Grid.Row="5" Background="{DynamicResource SurfaceBrush}">
             <ScrollViewer x:Name="CharacterScrollViewer"
                           VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Disabled">
@@ -329,8 +458,8 @@
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListBoxItem">
                                         <Border x:Name="border"
-                                                Background="White"
-                                                BorderBrush="#E0E0E0"
+                                                Background="{DynamicResource SurfaceBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
                                                 BorderThickness="1"
                                                 CornerRadius="4"
                                                 Margin="3"
@@ -340,12 +469,12 @@
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="border" Property="Background" Value="#E3F2FD"/>
-                                                <Setter TargetName="border" Property="BorderBrush" Value="#2196F3"/>
+                                                <Setter TargetName="border" Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
                                             </Trigger>
                                             <Trigger Property="IsSelected" Value="True">
-                                                <Setter TargetName="border" Property="Background" Value="#BBDEFB"/>
-                                                <Setter TargetName="border" Property="BorderBrush" Value="#1976D2"/>
+                                                <Setter TargetName="border" Property="Background" Value="{DynamicResource SelectedBrush}"/>
+                                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentHoverBrush}"/>
                                                 <Setter TargetName="border" Property="BorderThickness" Value="2"/>
                                             </Trigger>
                                         </ControlTemplate.Triggers>
@@ -368,7 +497,7 @@
         </Border>
 
         <!-- 상태 바 -->
-        <Border Grid.Row="5" Background="#F5F5F5" Padding="12,8" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0">
+        <Border Grid.Row="6" Background="{DynamicResource StatusBarBrush}" Padding="12,8" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -389,7 +518,7 @@
                                    FontWeight="SemiBold"/>
                         <TextBlock Text="{Binding SelectedCharacter.Codepoint}"
                                    FontSize="11"
-                                   Foreground="Gray"/>
+                                   Foreground="{DynamicResource SecondaryForegroundBrush}"/>
                     </StackPanel>
                 </StackPanel>
 
@@ -397,7 +526,7 @@
                 <TextBlock Grid.Column="1"
                            Text="{Binding StatusMessage}"
                            FontSize="12"
-                           Foreground="Gray"
+                           Foreground="{DynamicResource SecondaryForegroundBrush}"
                            VerticalAlignment="Center"
                            Margin="12,0"/>
 
@@ -407,10 +536,10 @@
                         Command="{Binding ToggleFavoriteCommand}"
                         Padding="12,6"
                         Margin="0,0,8,0"
-                        Background="#FFF8E1"
-                        Foreground="#F57C00"
+                        Background="{DynamicResource WarningBackgroundBrush}"
+                        Foreground="{DynamicResource WarningForegroundBrush}"
                         BorderThickness="1"
-                        BorderBrush="#FFB74D"
+                        BorderBrush="{DynamicResource WarningBorderBrush}"
                         Cursor="Hand"
                         ToolTip="선택된 문자 즐겨찾기 토글 (Ctrl+D)">
                     <Button.Style>
@@ -428,10 +557,10 @@
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="border" Property="Background" Value="#FFE082"/>
+                                                <Setter TargetName="border" Property="Background" Value="{DynamicResource WarningHoverBrush}"/>
                                             </Trigger>
                                             <Trigger Property="IsPressed" Value="True">
-                                                <Setter TargetName="border" Property="Background" Value="#FFD54F"/>
+                                                <Setter TargetName="border" Property="Background" Value="{DynamicResource WarningPressedBrush}"/>
                                             </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
@@ -446,8 +575,8 @@
                         Content="입력 (Enter)"
                         Command="{Binding PasteAndCloseCommand}"
                         Padding="16,6"
-                        Background="#2196F3"
-                        Foreground="White"
+                        Background="{DynamicResource AccentBrush}"
+                        Foreground="{DynamicResource PrimaryButtonForegroundBrush}"
                         BorderThickness="0"
                         Cursor="Hand">
                     <Button.Style>
@@ -463,13 +592,13 @@
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="border" Property="Background" Value="#1976D2"/>
+                                                <Setter TargetName="border" Property="Background" Value="{DynamicResource AccentHoverBrush}"/>
                                             </Trigger>
                                             <Trigger Property="IsPressed" Value="True">
-                                                <Setter TargetName="border" Property="Background" Value="#1565C0"/>
+                                                <Setter TargetName="border" Property="Background" Value="{DynamicResource AccentPressedBrush}"/>
                                             </Trigger>
                                             <Trigger Property="IsEnabled" Value="False">
-                                                <Setter TargetName="border" Property="Background" Value="#BDBDBD"/>
+                                                <Setter TargetName="border" Property="Background" Value="{DynamicResource DisabledBrush}"/>
                                             </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
@@ -482,12 +611,13 @@
         </Border>
 
         <!-- 로딩 오버레이 -->
-        <Border Grid.RowSpan="6"
-                Background="#80FFFFFF"
+        <Border Grid.RowSpan="7"
+                Background="{DynamicResource OverlayBrush}"
                 Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="로딩 중..." FontSize="16" Foreground="Gray"/>
+                <TextBlock Text="로딩 중..." FontSize="16" Foreground="{DynamicResource SecondaryForegroundBrush}"/>
             </StackPanel>
         </Border>
-    </Grid>
+        </Grid>
+    </Border>
 </Window>

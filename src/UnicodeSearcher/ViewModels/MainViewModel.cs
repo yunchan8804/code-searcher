@@ -48,6 +48,9 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<string> _recentCharacters = [];
 
+    [ObservableProperty]
+    private ObservableCollection<string> _favoriteCharacters = [];
+
     /// <summary>
     /// 현재 필터링된 문자 수
     /// </summary>
@@ -57,11 +60,6 @@ public partial class MainViewModel : ObservableObject
     /// 전체 문자 수
     /// </summary>
     public int TotalCount => _allCharacters.Count;
-
-    /// <summary>
-    /// 즐겨찾기 문자 목록
-    /// </summary>
-    public IReadOnlySet<string> FavoriteCharacters => _favoriteService.Favorites;
 
     /// <summary>
     /// 설정
@@ -97,7 +95,7 @@ public partial class MainViewModel : ObservableObject
         _recentCharactersService.RecentCharactersChanged += (_, _) => UpdateRecentCharacters();
 
         // 즐겨찾기 변경 이벤트 구독
-        _favoriteService.FavoritesChanged += (_, _) => OnPropertyChanged(nameof(FavoriteCharacters));
+        _favoriteService.FavoritesChanged += (_, _) => UpdateFavoriteCharacters();
     }
 
     /// <summary>
@@ -119,27 +117,18 @@ public partial class MainViewModel : ObservableObject
 
             // 즐겨찾기 로드
             await _favoriteService.LoadAsync();
+            UpdateFavoriteCharacters();
 
             // 문자 데이터 로드
             await _characterDataService.LoadDataAsync();
 
             _allCharacters = _characterDataService.Characters;
 
-            // 카테고리 설정 ("전체" 추가)
-            var allCategory = new Category
-            {
-                Id = "all",
-                NameKo = "전체",
-                NameEn = "All",
-                Icon = "🔤",
-                Order = 0
-            };
+            // 카테고리 설정 (데이터 파일에서 로드)
+            Categories = new ObservableCollection<Category>(_characterDataService.Categories);
 
-            Categories = new ObservableCollection<Category>(
-                new[] { allCategory }.Concat(_characterDataService.Categories)
-            );
-
-            SelectedCategory = allCategory;
+            // 첫 번째 카테고리 ("전체") 선택
+            SelectedCategory = Categories.FirstOrDefault();
 
             // 초기 문자 목록 표시
             UpdateFilteredCharacters();
@@ -159,6 +148,11 @@ public partial class MainViewModel : ObservableObject
     private void UpdateRecentCharacters()
     {
         RecentCharacters = new ObservableCollection<string>(_recentCharactersService.RecentCharacters);
+    }
+
+    private void UpdateFavoriteCharacters()
+    {
+        FavoriteCharacters = new ObservableCollection<string>(_favoriteService.Favorites);
     }
 
     partial void OnSearchQueryChanged(string value)

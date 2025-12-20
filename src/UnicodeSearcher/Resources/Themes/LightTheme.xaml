@@ -16,6 +16,28 @@
     <Color x:Key="RecentBorderColor">#FFB74D</Color>
     <Color x:Key="StatusBarColor">#F5F5F5</Color>
 
+    <!-- 즐겨찾기 버튼 색상 -->
+    <Color x:Key="FavoriteBackgroundColor">#E8F5E9</Color>
+    <Color x:Key="FavoriteBorderColor">#4CAF50</Color>
+    <Color x:Key="FavoriteHoverColor">#C8E6C9</Color>
+    <Color x:Key="FavoritePressedColor">#A5D6A7</Color>
+
+    <!-- 최근 버튼 추가 색상 -->
+    <Color x:Key="RecentHoverColor">#FFE0B2</Color>
+    <Color x:Key="RecentPressedColor">#FFCC80</Color>
+
+    <!-- 경고/스타 버튼 색상 -->
+    <Color x:Key="WarningBackgroundColor">#FFF8E1</Color>
+    <Color x:Key="WarningForegroundColor">#F57C00</Color>
+    <Color x:Key="WarningBorderColor">#FFB74D</Color>
+    <Color x:Key="WarningHoverColor">#FFE082</Color>
+    <Color x:Key="WarningPressedColor">#FFD54F</Color>
+
+    <!-- 기타 색상 -->
+    <Color x:Key="PrimaryButtonForegroundColor">#FFFFFF</Color>
+    <Color x:Key="DisabledColor">#BDBDBD</Color>
+    <Color x:Key="OverlayColor">#80FFFFFF</Color>
+
     <!-- SolidColorBrush -->
     <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
     <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource SurfaceColor}"/>
@@ -30,5 +52,27 @@
     <SolidColorBrush x:Key="RecentBackgroundBrush" Color="{StaticResource RecentBackgroundColor}"/>
     <SolidColorBrush x:Key="RecentBorderBrush" Color="{StaticResource RecentBorderColor}"/>
     <SolidColorBrush x:Key="StatusBarBrush" Color="{StaticResource StatusBarColor}"/>
+
+    <!-- 즐겨찾기 버튼 브러시 -->
+    <SolidColorBrush x:Key="FavoriteBackgroundBrush" Color="{StaticResource FavoriteBackgroundColor}"/>
+    <SolidColorBrush x:Key="FavoriteBorderBrush" Color="{StaticResource FavoriteBorderColor}"/>
+    <SolidColorBrush x:Key="FavoriteHoverBrush" Color="{StaticResource FavoriteHoverColor}"/>
+    <SolidColorBrush x:Key="FavoritePressedBrush" Color="{StaticResource FavoritePressedColor}"/>
+
+    <!-- 최근 버튼 추가 브러시 -->
+    <SolidColorBrush x:Key="RecentHoverBrush" Color="{StaticResource RecentHoverColor}"/>
+    <SolidColorBrush x:Key="RecentPressedBrush" Color="{StaticResource RecentPressedColor}"/>
+
+    <!-- 경고/스타 버튼 브러시 -->
+    <SolidColorBrush x:Key="WarningBackgroundBrush" Color="{StaticResource WarningBackgroundColor}"/>
+    <SolidColorBrush x:Key="WarningForegroundBrush" Color="{StaticResource WarningForegroundColor}"/>
+    <SolidColorBrush x:Key="WarningBorderBrush" Color="{StaticResource WarningBorderColor}"/>
+    <SolidColorBrush x:Key="WarningHoverBrush" Color="{StaticResource WarningHoverColor}"/>
+    <SolidColorBrush x:Key="WarningPressedBrush" Color="{StaticResource WarningPressedColor}"/>
+
+    <!-- 기타 브러시 -->
+    <SolidColorBrush x:Key="PrimaryButtonForegroundBrush" Color="{StaticResource PrimaryButtonForegroundColor}"/>
+    <SolidColorBrush x:Key="DisabledBrush" Color="{StaticResource DisabledColor}"/>
+    <SolidColorBrush x:Key="OverlayBrush" Color="{StaticResource OverlayColor}"/>
 
 </ResourceDictionary>
