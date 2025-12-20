@@ -67,9 +67,9 @@ public class CharacterDataService : ICharacterDataService
 
         if (stream == null)
         {
-            // Fallback: 파일 시스템에서 로드
-            var assemblyLocation = Path.GetDirectoryName(assembly.Location) ?? "";
-            var filePath = Path.Combine(assemblyLocation, "Data", "characters.json");
+            // Fallback: 파일 시스템에서 로드 (AppContext.BaseDirectory 사용)
+            var baseDir = AppContext.BaseDirectory;
+            var filePath = Path.Combine(baseDir, "Data", "characters.json");
 
             if (File.Exists(filePath))
             {
