@@ -1,0 +1,48 @@
+# .NET / C#
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.user
+*.suo
+*.cache
+*.log
+
+# Visual Studio
+.vs/
+*.vsidx
+*.lock.json
+
+# Rider
+.idea/
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]uild/
+bld/
+
+# NuGet
+*.nupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# User-specific files
+*.rsuser
+*.userprefs
+
+# Test results
+[Tt]est[Rr]esult*/
+*.trx
+
+# OS generated
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Publish
+publish/
