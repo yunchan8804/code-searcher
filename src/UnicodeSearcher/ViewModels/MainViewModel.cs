@@ -16,6 +16,7 @@ public partial class MainViewModel : ObservableObject
     private readonly IClipboardService _clipboardService;
     private readonly IRecentCharactersService _recentCharactersService;
     private readonly ISettingsService _settingsService;
+    private readonly IFavoriteService _favoriteService;
 
     private CancellationTokenSource? _searchCts;
     private IReadOnlyList<UnicodeCharacter> _allCharacters = [];
@@ -58,6 +59,11 @@ public partial class MainViewModel : ObservableObject
     public int TotalCount => _allCharacters.Count;
 
     /// <summary>
+    /// 즐겨찾기 문자 목록
+    /// </summary>
+    public IReadOnlySet<string> FavoriteCharacters => _favoriteService.Favorites;
+
+    /// <summary>
     /// 설정
     /// </summary>
     public UserSettings Settings => _settingsService.Settings;
@@ -77,16 +83,21 @@ public partial class MainViewModel : ObservableObject
         ISearchService searchService,
         IClipboardService clipboardService,
         IRecentCharactersService recentCharactersService,
-        ISettingsService settingsService)
+        ISettingsService settingsService,
+        IFavoriteService favoriteService)
     {
         _characterDataService = characterDataService;
         _searchService = searchService;
         _clipboardService = clipboardService;
         _recentCharactersService = recentCharactersService;
         _settingsService = settingsService;
+        _favoriteService = favoriteService;
 
         // 최근 사용 문자 변경 이벤트 구독
         _recentCharactersService.RecentCharactersChanged += (_, _) => UpdateRecentCharacters();
+
+        // 즐겨찾기 변경 이벤트 구독
+        _favoriteService.FavoritesChanged += (_, _) => OnPropertyChanged(nameof(FavoriteCharacters));
     }
 
     /// <summary>
@@ -105,6 +116,9 @@ public partial class MainViewModel : ObservableObject
             // 최근 사용 문자 로드
             await _recentCharactersService.LoadAsync();
             UpdateRecentCharacters();
+
+            // 즐겨찾기 로드
+            await _favoriteService.LoadAsync();
 
             // 문자 데이터 로드
             await _characterDataService.LoadDataAsync();
@@ -273,6 +287,43 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// 선택된 문자 즐겨찾기 토글
+    /// </summary>
+    [RelayCommand]
+    private void ToggleFavorite()
+    {
+        if (SelectedCharacter == null) return;
+
+        _favoriteService.ToggleFavorite(SelectedCharacter.Char);
+        _ = _favoriteService.SaveAsync();
+
+        var isFavorite = _favoriteService.IsFavorite(SelectedCharacter.Char);
+        StatusMessage = isFavorite
+            ? $"'{SelectedCharacter.Char}' 즐겨찾기에 추가됨"
+            : $"'{SelectedCharacter.Char}' 즐겨찾기에서 제거됨";
+    }
+
+    /// <summary>
+    /// 특정 문자 즐겨찾기 토글
+    /// </summary>
+    [RelayCommand]
+    private void ToggleFavoriteCharacter(UnicodeCharacter character)
+    {
+        _favoriteService.ToggleFavorite(character.Char);
+        _ = _favoriteService.SaveAsync();
+
+        var isFavorite = _favoriteService.IsFavorite(character.Char);
+        StatusMessage = isFavorite
+            ? $"'{character.Char}' 즐겨찾기에 추가됨"
+            : $"'{character.Char}' 즐겨찾기에서 제거됨";
+    }
+
+    /// <summary>
+    /// 문자가 즐겨찾기인지 확인
+    /// </summary>
+    public bool IsFavorite(string character) => _favoriteService.IsFavorite(character);
+
     private void CopyCharacterInternal(string character, bool closeWindow)
     {
         if (_clipboardService.Copy(character))
@@ -415,5 +466,6 @@ public partial class MainViewModel : ObservableObject
     {
         await _settingsService.SaveAsync();
         await _recentCharactersService.SaveAsync();
+        await _favoriteService.SaveAsync();
     }
 }

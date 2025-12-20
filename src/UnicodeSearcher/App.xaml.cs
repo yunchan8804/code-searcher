@@ -18,6 +18,8 @@ public partial class App : Application
     private IHotkeyService? _hotkeyService;
     private ISettingsService? _settingsService;
     private IRecentCharactersService? _recentCharactersService;
+    private IFavoriteService? _favoriteService;
+    private IThemeService? _themeService;
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -29,6 +31,8 @@ public partial class App : Application
         var clipboardService = new ClipboardService();
         _recentCharactersService = new RecentCharactersService();
         _settingsService = new SettingsService();
+        _favoriteService = new FavoriteService();
+        _themeService = new ThemeService();
         _hotkeyService = new HotkeyService();
 
         // ViewModel 생성
@@ -37,7 +41,8 @@ public partial class App : Application
             searchService,
             clipboardService,
             _recentCharactersService,
-            _settingsService);
+            _settingsService,
+            _favoriteService);
 
         // MainWindow 생성
         _mainWindow = new MainWindow
@@ -50,6 +55,9 @@ public partial class App : Application
 
         // 글로벌 핫키 설정
         SetupHotkey();
+
+        // 테마 설정 적용
+        SetupTheme();
 
         // 창 표시 (처음에는 표시)
         _mainWindow.Show();
@@ -107,6 +115,21 @@ public partial class App : Application
 
         // 핫키 시작
         _hotkeyService.Start();
+    }
+
+    private void SetupTheme()
+    {
+        if (_themeService == null || _settingsService == null) return;
+
+        // 설정에서 테마 모드 가져와서 적용
+        var themeMode = _settingsService.Settings.Appearance.Theme switch
+        {
+            "Dark" => ThemeMode.Dark,
+            "Light" => ThemeMode.Light,
+            _ => ThemeMode.System
+        };
+
+        _themeService.SetTheme(themeMode);
     }
 
     private void OnHotkeyPressed(object? sender, EventArgs e)

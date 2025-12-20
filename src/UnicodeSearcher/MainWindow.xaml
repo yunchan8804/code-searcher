@@ -72,6 +72,39 @@
             </Setter>
         </Style>
 
+        <!-- 즐겨찾기 문자 버튼 스타일 -->
+        <Style x:Key="FavoriteCharacterStyle" TargetType="Button">
+            <Setter Property="Background" Value="#E8F5E9"/>
+            <Setter Property="BorderBrush" Value="#4CAF50"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#C8E6C9"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#388E3C"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#A5D6A7"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <!-- 최근 사용 문자 버튼 스타일 -->
         <Style x:Key="RecentCharacterStyle" TargetType="Button">
             <Setter Property="Background" Value="#FFF3E0"/>
@@ -108,6 +141,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -202,8 +236,44 @@
             </Grid>
         </Border>
 
+        <!-- 즐겨찾기 문자 -->
+        <Border Grid.Row="2" Background="#F1F8E9" Padding="8,6" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1"
+                Visibility="{Binding FavoriteCharacters.Count, Converter={StaticResource CountToVisibilityConverter}, FallbackValue=Collapsed}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           Text="⭐ 즐겨찾기:"
+                           FontSize="12"
+                           Foreground="#666"
+                           VerticalAlignment="Center"
+                           Margin="0,0,8,0"/>
+
+                <ItemsControl Grid.Column="1" ItemsSource="{Binding FavoriteCharacters}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Style="{StaticResource FavoriteCharacterStyle}"
+                                    Content="{Binding}"
+                                    FontSize="16"
+                                    Command="{Binding DataContext.CopyRecentCharacterCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}"
+                                    ToolTip="클릭하여 복사"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </Border>
+
         <!-- 카테고리 탭 -->
-        <Border Grid.Row="2" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+        <Border Grid.Row="3" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                 <ItemsControl x:Name="CategoryTabs"
                               ItemsSource="{Binding Categories}">
@@ -231,7 +301,7 @@
         </Border>
 
         <!-- 문자 그리드 -->
-        <Border Grid.Row="3" Background="White">
+        <Border Grid.Row="4" Background="White">
             <ScrollViewer x:Name="CharacterScrollViewer"
                           VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Disabled">
@@ -264,11 +334,12 @@
         </Border>
 
         <!-- 상태 바 -->
-        <Border Grid.Row="4" Background="#F5F5F5" Padding="12,8" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0">
+        <Border Grid.Row="5" Background="#F5F5F5" Padding="12,8" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
@@ -296,8 +367,48 @@
                            VerticalAlignment="Center"
                            Margin="12,0"/>
 
-                <!-- 복사 버튼 -->
+                <!-- 즐겨찾기 토글 버튼 -->
                 <Button Grid.Column="2"
+                        Content="⭐ (Ctrl+D)"
+                        Command="{Binding ToggleFavoriteCommand}"
+                        Padding="12,6"
+                        Margin="0,0,8,0"
+                        Background="#FFF8E1"
+                        Foreground="#F57C00"
+                        BorderThickness="1"
+                        BorderBrush="#FFB74D"
+                        Cursor="Hand"
+                        ToolTip="선택된 문자 즐겨찾기 토글 (Ctrl+D)">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="border"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="4"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#FFE082"/>
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#FFD54F"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <!-- 복사 버튼 -->
+                <Button Grid.Column="3"
                         Content="복사 (Enter)"
                         Command="{Binding CopyAndCloseCommand}"
                         Padding="16,6"
@@ -337,7 +448,7 @@
         </Border>
 
         <!-- 로딩 오버레이 -->
-        <Border Grid.RowSpan="5"
+        <Border Grid.RowSpan="6"
                 Background="#80FFFFFF"
                 Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">

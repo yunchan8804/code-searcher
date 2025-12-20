@@ -105,7 +105,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        // Ctrl + 방향키: 카테고리 이동
+        // Ctrl + 방향키: 카테고리 이동, Ctrl+D: 즐겨찾기 토글
         if (Keyboard.Modifiers == ModifierKeys.Control)
         {
             if (e.Key == Key.Left)
@@ -117,6 +117,13 @@ public partial class MainWindow : Window
             if (e.Key == Key.Right)
             {
                 ViewModel.NextCategoryCommand.Execute(null);
+                e.Handled = true;
+                return;
+            }
+            if (e.Key == Key.D)
+            {
+                // Ctrl+D: 즐겨찾기 토글
+                ViewModel.ToggleFavoriteCommand.Execute(null);
                 e.Handled = true;
                 return;
             }
