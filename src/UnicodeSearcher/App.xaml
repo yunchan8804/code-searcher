@@ -16,6 +16,7 @@
             <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
             <converters:CategorySelectedConverter x:Key="CategorySelectedConverter"/>
             <converters:IsFavoriteConverter x:Key="IsFavoriteConverter"/>
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -2,6 +2,9 @@ using System.Windows;
 using System.Windows.Input;
 using Hardcodet.Wpf.TaskbarNotification;
 using UnicodeSearcher.Helpers;
+using UnicodeSearcher.Plugins.Core;
+using UnicodeSearcher.Plugins.Gif;
+using UnicodeSearcher.Plugins.Unicode;
 using UnicodeSearcher.Services;
 using UnicodeSearcher.ViewModels;
 
@@ -21,6 +24,7 @@ public partial class App : Application
     private IFavoriteService? _favoriteService;
     private IThemeService? _themeService;
     private IStartupService? _startupService;
+    private IPluginManager? _pluginManager;
 
     protected override async void OnStartup(StartupEventArgs e)
     {
@@ -62,6 +66,19 @@ public partial class App : Application
         // 설정 먼저 로드
         await _settingsService.LoadAsync();
 
+        // 플러그인 시스템 초기화
+        _pluginManager = new PluginManager(_settingsService);
+
+        // 플러그인 등록
+        var unicodePlugin = new UnicodePlugin(characterDataService, searchService);
+        _pluginManager.Register(unicodePlugin);
+
+        var gifPlugin = new GifPlugin();
+        _pluginManager.Register(gifPlugin);
+
+        // 플러그인 초기화
+        await _pluginManager.InitializeAllAsync();
+
         // ViewModel 생성
         _viewModel = new MainViewModel(
             characterDataService,
@@ -69,7 +86,8 @@ public partial class App : Application
             clipboardService,
             _recentCharactersService,
             _settingsService,
-            _favoriteService);
+            _favoriteService,
+            _pluginManager);
 
         // MainWindow 생성
         _mainWindow = new MainWindow
@@ -260,6 +278,12 @@ public partial class App : Application
         if (_viewModel != null)
         {
             await _viewModel.SaveStateAsync();
+        }
+
+        // 플러그인 정리
+        if (_pluginManager != null)
+        {
+            await _pluginManager.ShutdownAllAsync();
         }
 
         // 핫키 해제

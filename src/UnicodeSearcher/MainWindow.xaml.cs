@@ -838,6 +838,16 @@ public partial class MainWindow : Window
         }
     }
 
+    private void UnicodeTabButton_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.IsGifMode = false;
+    }
+
+    private void GifTabButton_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.IsGifMode = true;
+    }
+
     /// <summary>
     /// 카테고리 스크롤뷰어 마우스 휠 처리 (수평 스크롤)
     /// </summary>

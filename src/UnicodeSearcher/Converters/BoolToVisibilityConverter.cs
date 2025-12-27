@@ -6,6 +6,7 @@ namespace UnicodeSearcher.Converters;
 
 /// <summary>
 /// bool 값을 Visibility로 변환하는 컨버터
+/// parameter가 "Inverse"이면 반전
 /// </summary>
 public class BoolToVisibilityConverter : IValueConverter
 {
@@ -13,6 +14,8 @@ public class BoolToVisibilityConverter : IValueConverter
     {
         if (value is bool boolValue)
         {
+            var inverse = parameter is string s && s.Equals("Inverse", StringComparison.OrdinalIgnoreCase);
+            if (inverse) boolValue = !boolValue;
             return boolValue ? Visibility.Visible : Visibility.Collapsed;
         }
         return Visibility.Collapsed;
@@ -22,7 +25,9 @@ public class BoolToVisibilityConverter : IValueConverter
     {
         if (value is Visibility visibility)
         {
-            return visibility == Visibility.Visible;
+            var result = visibility == Visibility.Visible;
+            var inverse = parameter is string s && s.Equals("Inverse", StringComparison.OrdinalIgnoreCase);
+            return inverse ? !result : result;
         }
         return false;
     }

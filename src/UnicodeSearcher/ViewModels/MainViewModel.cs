@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using UnicodeSearcher.Models;
+using UnicodeSearcher.Plugins.Core;
 using UnicodeSearcher.Services;
 
 namespace UnicodeSearcher.ViewModels;
@@ -17,6 +18,7 @@ public partial class MainViewModel : ObservableObject
     private readonly IRecentCharactersService _recentCharactersService;
     private readonly ISettingsService _settingsService;
     private readonly IFavoriteService _favoriteService;
+    private readonly IPluginManager? _pluginManager;
 
     private CancellationTokenSource? _searchCts;
     private IReadOnlyList<UnicodeCharacter> _allCharacters = [];
@@ -51,10 +53,22 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<string> _favoriteCharacters = [];
 
+    [ObservableProperty]
+    private bool _isGifMode = false;
+
+    [ObservableProperty]
+    private ObservableCollection<ISearchResult> _gifResults = [];
+
+    [ObservableProperty]
+    private ISearchResult? _selectedGifResult;
+
+    [ObservableProperty]
+    private bool _isGifLoading = false;
+
     /// <summary>
     /// 현재 필터링된 문자 수
     /// </summary>
-    public int FilteredCount => FilteredCharacters.Count;
+    public int FilteredCount => IsGifMode ? GifResults.Count : FilteredCharacters.Count;
 
     /// <summary>
     /// 전체 문자 수
@@ -82,7 +96,8 @@ public partial class MainViewModel : ObservableObject
         IClipboardService clipboardService,
         IRecentCharactersService recentCharactersService,
         ISettingsService settingsService,
-        IFavoriteService favoriteService)
+        IFavoriteService favoriteService,
+        IPluginManager? pluginManager = null)
     {
         _characterDataService = characterDataService;
         _searchService = searchService;
@@ -90,6 +105,7 @@ public partial class MainViewModel : ObservableObject
         _recentCharactersService = recentCharactersService;
         _settingsService = settingsService;
         _favoriteService = favoriteService;
+        _pluginManager = pluginManager;
 
         // 최근 사용 문자 변경 이벤트 구독
         _recentCharactersService.RecentCharactersChanged += (_, _) => UpdateRecentCharacters();
@@ -97,6 +113,12 @@ public partial class MainViewModel : ObservableObject
         // 즐겨찾기 변경 이벤트 구독
         _favoriteService.FavoritesChanged += (_, _) => UpdateFavoriteCharacters();
     }
+
+    /// <summary>
+    /// GIF 플러그인 사용 가능 여부
+    /// </summary>
+    public bool IsGifPluginAvailable =>
+        _pluginManager?.SearchablePlugins.Any(p => p.Id == "gif") == true;
 
     /// <summary>
     /// 데이터 초기화
@@ -158,7 +180,24 @@ public partial class MainViewModel : ObservableObject
     partial void OnSearchQueryChanged(string value)
     {
         // 검색어 변경 시 debounce 적용하여 검색
-        SearchWithDebounce();
+        if (IsGifMode)
+        {
+            SearchGifWithDebounce();
+        }
+        else
+        {
+            SearchWithDebounce();
+        }
+    }
+
+    partial void OnIsGifModeChanged(bool value)
+    {
+        OnPropertyChanged(nameof(FilteredCount));
+        if (value)
+        {
+            // GIF 모드로 전환 시 검색 수행
+            SearchGifWithDebounce();
+        }
     }
 
     partial void OnSelectedCategoryChanged(Category? value)
@@ -485,4 +524,112 @@ public partial class MainViewModel : ObservableObject
         await _recentCharactersService.SaveAsync();
         await _favoriteService.SaveAsync();
     }
+
+    #region GIF 플러그인
+
+    /// <summary>
+    /// 플러그인 모드 토글 (유니코드 ↔ GIF)
+    /// </summary>
+    [RelayCommand]
+    private void TogglePluginMode()
+    {
+        IsGifMode = !IsGifMode;
+        StatusMessage = IsGifMode ? "GIF 검색 모드" : "유니코드 검색 모드";
+    }
+
+    private void SearchGifWithDebounce()
+    {
+        _searchCts?.Cancel();
+        _searchCts = new CancellationTokenSource();
+
+        _ = SearchGifAfterDelayAsync(_searchCts.Token);
+    }
+
+    private async Task SearchGifAfterDelayAsync(CancellationToken ct)
+    {
+        try
+        {
+            await Task.Delay(500, ct); // GIF는 API 호출이므로 debounce 길게
+            if (ct.IsCancellationRequested) return;
+
+            await SearchGifAsync(ct);
+        }
+        catch (TaskCanceledException)
+        {
+            // 취소됨 - 무시
+        }
+    }
+
+    private async Task SearchGifAsync(CancellationToken ct)
+    {
+        if (_pluginManager == null) return;
+
+        var gifPlugin = _pluginManager.SearchablePlugins.FirstOrDefault(p => p.Id == "gif");
+        if (gifPlugin == null) return;
+
+        IsGifLoading = true;
+        StatusMessage = "GIF 검색 중...";
+
+        try
+        {
+            var results = await gifPlugin.SearchAsync(SearchQuery, ct);
+            GifResults = new ObservableCollection<ISearchResult>(results);
+            OnPropertyChanged(nameof(FilteredCount));
+
+            StatusMessage = $"{GifResults.Count}개 GIF 검색됨";
+
+            if (GifResults.Count > 0)
+            {
+                SelectedGifResult = GifResults[0];
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"GIF 검색 실패: {ex.Message}";
+            GifResults.Clear();
+        }
+        finally
+        {
+            IsGifLoading = false;
+        }
+    }
+
+    /// <summary>
+    /// GIF 선택 및 복사
+    /// </summary>
+    [RelayCommand]
+    private async Task CopyGifAsync()
+    {
+        if (SelectedGifResult == null) return;
+
+        StatusMessage = "GIF 복사 중...";
+
+        try
+        {
+            var content = await SelectedGifResult.GetClipboardContentAsync();
+
+            if (content.FilePaths?.Count > 0)
+            {
+                // 파일로 클립보드에 복사
+                var files = new System.Collections.Specialized.StringCollection();
+                files.AddRange(content.FilePaths.ToArray());
+                System.Windows.Clipboard.SetFileDropList(files);
+                StatusMessage = "GIF 복사됨 (파일)";
+            }
+            else if (!string.IsNullOrEmpty(content.Text))
+            {
+                // URL로 복사
+                System.Windows.Clipboard.SetText(content.Text);
+                StatusMessage = "GIF URL 복사됨";
+            }
+
+            CloseWindowRequested?.Invoke(this, EventArgs.Empty);
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"GIF 복사 실패: {ex.Message}";
+        }
+    }
+
+    #endregion
 }

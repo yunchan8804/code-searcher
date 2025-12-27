@@ -31,6 +31,12 @@ public class UserSettings
     /// </summary>
     [JsonPropertyName("startup")]
     public StartupSettings Startup { get; set; } = new();
+
+    /// <summary>
+    /// 플러그인 설정
+    /// </summary>
+    [JsonPropertyName("plugins")]
+    public PluginSettings Plugins { get; set; } = new();
 }
 
 /// <summary>
@@ -157,4 +163,26 @@ public class StartupSettings
     /// </summary>
     [JsonPropertyName("startMinimized")]
     public bool StartMinimized { get; set; } = true;
+}
+
+/// <summary>
+/// 플러그인 설정
+/// </summary>
+public class PluginSettings
+{
+    /// <summary>
+    /// 플러그인별 활성화 상태
+    /// Key: 플러그인 ID, Value: 활성화 여부
+    /// </summary>
+    [JsonPropertyName("enabled")]
+    public Dictionary<string, bool> Enabled { get; set; } = new()
+    {
+        ["unicode"] = true,  // 기본 활성화
+    };
+
+    /// <summary>
+    /// 마지막 활성 플러그인 ID
+    /// </summary>
+    [JsonPropertyName("lastActivePlugin")]
+    public string LastActivePlugin { get; set; } = "unicode";
 }

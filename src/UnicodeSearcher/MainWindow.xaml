@@ -245,13 +245,34 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- 타이틀 -->
-                    <TextBlock Grid.Column="0"
-                               Text="🔤 유니코드 검색기"
-                               FontSize="12"
-                               Foreground="{DynamicResource ForegroundBrush}"
-                               VerticalAlignment="Center"
-                               Margin="12,0,0,0"/>
+                    <!-- 타이틀 + 플러그인 전환 -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0,0,0">
+                        <!-- 유니코드 버튼 -->
+                        <RadioButton x:Name="UnicodeTabButton"
+                                     GroupName="PluginTabs"
+                                     IsChecked="{Binding IsGifMode, Converter={StaticResource InverseBoolConverter}, Mode=OneWay}"
+                                     Click="UnicodeTabButton_Click"
+                                     Style="{StaticResource CategoryButtonStyle}"
+                                     WindowChrome.IsHitTestVisibleInChrome="True">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="✦" FontSize="12" Margin="0,0,4,0"/>
+                                <TextBlock Text="유니코드" FontSize="11"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <!-- GIF 버튼 -->
+                        <RadioButton x:Name="GifTabButton"
+                                     GroupName="PluginTabs"
+                                     IsChecked="{Binding IsGifMode, Mode=OneWay}"
+                                     Click="GifTabButton_Click"
+                                     Visibility="{Binding IsGifPluginAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
+                                     Style="{StaticResource CategoryButtonStyle}"
+                                     WindowChrome.IsHitTestVisibleInChrome="True">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="🎬" FontSize="12" Margin="0,0,4,0"/>
+                                <TextBlock Text="GIF" FontSize="11"/>
+                            </StackPanel>
+                        </RadioButton>
+                    </StackPanel>
 
                     <!-- 타이틀바 버튼들 -->
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
@@ -403,8 +424,9 @@
             </StackPanel>
         </Border>
 
-        <!-- 카테고리 탭 -->
-        <Border x:Name="CategorySection" Grid.Row="3" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+        <!-- 카테고리 탭 (유니코드 모드에서만 표시) -->
+        <Border x:Name="CategorySection" Grid.Row="3" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
+                Visibility="{Binding IsGifMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Inverse}">
             <ScrollViewer x:Name="CategoryScrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" PreviewMouseWheel="CategoryScrollViewer_PreviewMouseWheel">
                 <ItemsControl x:Name="CategoryTabs"
                               ItemsSource="{Binding Categories}"
@@ -438,8 +460,9 @@
             </ScrollViewer>
         </Border>
 
-        <!-- 문자 그리드 -->
-        <Border x:Name="GridSection" Grid.Row="4" Background="{DynamicResource SurfaceBrush}">
+        <!-- 문자 그리드 (유니코드 모드) -->
+        <Border x:Name="GridSection" Grid.Row="4" Background="{DynamicResource SurfaceBrush}"
+                Visibility="{Binding IsGifMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Inverse}">
                 <ListBox x:Name="CharacterGrid"
                          ItemsSource="{Binding FilteredCharacters}"
                          SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
@@ -523,6 +546,87 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+        </Border>
+
+        <!-- GIF 그리드 (GIF 모드) -->
+        <Border x:Name="GifSection" Grid.Row="4" Background="{DynamicResource SurfaceBrush}"
+                Visibility="{Binding IsGifMode, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid>
+                <!-- GIF 로딩 표시 -->
+                <TextBlock Text="GIF 검색 중..."
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="14"
+                           Foreground="{DynamicResource SecondaryForegroundBrush}"
+                           Visibility="{Binding IsGifLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                <!-- GIF 목록 -->
+                <ListBox x:Name="GifGrid"
+                         ItemsSource="{Binding GifResults}"
+                         SelectedItem="{Binding SelectedGifResult, Mode=TwoWay}"
+                         Padding="8"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         Visibility="{Binding IsGifLoading, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Inverse}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="4"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border x:Name="border"
+                                                Background="{DynamicResource SurfaceBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                Width="100" Height="100"
+                                                Cursor="Hand">
+                                            <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="{DynamicResource SelectedBrush}"/>
+                                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentHoverBrush}"/>
+                                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ToolTip="{Binding Title}">
+                                <Image Source="{Binding Preview}"
+                                       Stretch="UniformToFill"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <!-- 빈 결과 표시 -->
+                <TextBlock Text="검색어를 입력하세요"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="14"
+                           Foreground="{DynamicResource SecondaryForegroundBrush}"
+                           Visibility="{Binding GifResults.Count, Converter={StaticResource CountToVisibilityConverter}, ConverterParameter=Inverse, FallbackValue=Visible}"/>
+            </Grid>
         </Border>
 
         <!-- 상태 바 -->
