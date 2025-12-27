@@ -1,6 +1,6 @@
 # Unicode Searcher (유니코드 검색기)
 
-[![Version](https://img.shields.io/badge/version-1.2-blue.svg)](https://github.com/yunchan8804/code-searcher/releases)
+[![Version](https://img.shields.io/badge/version-1.3-blue.svg)](https://github.com/yunchan8804/code-searcher/releases)
 [![.NET](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Build](https://github.com/yunchan8804/code-searcher/actions/workflows/build.yml/badge.svg)](https://github.com/yunchan8804/code-searcher/actions)
@@ -48,11 +48,19 @@ Windows용 유니코드 특수문자 검색 및 복사 도구입니다.
 | 🚩 플래그 | 🇰🇷 🇺🇸 🇯🇵 🇬🇧 🏳️ |
 | ... | 그 외 17개 카테고리 |
 
-### 4. 즐겨찾기 & 최근 사용
+### 4. 🎬 GIF 검색 (v1.3 NEW!)
+- **Tenor API** 연동 GIF 검색
+- 검색한 GIF를 바로 클립보드에 복사
+- Discord, Slack 등에서 바로 붙여넣기 가능
+- 설정에서 API 키 입력하여 활성화
+- `Ctrl+1` (유니코드) / `Ctrl+2` (GIF) 탭 전환
+
+### 5. 즐겨찾기 & 최근 사용
 - 자주 쓰는 문자를 즐겨찾기에 추가
 - 최근 사용한 20개 문자 자동 저장
+- **GIF도 즐겨찾기/최근에 저장** (썸네일 표시)
 
-### 5. 시스템 트레이
+### 6. 시스템 트레이
 - 백그라운드 실행
 - 트레이 아이콘 더블클릭으로 호출
 - Windows 시작 시 자동 실행 (설정 가능)
@@ -76,8 +84,9 @@ Windows용 유니코드 특수문자 검색 및 복사 도구입니다.
 | `Ctrl+F` | 검색창으로 이동 |
 | `Ctrl+,` | 설정 창 열기 |
 | `Ctrl+←` `Ctrl+→` | 카테고리 전환 |
+| `Ctrl+1` / `Ctrl+2` | 유니코드/GIF 탭 전환 |
+| `Ctrl+Tab` | 다음 탭으로 전환 |
 | `1`-`9` | 최근 사용 N번째 문자 |
-| `Ctrl+1`-`9` | 검색 결과 N번째 문자 |
 
 ## 설치
 
@@ -102,8 +111,10 @@ dotnet run --project src/UnicodeSearcher
 dotnet publish src/UnicodeSearcher -c Release -r win-x64 --self-contained false
 ```
 
-## 주요 특징 (v1.2)
+## 주요 특징 (v1.3)
 
+- 🎬 **GIF 검색** - Tenor API 연동, 클립보드 복사 지원
+- 🔌 **플러그인 시스템** - 확장 가능한 아키텍처
 - 🎨 **Material Design 다크 테마** - 눈에 편한 어두운 UI
 - 🪟 **Windows 11 스타일** - 네이티브 둥근 모서리
 - ⌨️ **키보드 중심 UX** - 마우스 없이 모든 기능 사용 가능
@@ -124,8 +135,10 @@ dotnet publish src/UnicodeSearcher -c Release -r win-x64 --self-contained false
 - WPF (.NET 8)
 - C# 12
 - CommunityToolkit.Mvvm (MVVM 패턴)
-- H.Hooks (글로벌 핫키)
+- NHotkey.Wpf (글로벌 핫키)
 - Hardcodet.NotifyIcon.Wpf (시스템 트레이)
+- WpfAnimatedGif (GIF 애니메이션)
+- Tenor API (GIF 검색)
 
 ## 프로젝트 통계
 
@@ -145,6 +158,19 @@ MIT License
 버그 리포트, 기능 제안, PR 환영합니다!
 
 ## 변경 이력
+
+### v1.3 (2024-12-27)
+- 🎬 **GIF 검색 플러그인** - Tenor API 연동
+  - GIF 검색 및 클립보드 복사 (Discord, Slack 등에서 바로 붙여넣기)
+  - GIF 호버 시 애니메이션 미리보기
+  - 설정에서 API 키 입력하여 활성화
+- 🔌 **플러그인 시스템** - 확장 가능한 아키텍처 추가
+- ⭐ **통합 즐겨찾기/최근** - 유니코드와 GIF 통합 관리
+  - 최근/즐겨찾기에 GIF 썸네일 표시
+  - 플러그인 비활성화 시 자동 숨김
+- ⏳ **GIF 다운로드 로딩 UI** - 스피너 애니메이션 팝업
+- ⌨️ **탭 전환 단축키** - Ctrl+1/2, Ctrl+Tab
+- 🔧 **GIF 모드 키보드 네비게이션** 개선
 
 ### v1.2 (2024-12-21)
 - Material Design 다크 테마
