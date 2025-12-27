@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:UnicodeSearcher.ViewModels"
         xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
         mc:Ignorable="d"
         Title="유니코드 검색기"
         Icon="Resources/Icons/app.ico"
@@ -569,6 +570,8 @@
                          BorderThickness="0"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         MouseDoubleClick="GifGrid_MouseDoubleClick"
+                         KeyDown="GifGrid_KeyDown"
                          Visibility="{Binding IsGifLoading, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Inverse}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -610,10 +613,45 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid ToolTip="{Binding Title}">
-                                <Image Source="{Binding Preview}"
+                                <!-- 정지 이미지 (기본, 호버/선택 시 숨김) -->
+                                <Image Source="{Binding PreviewUrl}"
                                        Stretch="UniformToFill"
                                        HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"/>
+                                       VerticalAlignment="Center">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                                <!-- 애니메이션 이미지 (호버/선택 시에만 표시) -->
+                                <Image gif:ImageBehavior.AnimatedSource="{Binding PreviewUrl}"
+                                       gif:ImageBehavior.RepeatBehavior="Forever"
+                                       Stretch="UniformToFill"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

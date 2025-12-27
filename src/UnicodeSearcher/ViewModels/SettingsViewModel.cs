@@ -42,6 +42,13 @@ public partial class SettingsViewModel : ObservableObject
     [ObservableProperty]
     private bool _startMinimized = true;
 
+    // 플러그인 설정
+    [ObservableProperty]
+    private bool _gifPluginEnabled = false;
+
+    [ObservableProperty]
+    private string _tenorApiKey = string.Empty;
+
     /// <summary>
     /// 저장 완료 이벤트
     /// </summary>
@@ -81,6 +88,10 @@ public partial class SettingsViewModel : ObservableObject
         // 시작 설정
         RunAtStartup = settings.Startup.RunAtStartup;
         StartMinimized = settings.Startup.StartMinimized;
+
+        // 플러그인 설정
+        GifPluginEnabled = settings.Plugins.Enabled.GetValueOrDefault("gif", false);
+        TenorApiKey = settings.Plugins.Gif.TenorApiKey;
     }
 
     private void UpdateHotkeyDisplay()
@@ -135,6 +146,10 @@ public partial class SettingsViewModel : ObservableObject
         settings.Startup.RunAtStartup = RunAtStartup;
         settings.Startup.StartMinimized = StartMinimized;
 
+        // 플러그인 설정
+        settings.Plugins.Enabled["gif"] = GifPluginEnabled;
+        settings.Plugins.Gif.TenorApiKey = TenorApiKey;
+
         // 저장
         await _settingsService.SaveAsync();
 
@@ -184,5 +199,6 @@ public partial class SettingsViewModel : ObservableObject
         UpdateHotkeyDisplay();
         RunAtStartup = false;
         StartMinimized = true;
+        // 플러그인 설정은 초기화하지 않음 (API 키 유지)
     }
 }

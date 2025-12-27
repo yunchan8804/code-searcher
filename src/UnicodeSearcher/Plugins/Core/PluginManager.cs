@@ -193,4 +193,43 @@ public class PluginManager : IPluginManager
 
         Debug.WriteLine("[PluginManager] All plugins shut down");
     }
+
+    /// <inheritdoc/>
+    public async Task ReinitializePluginAsync(string pluginId)
+    {
+        var plugin = _plugins.FirstOrDefault(p => p.Id == pluginId);
+        if (plugin == null)
+        {
+            Debug.WriteLine($"[PluginManager] Plugin '{pluginId}' not found for reinitialization");
+            return;
+        }
+
+        try
+        {
+            // 종료 후 재초기화
+            await plugin.ShutdownAsync();
+            await plugin.InitializeAsync();
+
+            // 설정에서 활성화 상태 다시 로드
+            var settings = _settingsService.Settings.Plugins;
+            if (settings.Enabled.TryGetValue(pluginId, out var enabled))
+            {
+                plugin.IsEnabled = enabled;
+            }
+
+            Debug.WriteLine($"[PluginManager] Reinitialized plugin: {pluginId} (enabled: {plugin.IsEnabled})");
+
+            // 상태 변경 이벤트 발생
+            PluginStateChanged?.Invoke(this, new PluginStateChangedEventArgs
+            {
+                PluginId = pluginId,
+                IsEnabled = plugin.IsEnabled
+            });
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"[PluginManager] Failed to reinitialize {pluginId}: {ex.Message}");
+            plugin.IsEnabled = false;
+        }
+    }
 }

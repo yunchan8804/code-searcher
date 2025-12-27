@@ -56,6 +56,11 @@ public interface IPluginManager
     Task ShutdownAllAsync();
 
     /// <summary>
+    /// 특정 플러그인 재초기화
+    /// </summary>
+    Task ReinitializePluginAsync(string pluginId);
+
+    /// <summary>
     /// 플러그인 상태 변경 이벤트
     /// </summary>
     event EventHandler<PluginStateChangedEventArgs>? PluginStateChanged;

@@ -73,7 +73,7 @@ public partial class App : Application
         var unicodePlugin = new UnicodePlugin(characterDataService, searchService);
         _pluginManager.Register(unicodePlugin);
 
-        var gifPlugin = new GifPlugin();
+        var gifPlugin = new GifPlugin(_settingsService);
         _pluginManager.Register(gifPlugin);
 
         // 플러그인 초기화
@@ -230,7 +230,20 @@ public partial class App : Application
 
             // 동작 설정 적용
             ApplyBehaviorSettings();
+
+            // GIF 플러그인 재초기화 (API 키 변경 반영)
+            _ = ReinitializeGifPluginAsync();
         }
+    }
+
+    private async Task ReinitializeGifPluginAsync()
+    {
+        if (_pluginManager == null || _viewModel == null) return;
+
+        await _pluginManager.ReinitializePluginAsync("gif");
+
+        // ViewModel에 플러그인 상태 변경 알림
+        _viewModel.RefreshPluginState();
     }
 
     private void ApplyBehaviorSettings()

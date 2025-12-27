@@ -256,9 +256,37 @@ public partial class MainWindow : Window
                 e.Handled = true;
                 return;
             }
+            if (e.Key == Key.D1)
+            {
+                // Ctrl+1: 유니코드 탭
+                SwitchToPlugin("unicode");
+                e.Handled = true;
+                return;
+            }
+            if (e.Key == Key.D2)
+            {
+                // Ctrl+2: GIF 탭
+                SwitchToPlugin("gif");
+                e.Handled = true;
+                return;
+            }
+            if (e.Key == Key.Tab)
+            {
+                // Ctrl+Tab / Ctrl+Shift+Tab: 탭 순환
+                if (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
+                {
+                    SwitchToPreviousPlugin();
+                }
+                else
+                {
+                    SwitchToNextPlugin();
+                }
+                e.Handled = true;
+                return;
+            }
         }
 
-        // 숫자키: 최근 사용 문자 (검색어 비었을 때)
+        // 숫자키: 최근 사용 문자 (검색어 비었을 때, Ctrl 없이)
         if (string.IsNullOrEmpty(ViewModel.SearchQuery))
         {
             if (e.Key >= Key.D1 && e.Key <= Key.D9)
@@ -314,8 +342,87 @@ public partial class MainWindow : Window
             return;
         }
 
-        // 그리드 탐색
-        HandleGridKeyDown(e);
+        // GIF 그리드에 포커스가 있을 때
+        if (GifGrid.IsKeyboardFocusWithin && ViewModel.IsGifMode)
+        {
+            HandleGifGridKeyDown(e);
+            return;
+        }
+
+        // 유니코드 그리드 탐색
+        if (!ViewModel.IsGifMode)
+        {
+            HandleGridKeyDown(e);
+        }
+    }
+
+    private void HandleGifGridKeyDown(KeyEventArgs e)
+    {
+        // GIF 그리드는 WrapPanel이라 열 수 계산이 다름
+        var gridWidth = GifGrid.ActualWidth - 16; // padding 고려
+        var itemWidth = 108; // 100 + margin 8
+        var columns = Math.Max(1, (int)(gridWidth / itemWidth));
+
+        var currentIndex = GifGrid.SelectedIndex;
+        var itemCount = ViewModel.GifResults.Count;
+
+        if (itemCount == 0) return;
+
+        switch (e.Key)
+        {
+            case Key.Left:
+                if (currentIndex > 0)
+                {
+                    GifGrid.SelectedIndex = currentIndex - 1;
+                    GifGrid.ScrollIntoView(GifGrid.SelectedItem);
+                }
+                e.Handled = true;
+                break;
+
+            case Key.Right:
+                if (currentIndex < itemCount - 1)
+                {
+                    GifGrid.SelectedIndex = currentIndex + 1;
+                    GifGrid.ScrollIntoView(GifGrid.SelectedItem);
+                }
+                e.Handled = true;
+                break;
+
+            case Key.Up:
+                if (currentIndex >= columns)
+                {
+                    GifGrid.SelectedIndex = currentIndex - columns;
+                    GifGrid.ScrollIntoView(GifGrid.SelectedItem);
+                }
+                e.Handled = true;
+                break;
+
+            case Key.Down:
+                if (currentIndex + columns < itemCount)
+                {
+                    GifGrid.SelectedIndex = currentIndex + columns;
+                    GifGrid.ScrollIntoView(GifGrid.SelectedItem);
+                }
+                e.Handled = true;
+                break;
+
+            case Key.Enter:
+                if (ViewModel.SelectedGifResult != null)
+                {
+                    ViewModel.PasteGifAndCloseCommand.Execute(null);
+                }
+                e.Handled = true;
+                break;
+
+            case Key.Tab:
+                if (Keyboard.Modifiers == ModifierKeys.Shift)
+                {
+                    // Shift+Tab: 검색창으로
+                    SearchTextBox.Focus();
+                }
+                e.Handled = true;
+                break;
+        }
     }
 
     private void HandleSearchBoxKeyDown(KeyEventArgs e)
@@ -621,13 +728,33 @@ public partial class MainWindow : Window
 
     private void FocusOnGrid()
     {
-        // 그리드 자체에 포커스를 주어 키보드 네비게이션 활성화
-        CharacterGrid.Focus();
-        HighlightSection("grid");
+        // GIF 모드일 때는 GIF 그리드에 포커스
+        if (ViewModel.IsGifMode)
+        {
+            GifGrid.Focus();
+            if (GifGrid.SelectedIndex < 0 && ViewModel.GifResults.Count > 0)
+            {
+                GifGrid.SelectedIndex = 0;
+            }
+            HighlightSection("grid");
+        }
+        else
+        {
+            // 유니코드 그리드에 포커스
+            CharacterGrid.Focus();
+            HighlightSection("grid");
+        }
     }
 
     private void FocusOnCategory()
     {
+        // GIF 모드일 때는 카테고리가 없으므로 바로 그리드로
+        if (ViewModel.IsGifMode)
+        {
+            FocusOnGrid();
+            return;
+        }
+
         // 카테고리 탭에 포커스
         CategoryTabs.Focus();
         HighlightSection("category");
@@ -846,6 +973,66 @@ public partial class MainWindow : Window
     private void GifTabButton_Click(object sender, RoutedEventArgs e)
     {
         ViewModel.IsGifMode = true;
+    }
+
+    private void SwitchToPlugin(string pluginId)
+    {
+        if (pluginId == "unicode")
+        {
+            ViewModel.IsGifMode = false;
+            UnicodeTabButton.IsChecked = true;
+        }
+        else if (pluginId == "gif" && ViewModel.IsGifPluginAvailable)
+        {
+            ViewModel.IsGifMode = true;
+            GifTabButton.IsChecked = true;
+        }
+    }
+
+    private void SwitchToNextPlugin()
+    {
+        if (!ViewModel.IsGifMode && ViewModel.IsGifPluginAvailable)
+        {
+            SwitchToPlugin("gif");
+        }
+        else
+        {
+            SwitchToPlugin("unicode");
+        }
+    }
+
+    private void SwitchToPreviousPlugin()
+    {
+        // 현재는 2개뿐이라 Next와 동일
+        SwitchToNextPlugin();
+    }
+
+    private void GifGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        if (ViewModel.SelectedGifResult != null)
+        {
+            // 더블클릭 = 복사 + 붙여넣기
+            ViewModel.PasteGifAndCloseCommand.Execute(null);
+        }
+    }
+
+    private void GifGrid_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (ViewModel.SelectedGifResult != null)
+        {
+            if (e.Key == Key.Enter)
+            {
+                // Enter = 복사 + 붙여넣기
+                ViewModel.PasteGifAndCloseCommand.Execute(null);
+                e.Handled = true;
+            }
+            else if (e.Key == Key.C && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                // Ctrl+C = 복사만
+                ViewModel.CopySelectedGifCommand.Execute(null);
+                e.Handled = true;
+            }
+        }
     }
 
     /// <summary>

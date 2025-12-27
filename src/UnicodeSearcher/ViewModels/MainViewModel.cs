@@ -121,6 +121,14 @@ public partial class MainViewModel : ObservableObject
         _pluginManager?.SearchablePlugins.Any(p => p.Id == "gif") == true;
 
     /// <summary>
+    /// 플러그인 상태 새로고침 (설정 변경 후 호출)
+    /// </summary>
+    public void RefreshPluginState()
+    {
+        OnPropertyChanged(nameof(IsGifPluginAvailable));
+    }
+
+    /// <summary>
     /// 데이터 초기화
     /// </summary>
     public async Task InitializeAsync()
@@ -330,6 +338,81 @@ public partial class MainViewModel : ObservableObject
     private void CopyRecentCharacter(string character)
     {
         CopyCharacterInternal(character, closeWindow: true);
+    }
+
+    /// <summary>
+    /// 선택된 GIF를 클립보드에 복사
+    /// </summary>
+    [RelayCommand]
+    private async Task CopySelectedGifAsync()
+    {
+        await CopyGifInternalAsync(autoPaste: false);
+    }
+
+    /// <summary>
+    /// 선택된 GIF를 복사하고 이전 창에 붙여넣기
+    /// </summary>
+    [RelayCommand]
+    private async Task PasteGifAndCloseAsync()
+    {
+        await CopyGifInternalAsync(autoPaste: true);
+    }
+
+    private async Task CopyGifInternalAsync(bool autoPaste)
+    {
+        if (SelectedGifResult == null) return;
+
+        try
+        {
+            StatusMessage = "GIF 다운로드 중...";
+
+            var content = await SelectedGifResult.GetClipboardContentAsync();
+
+            // UI 스레드에서 클립보드 작업 실행
+            await System.Windows.Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                try
+                {
+                    var dataObject = new System.Windows.DataObject();
+
+                    if (content.FilePaths?.Count > 0)
+                    {
+                        // 파일로 복사 (Discord, Slack 등에서 바로 붙여넣기 가능)
+                        var files = new System.Collections.Specialized.StringCollection();
+                        files.AddRange(content.FilePaths.ToArray());
+                        dataObject.SetFileDropList(files);
+                    }
+
+                    if (!string.IsNullOrEmpty(content.Text))
+                    {
+                        dataObject.SetText(content.Text);
+                    }
+
+                    System.Windows.Clipboard.SetDataObject(dataObject, true);
+                    StatusMessage = "GIF가 클립보드에 복사되었습니다!";
+                }
+                catch (Exception clipEx)
+                {
+                    StatusMessage = $"클립보드 오류: {clipEx.Message}";
+                }
+            });
+
+            CharacterCopied?.Invoke(this, content.Text ?? "GIF");
+
+            // 자동 붙여넣기 또는 창 닫기
+            if (autoPaste)
+            {
+                PasteRequested?.Invoke(this, EventArgs.Empty);
+            }
+            else if (Settings.Behavior.CloseOnSelect)
+            {
+                CloseWindowRequested?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"GIF 복사 실패: {ex.Message}";
+        }
     }
 
     /// <summary>

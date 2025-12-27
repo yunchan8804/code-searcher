@@ -185,4 +185,22 @@ public class PluginSettings
     /// </summary>
     [JsonPropertyName("lastActivePlugin")]
     public string LastActivePlugin { get; set; } = "unicode";
+
+    /// <summary>
+    /// GIF 플러그인 설정
+    /// </summary>
+    [JsonPropertyName("gif")]
+    public GifPluginSettings Gif { get; set; } = new();
+}
+
+/// <summary>
+/// GIF 플러그인 설정
+/// </summary>
+public class GifPluginSettings
+{
+    /// <summary>
+    /// Tenor API 키
+    /// </summary>
+    [JsonPropertyName("tenorApiKey")]
+    public string TenorApiKey { get; set; } = string.Empty;
 }

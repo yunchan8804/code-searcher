@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using UnicodeSearcher.Plugins.Core;
+using UnicodeSearcher.Services;
 
 namespace UnicodeSearcher.Plugins.Gif;
 
@@ -8,8 +9,14 @@ namespace UnicodeSearcher.Plugins.Gif;
 /// </summary>
 public class GifPlugin : ISearchablePlugin, IDisposable
 {
+    private readonly ISettingsService _settingsService;
     private TenorApiClient? _apiClient;
     private string? _apiKey;
+
+    public GifPlugin(ISettingsService settingsService)
+    {
+        _settingsService = settingsService;
+    }
 
     #region IPlugin
 
@@ -37,10 +44,16 @@ public class GifPlugin : ISearchablePlugin, IDisposable
     /// <inheritdoc/>
     public Task InitializeAsync()
     {
-        // 환경 변수에서 API 키 읽기 (User 레벨)
-        _apiKey = Environment.GetEnvironmentVariable("TENOR_API_KEY", EnvironmentVariableTarget.User);
+        // 1. 설정에서 API 키 읽기
+        _apiKey = _settingsService.Settings.Plugins.Gif.TenorApiKey;
 
-        // User 레벨에서 못 찾으면 Process 레벨에서 시도
+        // 2. 설정에 없으면 환경 변수에서 시도 (User 레벨)
+        if (string.IsNullOrEmpty(_apiKey))
+        {
+            _apiKey = Environment.GetEnvironmentVariable("TENOR_API_KEY", EnvironmentVariableTarget.User);
+        }
+
+        // 3. User 레벨에서 못 찾으면 Process 레벨에서 시도
         if (string.IsNullOrEmpty(_apiKey))
         {
             _apiKey = Environment.GetEnvironmentVariable("TENOR_API_KEY");
@@ -48,16 +61,13 @@ public class GifPlugin : ISearchablePlugin, IDisposable
 
         if (string.IsNullOrEmpty(_apiKey))
         {
-            Debug.WriteLine("[GifPlugin] TENOR_API_KEY not found. Plugin disabled.");
+            Debug.WriteLine("[GifPlugin] Tenor API key not found. Plugin disabled.");
             IsEnabled = false;
             return Task.CompletedTask;
         }
 
         _apiClient = new TenorApiClient(_apiKey);
-
-        // API 키가 있으면 자동 활성화
-        IsEnabled = true;
-        Debug.WriteLine("[GifPlugin] Initialized with API key, enabled=true");
+        Debug.WriteLine("[GifPlugin] Initialized with API key");
 
         return Task.CompletedTask;
     }
