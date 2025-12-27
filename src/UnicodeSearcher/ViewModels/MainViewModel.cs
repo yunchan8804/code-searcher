@@ -260,28 +260,19 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private void PasteAndClose()
     {
-        Helpers.DebugLogger.Log("PasteAndClose START");
-
         if (SelectedCharacter == null) return;
 
-        Helpers.DebugLogger.Log("Before Clipboard (WinForms)");
         try
         {
             // WinForms Clipboard 사용 - 블로킹 없이 빠르게 실패
             System.Windows.Forms.Clipboard.SetText(SelectedCharacter.Char);
         }
-        catch (Exception ex)
+        catch
         {
-            Helpers.DebugLogger.Log($"Clipboard ERROR: {ex.Message}");
             // 실패해도 계속 진행 (이미 클립보드에 있을 수 있음)
         }
-        Helpers.DebugLogger.Log("After Clipboard");
 
-        Helpers.DebugLogger.Log("Before PasteRequested.Invoke");
         PasteRequested?.Invoke(this, EventArgs.Empty);
-        Helpers.DebugLogger.Log("After PasteRequested.Invoke");
-
-        Helpers.DebugLogger.Log("PasteAndClose END");
     }
 
     /// <summary>

@@ -84,23 +84,10 @@ public static class WindowHelper
     /// </summary>
     public static void PasteToActiveWindow()
     {
-        DebugLogger.Log($"PasteToActiveWindow START, handle={_lastActiveWindow}");
+        if (_lastActiveWindow == IntPtr.Zero) return;
 
-        if (_lastActiveWindow == IntPtr.Zero)
-        {
-            DebugLogger.Log("PasteToActiveWindow SKIP - no window");
-            return;
-        }
-
-        DebugLogger.Log("Before SetForegroundWindow");
         SetForegroundWindow(_lastActiveWindow);
-        DebugLogger.Log("After SetForegroundWindow");
-
-        DebugLogger.Log("Before SendKeys.SendWait");
         System.Windows.Forms.SendKeys.SendWait("^v");
-        DebugLogger.Log("After SendKeys.SendWait");
-
-        DebugLogger.Log("PasteToActiveWindow END");
     }
 
     /// <summary>

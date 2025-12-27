@@ -126,23 +126,14 @@ public partial class MainWindow : Window
 
     private void OnPasteRequested(object? sender, EventArgs e)
     {
-        Helpers.DebugLogger.Log("OnPasteRequested START");
-
-        Helpers.DebugLogger.Log("Before HideWindow");
         HideWindow();
-        Helpers.DebugLogger.Log("After HideWindow");
 
         // 완전히 백그라운드 스레드에서 실행
         Task.Run(async () =>
         {
-            Helpers.DebugLogger.Log("Task.Run START");
             await Task.Delay(150);
-            Helpers.DebugLogger.Log("Before PasteToActiveWindow");
             WindowHelper.PasteToActiveWindow();
-            Helpers.DebugLogger.Log("After PasteToActiveWindow");
         });
-
-        Helpers.DebugLogger.Log("OnPasteRequested END");
     }
 
     /// <summary>
@@ -188,15 +179,11 @@ public partial class MainWindow : Window
     /// </summary>
     public void HideWindow()
     {
-        Helpers.DebugLogger.Log("HideWindow START");
         _hideOnDeactivate = false;
-        Helpers.DebugLogger.Log("Before Hide()");
         Hide();
-        Helpers.DebugLogger.Log("After Hide()");
 
         // 창 숨긴 후 백그라운드에서 정리
         Dispatcher.BeginInvoke(() => ViewModel.OnWindowClosing(), DispatcherPriority.Background);
-        Helpers.DebugLogger.Log("HideWindow END");
     }
 
     private void Window_Deactivated(object sender, EventArgs e)
