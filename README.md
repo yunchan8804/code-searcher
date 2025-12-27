@@ -1,6 +1,6 @@
 # Unicode Searcher (유니코드 검색기)
 
-[![Version](https://img.shields.io/badge/version-1.3-blue.svg)](https://github.com/yunchan8804/code-searcher/releases)
+[![Version](https://img.shields.io/badge/version-1.3.1-blue.svg)](https://github.com/yunchan8804/code-searcher/releases)
 [![.NET](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Build](https://github.com/yunchan8804/code-searcher/actions/workflows/build.yml/badge.svg)](https://github.com/yunchan8804/code-searcher/actions)
@@ -159,7 +159,13 @@ MIT License
 
 ## 변경 이력
 
-### v1.3 (2024-12-27)
+### v1.3.1 (2024-12-27)
+- 📦 **인스톨러 추가** - Inno Setup 기반 설치 프로그램
+  - 시작 메뉴 등록
+  - 프로그램 추가/제거에서 관리 가능
+  - Windows 시작 시 자동 실행 옵션
+
+### v1.3.0 (2024-12-27)
 - 🎬 **GIF 검색 플러그인** - Tenor API 연동
   - GIF 검색 및 클립보드 복사 (Discord, Slack 등에서 바로 붙여넣기)
   - GIF 호버 시 애니메이션 미리보기
