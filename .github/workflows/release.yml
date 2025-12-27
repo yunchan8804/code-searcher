@@ -26,25 +26,62 @@ jobs:
     - name: Test
       run: dotnet test --configuration Release --verbosity normal
 
-    - name: Publish (Self-contained)
-      run: |
-        dotnet publish src/UnicodeSearcher -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish/self-contained
-
     - name: Publish (Framework-dependent)
       run: |
         dotnet publish src/UnicodeSearcher -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -o publish/framework-dependent
 
+    - name: Publish (Self-contained)
+      run: |
+        dotnet publish src/UnicodeSearcher -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish/self-contained
+
+    - name: Build Installer (Inno Setup)
+      run: |
+        # Inno Setup 설치
+        choco install innosetup -y
+
+        # 버전 번호 추출 (v1.3.0 -> 1.3.0)
+        $version = "${{ github.ref_name }}".TrimStart('v')
+
+        # .iss 파일에서 버전 업데이트
+        $issFile = "installer/UnicodeSearcher.iss"
+        (Get-Content $issFile) -replace '#define MyAppVersion ".*"', "#define MyAppVersion `"$version`"" | Set-Content $issFile
+
+        # 출력 디렉토리 생성
+        New-Item -ItemType Directory -Force -Path installer-output
+
+        # Inno Setup 컴파일
+        & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" $issFile
+      shell: pwsh
+
     - name: Create ZIP archives
       run: |
-        Compress-Archive -Path publish/self-contained/* -DestinationPath CodeSearcher-${{ github.ref_name }}-win-x64-self-contained.zip
-        Compress-Archive -Path publish/framework-dependent/* -DestinationPath CodeSearcher-${{ github.ref_name }}-win-x64.zip
+        Compress-Archive -Path publish/self-contained/* -DestinationPath UnicodeSearcher-${{ github.ref_name }}-win-x64-portable.zip
+        Compress-Archive -Path publish/framework-dependent/* -DestinationPath UnicodeSearcher-${{ github.ref_name }}-win-x64-portable-framework.zip
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          CodeSearcher-${{ github.ref_name }}-win-x64-self-contained.zip
-          CodeSearcher-${{ github.ref_name }}-win-x64.zip
+          installer-output/*.exe
+          UnicodeSearcher-${{ github.ref_name }}-win-x64-portable.zip
+          UnicodeSearcher-${{ github.ref_name }}-win-x64-portable-framework.zip
+        body: |
+          ## 다운로드
+
+          ### 권장: 인스톨러 (Setup)
+          - **`UnicodeSearcher-${{ github.ref_name }}-Setup.exe`** - 인스톨러 (.NET 8 런타임 필요)
+            - 시작 메뉴에 등록
+            - 프로그램 추가/제거에서 관리 가능
+            - Windows 시작 시 자동 실행 옵션
+
+          ### 포터블 버전 (ZIP)
+          - **`UnicodeSearcher-${{ github.ref_name }}-win-x64-portable.zip`** - 포터블 (.NET 8 런타임 불필요)
+          - **`UnicodeSearcher-${{ github.ref_name }}-win-x64-portable-framework.zip`** - 포터블 (.NET 8 런타임 필요, 파일 크기 작음)
+
+          ### 요구 사항
+          - Windows 10/11 (x64)
+          - .NET 8.0 Runtime (인스톨러/framework 버전만 해당)
+            - [.NET 8 Runtime 다운로드](https://dotnet.microsoft.com/download/dotnet/8.0)
         generate_release_notes: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
