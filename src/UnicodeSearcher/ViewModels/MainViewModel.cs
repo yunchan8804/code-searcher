@@ -54,6 +54,12 @@ public partial class MainViewModel : ObservableObject
     private ObservableCollection<string> _favoriteCharacters = [];
 
     [ObservableProperty]
+    private ObservableCollection<QuickAccessItem> _recentItems = [];
+
+    [ObservableProperty]
+    private ObservableCollection<QuickAccessItem> _favoriteItems = [];
+
+    [ObservableProperty]
     private bool _isGifMode = false;
 
     [ObservableProperty]
@@ -64,6 +70,18 @@ public partial class MainViewModel : ObservableObject
 
     [ObservableProperty]
     private bool _isGifLoading = false;
+
+    [ObservableProperty]
+    private string? _selectedGifTitle;
+
+    [ObservableProperty]
+    private string? _selectedGifDescription;
+
+    [ObservableProperty]
+    private bool _isDownloadingGif = false;
+
+    [ObservableProperty]
+    private string _downloadingMessage = "GIF 다운로드 중...";
 
     /// <summary>
     /// 현재 필터링된 문자 수
@@ -177,12 +195,33 @@ public partial class MainViewModel : ObservableObject
 
     private void UpdateRecentCharacters()
     {
+        // 레거시 호환
         RecentCharacters = new ObservableCollection<string>(_recentCharactersService.RecentCharacters);
+
+        // 통합 목록 (플러그인 활성화 여부에 따라 필터링)
+        var items = _recentCharactersService.RecentItems
+            .Where(i => IsPluginEnabled(i.PluginId))
+            .ToList();
+        RecentItems = new ObservableCollection<QuickAccessItem>(items);
     }
 
     private void UpdateFavoriteCharacters()
     {
+        // 레거시 호환
         FavoriteCharacters = new ObservableCollection<string>(_favoriteService.Favorites);
+
+        // 통합 목록 (플러그인 활성화 여부에 따라 필터링)
+        var items = _favoriteService.FavoriteItems
+            .Where(i => IsPluginEnabled(i.PluginId))
+            .ToList();
+        FavoriteItems = new ObservableCollection<QuickAccessItem>(items);
+    }
+
+    private bool IsPluginEnabled(string pluginId)
+    {
+        if (pluginId == "unicode") return true; // 유니코드는 항상 활성화
+        if (pluginId == "gif") return IsGifPluginAvailable;
+        return _pluginManager?.GetPlugin(pluginId)?.IsEnabled == true;
     }
 
     partial void OnSearchQueryChanged(string value)
@@ -216,9 +255,23 @@ public partial class MainViewModel : ObservableObject
 
     partial void OnSelectedCharacterChanged(UnicodeCharacter? value)
     {
-        if (value != null)
+        if (value != null && !IsGifMode)
         {
             StatusMessage = $"{value.Char} {value.Name} ({value.Codepoint})";
+        }
+    }
+
+    partial void OnSelectedGifResultChanged(ISearchResult? value)
+    {
+        if (value != null && IsGifMode)
+        {
+            SelectedGifTitle = value.Title;
+            SelectedGifDescription = value.Description ?? "GIF";
+        }
+        else
+        {
+            SelectedGifTitle = null;
+            SelectedGifDescription = null;
         }
     }
 
@@ -341,6 +394,93 @@ public partial class MainViewModel : ObservableObject
     }
 
     /// <summary>
+    /// QuickAccessItem 복사 (유니코드/GIF 통합)
+    /// </summary>
+    [RelayCommand]
+    private async Task CopyQuickAccessItemAsync(QuickAccessItem item)
+    {
+        if (item == null) return;
+
+        if (item.Type == QuickAccessItemType.Unicode)
+        {
+            // 유니코드 문자 복사
+            CopyCharacterInternal(item.Value, closeWindow: true);
+        }
+        else if (item.Type == QuickAccessItemType.Gif)
+        {
+            // GIF 복사
+            await CopyGifFromQuickAccessAsync(item);
+        }
+    }
+
+    private async Task CopyGifFromQuickAccessAsync(QuickAccessItem item)
+    {
+        if (string.IsNullOrEmpty(item.FullUrl) && string.IsNullOrEmpty(item.PreviewUrl))
+        {
+            StatusMessage = "GIF URL이 없습니다.";
+            return;
+        }
+
+        try
+        {
+            DownloadingMessage = "GIF 다운로드 중...";
+            IsDownloadingGif = true;
+            StatusMessage = "GIF 다운로드 중...";
+            var gifUrl = item.FullUrl ?? item.PreviewUrl;
+
+            // Tenor API 클라이언트 가져오기
+            var gifPlugin = _pluginManager?.SearchablePlugins.FirstOrDefault(p => p.Id == "gif");
+            if (gifPlugin == null)
+            {
+                // API 클라이언트 없이 URL만 복사
+                System.Windows.Clipboard.SetText(gifUrl!);
+                StatusMessage = "GIF URL 복사됨";
+                PasteRequested?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
+            // GIF 다운로드 (리플렉션으로 ApiClient 접근)
+            var apiClientProp = gifPlugin.GetType().GetProperty("ApiClient",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (apiClientProp?.GetValue(gifPlugin) is Plugins.Gif.TenorApiClient apiClient)
+            {
+                var gifData = await apiClient.DownloadGifAsync(gifUrl!);
+                if (gifData != null)
+                {
+                    var tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"tenor_{item.Value}.gif");
+                    await System.IO.File.WriteAllBytesAsync(tempPath, gifData);
+
+                    await System.Windows.Application.Current.Dispatcher.InvokeAsync(() =>
+                    {
+                        var dataObject = new System.Windows.DataObject();
+                        var files = new System.Collections.Specialized.StringCollection { tempPath };
+                        dataObject.SetFileDropList(files);
+                        dataObject.SetText(gifUrl);
+                        System.Windows.Clipboard.SetDataObject(dataObject, true);
+                    });
+
+                    StatusMessage = "GIF가 클립보드에 복사되었습니다!";
+                    PasteRequested?.Invoke(this, EventArgs.Empty);
+                    return;
+                }
+            }
+
+            // 다운로드 실패 시 URL만 복사
+            System.Windows.Clipboard.SetText(gifUrl!);
+            StatusMessage = "GIF URL 복사됨";
+            PasteRequested?.Invoke(this, EventArgs.Empty);
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"GIF 복사 실패: {ex.Message}";
+        }
+        finally
+        {
+            IsDownloadingGif = false;
+        }
+    }
+
+    /// <summary>
     /// 선택된 GIF를 클립보드에 복사
     /// </summary>
     [RelayCommand]
@@ -364,6 +504,8 @@ public partial class MainViewModel : ObservableObject
 
         try
         {
+            DownloadingMessage = "GIF 다운로드 중...";
+            IsDownloadingGif = true;
             StatusMessage = "GIF 다운로드 중...";
 
             var content = await SelectedGifResult.GetClipboardContentAsync();
@@ -399,6 +541,18 @@ public partial class MainViewModel : ObservableObject
 
             CharacterCopied?.Invoke(this, content.Text ?? "GIF");
 
+            // 최근 사용에 GIF 추가
+            if (SelectedGifResult is Plugins.Gif.GifSearchResult gifResult)
+            {
+                var recentItem = QuickAccessItem.FromGif(
+                    gifResult.Id,
+                    gifResult.Title,
+                    gifResult.PreviewUrl,
+                    gifResult.FullUrl);
+                _recentCharactersService.AddItem(recentItem);
+                await _recentCharactersService.SaveAsync();
+            }
+
             // 자동 붙여넣기 또는 창 닫기
             if (autoPaste)
             {
@@ -412,6 +566,10 @@ public partial class MainViewModel : ObservableObject
         catch (Exception ex)
         {
             StatusMessage = $"GIF 복사 실패: {ex.Message}";
+        }
+        finally
+        {
+            IsDownloadingGif = false;
         }
     }
 
@@ -427,11 +585,19 @@ public partial class MainViewModel : ObservableObject
     }
 
     /// <summary>
-    /// 선택된 문자 즐겨찾기 토글
+    /// 선택된 아이템 즐겨찾기 토글 (모드에 따라 유니코드/GIF)
     /// </summary>
     [RelayCommand]
     private void ToggleFavorite()
     {
+        // GIF 모드인 경우 GIF 즐겨찾기
+        if (IsGifMode)
+        {
+            ToggleGifFavorite();
+            return;
+        }
+
+        // 유니코드 모드
         if (SelectedCharacter == null) return;
 
         _favoriteService.ToggleFavorite(SelectedCharacter.Char);
@@ -462,6 +628,38 @@ public partial class MainViewModel : ObservableObject
     /// 문자가 즐겨찾기인지 확인
     /// </summary>
     public bool IsFavorite(string character) => _favoriteService.IsFavorite(character);
+
+    /// <summary>
+    /// 선택된 GIF 즐겨찾기 토글
+    /// </summary>
+    [RelayCommand]
+    private void ToggleGifFavorite()
+    {
+        if (SelectedGifResult is not Plugins.Gif.GifSearchResult gifResult) return;
+
+        var item = QuickAccessItem.FromGif(
+            gifResult.Id,
+            gifResult.Title,
+            gifResult.PreviewUrl,
+            gifResult.FullUrl);
+
+        _favoriteService.ToggleFavoriteItem(item);
+        _ = _favoriteService.SaveAsync();
+
+        var isFavorite = _favoriteService.IsFavoriteItem(item);
+        StatusMessage = isFavorite
+            ? "GIF 즐겨찾기에 추가됨"
+            : "GIF 즐겨찾기에서 제거됨";
+    }
+
+    /// <summary>
+    /// GIF가 즐겨찾기인지 확인
+    /// </summary>
+    public bool IsGifFavorite(string gifId)
+    {
+        var item = QuickAccessItem.FromGif(gifId, null, null, null);
+        return _favoriteService.IsFavoriteItem(item);
+    }
 
     private void CopyCharacterInternal(string character, bool closeWindow)
     {

@@ -35,7 +35,7 @@ public class GifSearchResult : ISearchResult
     public object? Preview => PreviewUrl;
 
     /// <inheritdoc/>
-    public bool CanFavorite => false;  // GIF는 즐겨찾기 지원 안 함
+    public bool CanFavorite => true;  // GIF도 즐겨찾기 지원
 
     /// <summary>
     /// 미리보기 URL (tinygif)

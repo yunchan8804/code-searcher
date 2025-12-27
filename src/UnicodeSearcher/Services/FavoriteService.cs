@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text.Json;
+using UnicodeSearcher.Models;
 
 namespace UnicodeSearcher.Services;
 
@@ -12,41 +13,76 @@ public class FavoriteService : IFavoriteService
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "UnicodeSearcher");
 
-    private static readonly string FavoritesFilePath = Path.Combine(AppDataFolder, "favorites.json");
+    private static readonly string FavoritesFilePath = Path.Combine(AppDataFolder, "favorites_v2.json");
+    private static readonly string LegacyFavoritesFilePath = Path.Combine(AppDataFolder, "favorites.json");
 
-    private readonly HashSet<string> _favorites = [];
+    private readonly List<QuickAccessItem> _favoriteItems = [];
+    private readonly HashSet<string> _favoriteKeys = []; // 빠른 조회용
 
-    public IReadOnlySet<string> Favorites => _favorites;
+    /// <summary>
+    /// 즐겨찾기 목록 (레거시 호환 - 유니코드만)
+    /// </summary>
+    public IReadOnlySet<string> Favorites =>
+        _favoriteItems
+            .Where(i => i.Type == QuickAccessItemType.Unicode)
+            .Select(i => i.Value)
+            .ToHashSet();
+
+    /// <summary>
+    /// 즐겨찾기 아이템 목록 (통합)
+    /// </summary>
+    public IReadOnlyList<QuickAccessItem> FavoriteItems => _favoriteItems.AsReadOnly();
 
     public event EventHandler? FavoritesChanged;
 
     public bool IsFavorite(string character)
     {
-        return _favorites.Contains(character);
+        var key = $"{QuickAccessItemType.Unicode}:{character}";
+        return _favoriteKeys.Contains(key);
+    }
+
+    public bool IsFavoriteItem(QuickAccessItem item)
+    {
+        return _favoriteKeys.Contains(item.UniqueKey);
     }
 
     public void ToggleFavorite(string character)
     {
         if (string.IsNullOrEmpty(character)) return;
 
-        if (_favorites.Contains(character))
+        var item = QuickAccessItem.FromUnicode(character);
+        ToggleFavoriteItem(item);
+    }
+
+    public void ToggleFavoriteItem(QuickAccessItem item)
+    {
+        if (item == null) return;
+
+        if (_favoriteKeys.Contains(item.UniqueKey))
         {
-            _favorites.Remove(character);
+            RemoveFavoriteItem(item);
         }
         else
         {
-            _favorites.Add(character);
+            AddFavoriteItem(item);
         }
-
-        FavoritesChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void AddFavorite(string character)
     {
         if (string.IsNullOrEmpty(character)) return;
 
-        if (_favorites.Add(character))
+        var item = QuickAccessItem.FromUnicode(character);
+        AddFavoriteItem(item);
+    }
+
+    public void AddFavoriteItem(QuickAccessItem item)
+    {
+        if (item == null) return;
+
+        if (_favoriteKeys.Add(item.UniqueKey))
         {
+            _favoriteItems.Add(item);
             FavoritesChanged?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -55,8 +91,21 @@ public class FavoriteService : IFavoriteService
     {
         if (string.IsNullOrEmpty(character)) return;
 
-        if (_favorites.Remove(character))
+        var item = QuickAccessItem.FromUnicode(character);
+        RemoveFavoriteItem(item);
+    }
+
+    public void RemoveFavoriteItem(QuickAccessItem item)
+    {
+        if (item == null) return;
+
+        if (_favoriteKeys.Remove(item.UniqueKey))
         {
+            var existing = _favoriteItems.FirstOrDefault(i => i.UniqueKey == item.UniqueKey);
+            if (existing != null)
+            {
+                _favoriteItems.Remove(existing);
+            }
             FavoritesChanged?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -67,7 +116,10 @@ public class FavoriteService : IFavoriteService
         {
             Directory.CreateDirectory(AppDataFolder);
 
-            var json = JsonSerializer.Serialize(_favorites.ToList());
+            var json = JsonSerializer.Serialize(_favoriteItems, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
             await File.WriteAllTextAsync(FavoritesFilePath, json);
         }
         catch (Exception ex)
@@ -80,19 +132,46 @@ public class FavoriteService : IFavoriteService
     {
         try
         {
+            // 새 형식 파일이 있으면 로드
             if (File.Exists(FavoritesFilePath))
             {
                 var json = await File.ReadAllTextAsync(FavoritesFilePath);
+                var list = JsonSerializer.Deserialize<List<QuickAccessItem>>(json);
+
+                if (list != null)
+                {
+                    _favoriteItems.Clear();
+                    _favoriteKeys.Clear();
+                    foreach (var item in list)
+                    {
+                        _favoriteItems.Add(item);
+                        _favoriteKeys.Add(item.UniqueKey);
+                    }
+                    FavoritesChanged?.Invoke(this, EventArgs.Empty);
+                    return;
+                }
+            }
+
+            // 레거시 파일 마이그레이션
+            if (File.Exists(LegacyFavoritesFilePath))
+            {
+                var json = await File.ReadAllTextAsync(LegacyFavoritesFilePath);
                 var list = JsonSerializer.Deserialize<List<string>>(json);
 
                 if (list != null)
                 {
-                    _favorites.Clear();
-                    foreach (var item in list)
+                    _favoriteItems.Clear();
+                    _favoriteKeys.Clear();
+                    foreach (var character in list)
                     {
-                        _favorites.Add(item);
+                        var item = QuickAccessItem.FromUnicode(character);
+                        _favoriteItems.Add(item);
+                        _favoriteKeys.Add(item.UniqueKey);
                     }
                     FavoritesChanged?.Invoke(this, EventArgs.Empty);
+
+                    // 새 형식으로 저장
+                    await SaveAsync();
                 }
             }
         }

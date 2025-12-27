@@ -394,6 +394,11 @@ public partial class MainWindow : Window
                     GifGrid.SelectedIndex = currentIndex - columns;
                     GifGrid.ScrollIntoView(GifGrid.SelectedItem);
                 }
+                else
+                {
+                    // 첫 행에서 위로 가면 최근/즐겨찾기로
+                    FocusOnRecentOrFavorite();
+                }
                 e.Handled = true;
                 break;
 
@@ -731,10 +736,17 @@ public partial class MainWindow : Window
         // GIF 모드일 때는 GIF 그리드에 포커스
         if (ViewModel.IsGifMode)
         {
-            GifGrid.Focus();
             if (GifGrid.SelectedIndex < 0 && ViewModel.GifResults.Count > 0)
             {
                 GifGrid.SelectedIndex = 0;
+            }
+            GifGrid.Focus();
+            // 선택된 아이템에 포커스를 맞춤
+            if (GifGrid.SelectedIndex >= 0)
+            {
+                GifGrid.ScrollIntoView(GifGrid.SelectedItem);
+                var container = GifGrid.ItemContainerGenerator.ContainerFromIndex(GifGrid.SelectedIndex) as System.Windows.Controls.ListBoxItem;
+                container?.Focus();
             }
             HighlightSection("grid");
         }
@@ -758,6 +770,31 @@ public partial class MainWindow : Window
         // 카테고리 탭에 포커스
         CategoryTabs.Focus();
         HighlightSection("category");
+    }
+
+    /// <summary>
+    /// 최근/즐겨찾기로 포커스 이동 (GIF 모드에서 첫 행에서 위로 갈 때)
+    /// </summary>
+    private void FocusOnRecentOrFavorite()
+    {
+        if (FavoriteList.Items.Count > 0 && FavoriteList.IsVisible)
+        {
+            FavoriteList.Focus();
+            if (FavoriteList.SelectedIndex < 0) FavoriteList.SelectedIndex = FavoriteList.Items.Count - 1;
+            HighlightSection("favorite");
+        }
+        else if (RecentList.Items.Count > 0 && RecentList.IsVisible)
+        {
+            RecentList.Focus();
+            if (RecentList.SelectedIndex < 0) RecentList.SelectedIndex = RecentList.Items.Count - 1;
+            HighlightSection("recent");
+        }
+        else
+        {
+            SearchTextBox.Focus();
+            SearchTextBox.SelectAll();
+            HighlightSection("search");
+        }
     }
 
     /// <summary>
@@ -822,9 +859,9 @@ public partial class MainWindow : Window
 
     private void RecentList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-        if (RecentList.SelectedItem is string character)
+        if (RecentList.SelectedItem is Models.QuickAccessItem item)
         {
-            ViewModel.CopyRecentCharacterCommand.Execute(character);
+            ViewModel.CopyQuickAccessItemCommand.Execute(item);
         }
     }
 
@@ -835,9 +872,9 @@ public partial class MainWindow : Window
 
     private void FavoriteList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-        if (FavoriteList.SelectedItem is string character)
+        if (FavoriteList.SelectedItem is Models.QuickAccessItem item)
         {
-            ViewModel.CopyRecentCharacterCommand.Execute(character);
+            ViewModel.CopyQuickAccessItemCommand.Execute(item);
         }
     }
 
@@ -848,10 +885,10 @@ public partial class MainWindow : Window
         switch (e.Key)
         {
             case Key.Enter:
-                // 선택된 문자 복사 + 붙여넣기
-                if (listBox.SelectedItem is string character)
+                // 선택된 아이템 복사 + 붙여넣기
+                if (listBox.SelectedItem is Models.QuickAccessItem item)
                 {
-                    ViewModel.CopyRecentCharacterCommand.Execute(character);
+                    ViewModel.CopyQuickAccessItemCommand.Execute(item);
                 }
                 e.Handled = true;
                 break;

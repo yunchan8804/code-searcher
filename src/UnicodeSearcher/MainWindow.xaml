@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:UnicodeSearcher.ViewModels"
+        xmlns:models="clr-namespace:UnicodeSearcher.Models"
         xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
         xmlns:gif="http://wpfanimatedgif.codeplex.com"
         mc:Ignorable="d"
@@ -131,6 +132,45 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- QuickAccessItem DataTemplate (최근/즐겨찾기 통합) -->
+        <DataTemplate x:Key="QuickAccessItemTemplate" DataType="{x:Type models:QuickAccessItem}">
+            <Grid>
+                <!-- 유니코드: 문자 표시 -->
+                <TextBlock Text="{Binding DisplayText}"
+                           FontSize="14"
+                           Foreground="{DynamicResource ForegroundBrush}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Type}" Value="Gif">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <!-- GIF: 썸네일 표시 -->
+                <Image Source="{Binding PreviewUrl}"
+                       Width="18" Height="18"
+                       Stretch="UniformToFill"
+                       RenderOptions.BitmapScalingMode="HighQuality">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Type}" Value="Gif">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+            </Grid>
+        </DataTemplate>
 
         <!-- 최근 사용 문자 ListBoxItem 스타일 -->
         <Style x:Key="RecentCharacterItemStyle" TargetType="ListBoxItem">
@@ -357,18 +397,19 @@
             <StackPanel Orientation="Horizontal">
                 <!-- 최근 사용 -->
                 <StackPanel x:Name="RecentSection" Orientation="Horizontal"
-                            Visibility="{Binding RecentCharacters.Count, Converter={StaticResource CountToVisibilityConverter}, FallbackValue=Collapsed}">
+                            Visibility="{Binding RecentItems.Count, Converter={StaticResource CountToVisibilityConverter}, FallbackValue=Collapsed}">
                     <TextBlock Text="⏱"
                                FontSize="11"
                                Foreground="{DynamicResource SecondaryForegroundBrush}"
                                VerticalAlignment="Center"
                                Margin="0,0,4,0"/>
                     <ListBox x:Name="RecentList"
-                             ItemsSource="{Binding RecentCharacters}"
+                             ItemsSource="{Binding RecentItems}"
                              Background="Transparent"
                              BorderThickness="0"
                              Padding="0"
                              ItemContainerStyle="{StaticResource RecentCharacterItemStyle}"
+                             ItemTemplate="{StaticResource QuickAccessItemTemplate}"
                              KeyDown="RecentList_KeyDown"
                              MouseDoubleClick="RecentList_MouseDoubleClick">
                         <ListBox.ItemsPanel>
@@ -376,35 +417,28 @@
                                 <StackPanel Orientation="Horizontal"/>
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding}"
-                                           FontSize="14"
-                                           Foreground="{DynamicResource ForegroundBrush}"
-                                           ToolTip="Enter로 복사 (1-9 숫자키)"/>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
                     </ListBox>
                 </StackPanel>
 
                 <!-- 구분선 -->
                 <Border Width="1" Background="{DynamicResource BorderBrush}" Margin="8,2"
-                        Visibility="{Binding RecentCharacters.Count, Converter={StaticResource CountToVisibilityConverter}, FallbackValue=Collapsed}"/>
+                        Visibility="{Binding RecentItems.Count, Converter={StaticResource CountToVisibilityConverter}, FallbackValue=Collapsed}"/>
 
                 <!-- 즐겨찾기 -->
                 <StackPanel x:Name="FavoriteSection" Orientation="Horizontal"
-                            Visibility="{Binding FavoriteCharacters.Count, Converter={StaticResource CountToVisibilityConverter}, FallbackValue=Collapsed}">
+                            Visibility="{Binding FavoriteItems.Count, Converter={StaticResource CountToVisibilityConverter}, FallbackValue=Collapsed}">
                     <TextBlock Text="⭐"
                                FontSize="11"
                                Foreground="{DynamicResource SecondaryForegroundBrush}"
                                VerticalAlignment="Center"
                                Margin="0,0,4,0"/>
                     <ListBox x:Name="FavoriteList"
-                             ItemsSource="{Binding FavoriteCharacters}"
+                             ItemsSource="{Binding FavoriteItems}"
                              Background="Transparent"
                              BorderThickness="0"
                              Padding="0"
                              ItemContainerStyle="{StaticResource FavoriteCharacterItemStyle}"
+                             ItemTemplate="{StaticResource QuickAccessItemTemplate}"
                              KeyDown="FavoriteList_KeyDown"
                              MouseDoubleClick="FavoriteList_MouseDoubleClick">
                         <ListBox.ItemsPanel>
@@ -412,14 +446,6 @@
                                 <StackPanel Orientation="Horizontal"/>
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding}"
-                                           FontSize="14"
-                                           Foreground="{DynamicResource ForegroundBrush}"
-                                           ToolTip="Enter로 복사"/>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
                     </ListBox>
                 </StackPanel>
             </StackPanel>
@@ -678,21 +704,49 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- 선택된 문자 표시 -->
-                <StackPanel Grid.Column="0" Orientation="Horizontal" Visibility="{Binding SelectedCharacter, Converter={StaticResource NullToVisibilityConverter}, FallbackValue=Collapsed}">
-                    <TextBlock Text="{Binding SelectedCharacter.Char}"
-                               FontSize="24"
-                               Foreground="{DynamicResource StatusBarForegroundBrush}"
-                               VerticalAlignment="Center"
-                               Margin="0,0,12,0"/>
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="{Binding SelectedCharacter.Name}"
-                                   FontSize="12"
+                <!-- 선택된 유니코드 문자 표시 (유니코드 모드) -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal"
+                            Visibility="{Binding IsGifMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Inverse}">
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding SelectedCharacter, Converter={StaticResource NullToVisibilityConverter}, FallbackValue=Collapsed}">
+                        <TextBlock Text="{Binding SelectedCharacter.Char}"
+                                   FontSize="24"
                                    Foreground="{DynamicResource StatusBarForegroundBrush}"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Text="{Binding SelectedCharacter.Codepoint}"
-                                   FontSize="11"
-                                   Foreground="{DynamicResource SecondaryForegroundBrush}"/>
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,12,0"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{Binding SelectedCharacter.Name}"
+                                       FontSize="12"
+                                       Foreground="{DynamicResource StatusBarForegroundBrush}"
+                                       FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding SelectedCharacter.Codepoint}"
+                                       FontSize="11"
+                                       Foreground="{DynamicResource SecondaryForegroundBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- 선택된 GIF 표시 (GIF 모드) -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal"
+                            Visibility="{Binding IsGifMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding SelectedGifResult, Converter={StaticResource NullToVisibilityConverter}, FallbackValue=Collapsed}">
+                        <TextBlock Text="🎬"
+                                   FontSize="20"
+                                   Foreground="{DynamicResource StatusBarForegroundBrush}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,8,0"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{Binding SelectedGifTitle}"
+                                       FontSize="12"
+                                       Foreground="{DynamicResource StatusBarForegroundBrush}"
+                                       FontWeight="SemiBold"
+                                       MaxWidth="200"
+                                       TextTrimming="CharacterEllipsis"/>
+                            <TextBlock Text="{Binding SelectedGifDescription}"
+                                       FontSize="11"
+                                       Foreground="{DynamicResource SecondaryForegroundBrush}"
+                                       MaxWidth="200"
+                                       TextTrimming="CharacterEllipsis"/>
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
 
@@ -791,6 +845,59 @@
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="로딩 중..." FontSize="16" Foreground="{DynamicResource SecondaryForegroundBrush}"/>
             </StackPanel>
+        </Border>
+
+        <!-- GIF 다운로드 오버레이 -->
+        <Border Grid.RowSpan="7"
+                Background="#CC000000"
+                Visibility="{Binding IsDownloadingGif, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}">
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Background="{DynamicResource SurfaceBrush}"
+                    CornerRadius="12"
+                    Padding="32,24"
+                    BorderBrush="{DynamicResource AccentBrush}"
+                    BorderThickness="2">
+                <StackPanel HorizontalAlignment="Center">
+                    <!-- 스피너 애니메이션 -->
+                    <Grid Width="48" Height="48" Margin="0,0,0,16">
+                        <Ellipse Width="48" Height="48"
+                                 Stroke="{DynamicResource BorderBrush}"
+                                 StrokeThickness="4"/>
+                        <Ellipse x:Name="SpinnerArc" Width="48" Height="48"
+                                 Stroke="{DynamicResource AccentBrush}"
+                                 StrokeThickness="4"
+                                 StrokeDashArray="2,2"
+                                 RenderTransformOrigin="0.5,0.5">
+                            <Ellipse.RenderTransform>
+                                <RotateTransform x:Name="SpinnerRotation" Angle="0"/>
+                            </Ellipse.RenderTransform>
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetName="SpinnerRotation"
+                                                             Storyboard.TargetProperty="Angle"
+                                                             From="0" To="360"
+                                                             Duration="0:0:1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
+                    </Grid>
+                    <!-- 메시지 -->
+                    <TextBlock Text="{Binding DownloadingMessage}"
+                               FontSize="14"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource ForegroundBrush}"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="잠시만 기다려주세요..."
+                               FontSize="12"
+                               Foreground="{DynamicResource SecondaryForegroundBrush}"
+                               HorizontalAlignment="Center"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
         </Border>
         </Grid>
     </Border>
